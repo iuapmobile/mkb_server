@@ -56,10 +56,11 @@ public class QAFeedback extends HttpServlet {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
+        
+        
         // response.setContentType("application/json");
-        String content_type = request.getContentType();
-        JSONObject requestParam = new JSONObject();
-
+//        String content_type = request.getContentType();
+//        JSONObject requestParam = new JSONObject();
         // MKBRequestProcessor rp = new MKBRequestProcessor();
         // if (content_type != null &&
         // content_type.toLowerCase().indexOf("application/json") >= 0) {
