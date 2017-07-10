@@ -32,7 +32,7 @@ public class QAManager {
         qa.setQuestion(question);
         qa.setAnswer(answer);
 
-        if (questions.length > 0) {
+        if (questions != null && questions.length > 0) {
             qa.setQuestions(questions);
         }
 
@@ -91,13 +91,12 @@ public class QAManager {
         return json;
     }
 
-    public String addTongji(String q, Tenant tenant) {
+    public String addTongji(String q, String a, Tenant tenant) {
         // TODO Auto-generated method stub
         String id = "";
         KBQA qa = new KBQA();
-
         qa.setQuestion(q);
-
+        qa.setAnswer(a);
         DBManager dbmgr = new DBManager();
         id = dbmgr.insertQA_tj(qa, tenant);
         return id;

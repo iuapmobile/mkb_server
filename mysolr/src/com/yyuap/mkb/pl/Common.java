@@ -71,7 +71,7 @@ public class Common {
     public static final String SELECT_QA_SIMILAR_BY_ID_SQL = "select * from qa_similar where qid = ?";
 
     
-    public static final String INSERT_QA_TJ_SQL = "insert into qa_tj(id, question, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_QA_TJ_SQL = "insert into qa_tj(id, question, answer, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
     
     //统计 top5
     public static final String QA_Top5 = "select * from (select question, count(*) counts from yycloudkb.qa_tj group by question) t order by counts desc limit 5";

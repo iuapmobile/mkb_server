@@ -99,6 +99,10 @@ public class DBManager {
 
     public boolean insertQA(KBQA qa, Tenant tenant) throws SQLException {
         // TODO Auto-generated method stub
+        if (qa == null) {
+            return false;
+        }
+
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
@@ -109,8 +113,9 @@ public class DBManager {
             String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
 
             // 2.2 相似问法
-            DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, id, dbconf);
-
+            if (qa.getQuestions() != null) {
+                DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, id, dbconf);
+            }
             return true;
         } else {
             System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "

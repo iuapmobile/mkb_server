@@ -58,7 +58,7 @@ public class Query extends HttpServlet {
         // response.setContentType("application/json");
         String content_type = request.getContentType();
         JSONObject requestParam = new JSONObject();
-       
+
         MKBRequestProcessor rp = new MKBRequestProcessor();
         if (content_type != null && content_type.toLowerCase().indexOf("application/json") >= 0) {
             requestParam = rp.readJSON4JSON(request);
@@ -71,6 +71,7 @@ public class Query extends HttpServlet {
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
 
+         String a="";
         // 1、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
@@ -86,25 +87,24 @@ public class Query extends HttpServlet {
         ret.put("response", res);
         if (tenant != null) {
             QAManager qamgr = new QAManager();
-            // 2、添加q的统计
-            String q_tj_id = qamgr.addTongji(q, tenant);
 
-            // 3、查询唯一答案
+            // 2、查询唯一答案
             JSONObject uniqueQA = qamgr.getUniqueAnswer(q, tenant);
             if (uniqueQA != null && !uniqueQA.getString(q).equals("")) {
                 JSONObject botRes = new JSONObject();
                 botRes.put("code", "100000");
-                botRes.put("text", uniqueQA.getString(q));
+                a = uniqueQA.getString(q);
+                botRes.put("text", a);
                 res.put("botResponse", botRes);
             } else {
-                // 4、启用搜索引擎
+                // 3、启用搜索引擎
                 SolrManager solrmng = new SolrManager(tenant.gettkbcore());
 
                 try {
-                    requestParam.put("qid",q_tj_id);
+
                     ret = solrmng.query(requestParam);// 获取查询结果
 
-                    // 5、机器人应答
+                    // 4、机器人应答
                     JSONObject resObjj = ((JSONObject) ret.get("response"));
                     // if(resObj.getInteger("numFound") == 0){
                     if (bot == null || !bot.equalsIgnoreCase("false")) {
@@ -122,6 +122,7 @@ public class Query extends HttpServlet {
 
                         String botRes = httpclient.doPost(BOTURL, createMap, charset);
                         JSONObject obj = JSONObject.parseObject(botRes);
+                        a = obj.getString("text");
                         resObjj.put("botResponse", obj);
 
                     }
@@ -145,11 +146,15 @@ public class Query extends HttpServlet {
             res.put("numFound", 0);
             res.put("start", 0);
         }
-        // response.setStatus(200);
 
-        // String str2 = ret.toJSONString();
+        // 5、添加q的统计
+        QAManager qamgr = new QAManager();
+        String q_tj_id = qamgr.addTongji(q, a, tenant);
+        res = ret.getJSONObject("responseHeader");
+        JSONObject param = res.getJSONObject("param");
+        param.put("qid", q_tj_id);
+
         String result = ret.toString();
-        // response.getWriter().write(ret.toString());
 
         PrintWriter out = response.getWriter();
         // out.write(result);
@@ -158,7 +163,7 @@ public class Query extends HttpServlet {
         out.close();
     }
 
-    /**
+    /**、
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
      *      response)
      */
@@ -168,5 +173,5 @@ public class Query extends HttpServlet {
         // TODO Auto-generated method stub
         doGet(request, response);
     }
-    
+
 }

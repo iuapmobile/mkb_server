@@ -283,7 +283,7 @@ public class SolrManager {
         resHeader.put("QTime", 0);
         JSONObject param = new JSONObject();
         param.put("q", q);
-        param.put("qid", requestParam.get("qid"));
+       
         param.put("indent", "on");
         param.put("wt", "json");
         resHeader.put("param", param);

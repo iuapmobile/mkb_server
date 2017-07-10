@@ -350,6 +350,9 @@ public class DbUtil {
     public static void insertQA_SIMILAR(String insertQaSimilarSql, KBQA qa, String qaid, DBConfig dbconf)
             throws SQLException {
         // TODO Auto-generated method stub
+        if (qa == null || qa.getQuestions() == null) {
+            return;
+        }
         Connection conn = null;
         PreparedStatement ps = null;
 
@@ -543,12 +546,12 @@ public class DbUtil {
             String newid = UUID.randomUUID().toString();
             ps.setString(1, newid);
             ps.setString(2, qa.getQuestion());
-
+            ps.setString(3, qa.getAnswer());
             String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-            ps.setString(3, datetime);
             ps.setString(4, datetime);
-            ps.setString(5, qa.getCreateBy());
-            ps.setString(6, qa.getUpdateBy());
+            ps.setString(5, datetime);
+            ps.setString(6, qa.getCreateBy());
+            ps.setString(7, qa.getUpdateBy());
 
             boolean flag = ps.execute();
 
