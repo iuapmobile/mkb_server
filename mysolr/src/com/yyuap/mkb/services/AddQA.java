@@ -52,9 +52,10 @@ public class AddQA extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO Auto-generated method stub
-//http://127.0.0.1:8080/kb/mkb/QuerySimilarQById?id=1a0f636d-1bba-469e-b680-06e4bcfb5ef3&apiKey=8001
+        // http://127.0.0.1:8080/kb/mkb/QuerySimilarQById?id=1a0f636d-1bba-469e-b680-06e4bcfb5ef3&apiKey=8001
         String q = request.getParameter("q");
         String a = request.getParameter("a");
+        String libraryPk = request.getParameter("libraryPk");
         String[] qs = request.getParameterValues("qs");
 
         if (q != null && !q.equals("") && a != null && !a.equals("")) {
@@ -81,13 +82,19 @@ public class AddQA extends HttpServlet {
 
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
-        boolean success = qam.addQA(q, a, qs, tenant);
+        String id = qam.addQA(libraryPk, q, a, qs, tenant);
 
-       
-        ResultObjectFactory rof =new ResultObjectFactory();
+        ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
+        if (id == null) {
+            ro.getResponse().put("id", null);
+            ro.getResponse().put("text", "不允许插入重复数据");
+            ro.setStatus(100);
+        } else {
+            ro.getResponse().put("id", id);
+        }
         response.getWriter().write(ro.toString());
-        
+
     }
 
 }

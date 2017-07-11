@@ -97,18 +97,18 @@ public class DBManager {
 
     }
 
-    public boolean insertQA(KBQA qa, Tenant tenant) throws SQLException {
+    public String insertQA(KBQA qa, Tenant tenant) throws SQLException {
         // TODO Auto-generated method stub
         if (qa == null) {
-            return false;
+            return null;
         }
 
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
         // 2、检查是否已经存在相同的q和a
-        List list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
-        if (!list.contains(1)) {
+        ArrayList<KBQA> list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
+        if (list.size() == 0) {
             // 2.1 问答
             String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
 
@@ -116,11 +116,14 @@ public class DBManager {
             if (qa.getQuestions() != null) {
                 DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, id, dbconf);
             }
-            return true;
+            return id;
         } else {
             System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
                     + qa.getAnswer() + ", and has been throw away!");
-            return false;
+            String id = list.get(0).getId();
+            throw new SQLException(
+                    "存在重复的记录id[" + id + "]，q=" + qa.getQuestion() + ", a=" + qa.getAnswer() + ", 未能持久化成功改次操作");
+            // return id;
         }
     }
 

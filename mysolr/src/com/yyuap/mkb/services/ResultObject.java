@@ -26,6 +26,10 @@ public class ResultObject {
         return this.res;
     }
 
+    public JSONObject getResponseHeader() {
+        return this.resHeader;
+    }
+
     public JSONObject getResult() {
         return this.ret;
     }

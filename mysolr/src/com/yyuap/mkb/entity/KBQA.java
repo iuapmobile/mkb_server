@@ -22,6 +22,7 @@ public class KBQA extends KBEntity {
     private String answer = "";
     private String qtype = "";
     private String[] questions = null;
+    private String libraryPk = null;
 
     public String getId() {
         return id;
@@ -72,5 +73,12 @@ public class KBQA extends KBEntity {
         json.put("createTime", this.getCreateTime());
         json.put("updateTime", this.getUpdateTime());
         return json;
+    }
+
+    public String getLibraryPk(){
+        return this.libraryPk;
+    }
+    public void setLibraryPk(String libraryPk) {
+       this.libraryPk = libraryPk;   
     }
 }

@@ -56,7 +56,7 @@ public class Common {
     public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ?";
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
-    public static final String INSERT_QA_SQL = "insert into qa(id, question, answer, qtype, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String INSERT_QA_SIMILAR_SQL = "insert into qa_similar(id, question, qid, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
 
     public static final String SELECT_ANSWER_SQL = "select * from qa where question = ?";

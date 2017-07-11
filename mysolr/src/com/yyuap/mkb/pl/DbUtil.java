@@ -76,11 +76,11 @@ public class DbUtil {
         }
     }
 
-    public static List selectOne(String sql, KBQA kbqa, DBConfig dbconf) throws SQLException {
+    public static ArrayList<KBQA> selectOne(String sql, KBQA kbqa, DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List list = new ArrayList<Integer>();
+        ArrayList<KBQA> list = new ArrayList<KBQA>();
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
@@ -91,10 +91,17 @@ public class DbUtil {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                if (!rs.getString("question").equals("") && !rs.getString("answer").equals("")) {
-                    list.add(1);
+                String q = rs.getString("question");
+                String a = rs.getString("answer");
+                String id = rs.getString("id");
+                if (!q.equals("") && !a.equals("")) {
+                    KBQA qa = new KBQA();
+                    qa.setQuestion(q);
+                    qa.setAnswer(a);
+                    qa.setId(id);
+                    list.add(qa);
                 } else {
-                    list.add(0);
+                    // nothing to do
                 }
             }
         } catch (Exception e) {
@@ -224,7 +231,7 @@ public class DbUtil {
         // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
-        String id = null;
+        String ret = null;
         try {
 
             // Class.forName(Common.DRIVER);
@@ -233,27 +240,29 @@ public class DbUtil {
             String _url = dbconf.getUlr();
             conn = DriverManager.getConnection(_url, _username, _psw);
             ps = conn.prepareStatement(insertSql);
-            id = qa.getId();
+            String id = qa.getId();
             if (id.equals("")) {
                 id = UUID.randomUUID().toString();
             }
             ps.setString(1, id);
-
-            ps.setString(2, qa.getQuestion());
-            ps.setString(3, qa.getAnswer());
-            ps.setString(4, qa.getQtype());
+            ps.setString(2, qa.getLibraryPk());
+            ps.setString(3, qa.getQuestion());
+            ps.setString(4, qa.getAnswer());
+            ps.setString(5, qa.getQtype());
 
             String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-            ps.setString(5, datetime);
             ps.setString(6, datetime);
-            ps.setString(7, qa.getCreateBy());
-            ps.setString(8, qa.getUpdateBy());
+            ps.setString(7, datetime);
+            ps.setString(8, qa.getCreateBy());
+            ps.setString(9, qa.getUpdateBy());
 
             boolean flag = ps.execute();
             if (!flag) {
+                ret = id;
                 System.out.println("import data : question = " + qa.getQuestion() + " succeed!");
             }
         } catch (Exception e) {
+            // e.toString()
             e.printStackTrace();
         } finally {
             if (ps != null) {
@@ -264,7 +273,7 @@ public class DbUtil {
             }
         }
 
-        return id;
+        return ret;
     }
 
     public static ArrayList<JSONObject> selectAnswer(String sql, String q, DBConfig dbconf) throws SQLException {

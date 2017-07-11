@@ -25,10 +25,11 @@ public class QAManager {
         return ret;
     }
 
-    public boolean addQA(String question, String answer, String[] questions, Tenant tenant) {
-        boolean success = false;
+    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant) {
+        String id = null;
         KBQA qa = new KBQA();
         qa.setId(UUID.randomUUID().toString());
+        qa.setLibraryPk(libraryPk);
         qa.setQuestion(question);
         qa.setAnswer(answer);
 
@@ -38,12 +39,12 @@ public class QAManager {
 
         DBManager dbmgr = new DBManager();
         try {
-            success = dbmgr.insertQA(qa, tenant);
+            id = dbmgr.insertQA(qa, tenant);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return success;
+        return id;
     }
 
     public JSONObject query(Tenant tenant) {
