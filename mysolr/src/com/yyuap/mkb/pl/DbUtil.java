@@ -22,6 +22,7 @@ import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
+import com.yyuap.mkb.entity.QaCollection;
 
 /**
  * @author gct
@@ -847,5 +848,165 @@ public class DbUtil {
         }
 
         return ret;
+    }
+    
+    /**
+     * pengjf 2017年7月13日18:26:40
+     * 保存收藏
+     * @param insertSql
+     * @param qac
+     * @param dbconf
+     * @return
+     * @throws SQLException
+     */
+    public static String insertQaCollectioin(String insertSql, QaCollection qac, DBConfig dbconf) throws SQLException {
+        // TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        String ret = null;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(insertSql);
+            String id = qac.getId();
+            if (id.equals("")) {
+                id = UUID.randomUUID().toString();
+            }
+            ps.setString(1, id);
+            ps.setString(2, qac.getTenantid());
+            ps.setString(3, qac.getUserid());
+            ps.setString(4, qac.getKbindexid());
+            ps.setString(5, qac.getTitle());
+            ps.setString(6, qac.getDescript());
+            ps.setString(7, qac.getUrl());
+            ps.setString(8, qac.getQid());
+            ps.setString(9, qac.getQsid());
+            ps.setString(10, qac.getQuestion());
+            ps.setString(11, qac.getAnswer());
+
+            String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+            ps.setString(12, datetime);
+            ps.setString(13, datetime);
+            ps.setString(14, qac.getCreateBy());
+            ps.setString(15, qac.getUpdateBy());
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                ret = id;
+                System.out.println("import data : qacollection 用户：= " + qac.getUserid() +"----标题："+qac.getTitle() + " succeed!");
+            }
+        } catch (Exception e) {
+            // e.toString()
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return ret;
+    }
+    
+    /**
+     * pengjf 2017年7月13日18:13:43
+     * @param sql
+     * @param qac
+     * @param dbconf
+     * @return
+     * @throws SQLException
+     */
+    public static JSONArray selectQaCollection(String sql, String[] params, DBConfig dbconf){
+    	JSONArray array = new JSONArray();
+    	Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, params[0]);
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                JSONObject qaco = new JSONObject();
+                qaco.put("id", rs.getString("id"));
+                qaco.put("tenantid", rs.getString("tenantid"));
+                qaco.put("userid", rs.getString("userid"));
+                qaco.put("kbindexid", rs.getString("kbindexid"));
+                qaco.put("title", rs.getString("title"));
+                qaco.put("descript", rs.getString("descript"));
+                qaco.put("url", rs.getString("url"));
+                qaco.put("qid", rs.getString("qid"));
+                qaco.put("qsid", rs.getString("qsid"));
+                qaco.put("question", rs.getString("question"));
+                qaco.put("answer", rs.getString("answer"));
+                
+                qaco.put("createTime", rs.getString("createTime"));
+                qaco.put("updateTime", rs.getString("updateTime"));
+                qaco.put("createBy", rs.getString("createBy"));
+                qaco.put("updateBy", rs.getString("updateBy"));
+
+                array.add(qaco);
+            }
+//            while (rs.next()) {
+//                String id = rs.getString("id");
+//                String tenantid = rs.getString("tenantid");; 
+//                String userid = rs.getString("userid");; 
+//                String kbindexid = rs.getString("kbindexid");; 
+//                String title = rs.getString("title");; 
+//        		String descript = rs.getString("descript");;
+//        		String url = rs.getString("url");;
+//        		String qid = rs.getString("qid");;
+//        		String qsid = rs.getString("qsid");;
+//        		String question = rs.getString("question");;
+//        		String answer = rs.getString("answer");;
+//        		 if (answer != null && !answer.equals("") && userid != null && !userid.equals("")
+//        	        		&& kbindexid != null && !kbindexid.equals("") && title != null && !title.equals("")
+//        	        		&& descript != null && !descript.equals("") && url != null && !url.equals("")) {
+//        			QaCollection qaco = new QaCollection();
+//        			qaco.setTenantid(tenantid);
+//        			qaco.setUserid(userid);
+//        			qaco.setKbindexid(kbindexid);
+//        			qaco.setTitle(title);
+//        			qaco.setDescript(descript);
+//        			qaco.setUrl(url);
+//        			qaco.setQid(qid);
+//        			qaco.setQsid(qsid);
+//        			qaco.setQuestion(question);
+//        			qaco.setAnswer(answer);
+//        			qaco.setId(id);
+//                    list.add(qaco);
+//                } else {
+//                    // nothing to do
+//                }
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        	 try {
+                 if (rs != null) {
+                     rs.close();
+                 }
+                 if (ps != null) {
+                     ps.close();
+                 }
+                 if (conn != null) {
+                     conn.close();
+                 }
+             } catch (SQLException e) {
+                 // TODO Auto-generated catch block
+                 e.printStackTrace();
+
+             }
+        }
+        return array;
     }
 }

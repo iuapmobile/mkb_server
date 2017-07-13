@@ -16,6 +16,7 @@ import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
+import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.fileUtil.ExcelReader;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
 
@@ -311,6 +312,49 @@ public class DBManager {
         }
 
         return success && success1 && success2 && success3;
+    }
+    
+    /**
+     * pengjf 2017年7月13日18:10:36
+     * @param qac
+     * @param tenant
+     * @return
+     * @throws KBDuplicateSQLException
+     * @throws SQLException
+     */
+    public String insertQACollection(QaCollection qac, Tenant tenant) throws SQLException {
+        // TODO Auto-generated method stub
+        try {
+            if (qac == null) {
+                return null;
+            }
+
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+            
+            String id = DbUtil.insertQaCollectioin(Common.INSERT_QACOLLECTION_SQL, qac, dbconf);
+            return id;
+
+        } catch (SQLException e) {
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+    }
+    
+    public JSONArray selectQaCoolectionByUserid(Tenant tenant, String userid) {
+        // TODO Auto-generated method stub
+        JSONArray array = null;
+
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、
+        array = DbUtil.selectQaCollection(Common.SELECT_QACOLLECTION_SQL, new String[] { userid }, dbconf);
+
+        return array;
     }
 
 }

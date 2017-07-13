@@ -81,5 +81,8 @@ public class Common {
     public static final String UPDATE_QA_SIMILAR_SQL = "update qa_similar set `question` = ?,  `updateTime` = ?, `updateBy`=? where `id`=?";
     public static final String DELETE_QS_BY_ID_SQL = "delete from qa_similar where `id` = ?";
     
-
+    
+    public static final String SELECT_QACOLLECTION_SQL = "select * from qa_collection where userid = ?";
+    public static final String INSERT_QACOLLECTION_SQL = "INSERT INTO qa_collection(id,tenantid,userid,kbindexid,title,descript,url,qid,qsid,question,answer,createTime,updateTime,createBy,updateBy) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 }
+
