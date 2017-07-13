@@ -10,6 +10,7 @@ import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
+import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 
@@ -160,4 +161,56 @@ public class QAManager {
         }
         return false;
     }
+    
+    /**
+     * pengjf 2017年7月13日17:58:03
+     * 保存收藏
+     * @param tenantid  租户
+     * @param userid 用户
+     * @param kbindexid kbindexinfo表中id
+     * @param title
+     * @param descript
+     * @param url
+     * @param qid 目前没用到
+     * @param qsid 目前没用到
+     * @param question 目前没用到
+     * @param answer 目前没用到
+     * @param tenant 目前没用到
+     * @return
+     * @throws SQLException
+     * 
+     */
+    public String addStore(String tenantid, String userid, String kbindexid, String title, 
+    		String descript,String url,String qid,String qsid,String question,String answer,Tenant tenant)
+            throws SQLException {
+        String id = null;
+        QaCollection qac = new QaCollection();
+        qac.setId(UUID.randomUUID().toString());
+        qac.setTenantid(tenantid);
+        qac.setUserid(userid);
+        qac.setKbindexid(kbindexid);
+        qac.setTitle(title);
+        qac.setDescript(descript);
+        qac.setUrl(url);
+        qac.setQid(qid);
+        qac.setQsid(qsid);
+        qac.setQuestion(question);
+        qac.setAnswer(answer);
+
+        DBManager dbmgr = new DBManager();
+
+        id = dbmgr.insertQACollection(qac, tenant);
+
+        return id;
+    }
+    
+    public JSONObject queryQaCollectionByUserid(Tenant tenant,  String userid) {
+        // TODO Auto-generated method stub
+    	JSONObject json = new JSONObject();
+        DBManager dbmgr = new DBManager();
+        JSONArray array = dbmgr.selectQaCoolectionByUserid(tenant, userid);
+        json.put("qacollection", array);
+        return json;
+    }
+    
 }

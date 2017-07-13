@@ -43,7 +43,7 @@ public class AddDoc extends HttpServlet {
         try {
             String apiKey = request.getParameter("apiKey");
 
-            // 1、获取租户信息
+            // 1銆佽幏鍙栫鎴蜂俊鎭�
             Tenant tenant = null;
             CBOManager api = new CBOManager();
             try {
