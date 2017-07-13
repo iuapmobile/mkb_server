@@ -1,5 +1,6 @@
 package com.yyuap.mkb.services;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -58,16 +59,20 @@ public class QATop extends HttpServlet {
         // response.setContentType("application/json");
         String content_type = request.getContentType();
         JSONObject requestParam = new JSONObject();
-        // if (content_type != null &&
-        // content_type.toLowerCase().indexOf("application/json") >= 0) {
-        //
-        // requestParam = this.readJSON4JSON(request);
-        //
-        // } else {
-        // requestParam = this.readJSON4JSON(request);
-        // }
+         if (content_type != null &&
+         content_type.toLowerCase().indexOf("application/json") >= 0) {
+        
+         requestParam = this.readJSON4JSON(request);
+        
+         } else {
+         requestParam = this.readJSON4Form_urlencoded(request);
+         }
+         
         String apiKey = request.getParameter("apiKey");
+        apiKey = requestParam.getString("apiKey");
+        
         String topn = request.getParameter("top");
+        requestParam.getString("top");
 
         // 1、获取租户信息
         Tenant tenant = null;
@@ -92,5 +97,53 @@ public class QATop extends HttpServlet {
         out.flush();
         out.close();
     }
+    
+    
+    
+    private JSONObject readJSON4JSON(HttpServletRequest request) {
+        JSONObject param = new JSONObject();
+        StringBuffer json = new StringBuffer();
+        String line = null;
+        try {
+            BufferedReader reader = request.getReader();
+            while ((line = reader.readLine()) != null) {
+                json.append(line);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        String str = json.toString();
+        try {
+            JSONObject obj = JSONObject.parseObject(str);
+            return obj;
+        } catch (Exception e) {
+            try {
+                str = java.net.URLDecoder.decode(str, "UTF-8");
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+
+            String[] strs = str.split("&");
+            for (String s : strs) {
+                String[] kv = s.split("=");
+                param.put(kv[0], kv[1]);
+            }
+            return param;
+        }
+    }
+
+    private JSONObject readJSON4Form_urlencoded(HttpServletRequest request) {
+        JSONObject param = new JSONObject();
+
+       
+        String apiKey = request.getParameter("apiKey");
+        param.put("apiKey", apiKey);
+
+       
+
+        return param;
+    }
+
 
 }

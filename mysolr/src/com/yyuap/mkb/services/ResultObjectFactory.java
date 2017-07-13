@@ -1,18 +1,23 @@
 package com.yyuap.mkb.services;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
 
 public class ResultObjectFactory {
-    
-    
-    public ResultObjectFactory(){
-        
+
+    public ResultObjectFactory() {
+
     }
-    public ResultObject create(int val){
+
+    public ResultObject create() {
+        ResultObject ro = new ResultObject();
+        ro.setStatus(0);
+        return ro;
+    }
+
+    public ResultObject create(int val) {
         ResultObject ro = new ResultObject();
         ro.setStatus(val);
         return ro;
     }
-      
+
 }

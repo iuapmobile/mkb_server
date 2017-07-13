@@ -21,6 +21,7 @@ import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
+import com.yyuap.mkb.entity.KBQS;
 
 /**
  * @author gct
@@ -31,7 +32,7 @@ public class DbUtil {
     /**
      * @param sql
      */
-    public static void insert(String sql, KBIndex kbIndex) throws SQLException {
+    public static void insert(String sql, KBIndex kbIndex, DBConfig dbconf) throws SQLException {
         // "insert into kbIndexInfo(title, decript, descriptImg, url,
         // author,keywords,tag,category,grade,domain,createTime,updateTime)
         // values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -39,8 +40,13 @@ public class DbUtil {
         Connection conn = null;
         PreparedStatement ps = null;
         try {
+
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+
             Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            conn = DriverManager.getConnection(_url, _username, _psw);
             ps = conn.prepareStatement(sql);
             ps.setString(1, kbIndex.getId());
             ps.setString(2, kbIndex.getTitle());
@@ -120,7 +126,7 @@ public class DbUtil {
         return list;
     }
 
-    public static List selectOne(String sql, KBIndex kbIndex) throws SQLException {
+    public static List selectOne(String sql, KBIndex kbIndex, DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -356,11 +362,10 @@ public class DbUtil {
         return list;
     }
 
-    public static void insertQA_SIMILAR(String insertQaSimilarSql, KBQA qa, String qaid, DBConfig dbconf)
-            throws SQLException {
+    public static boolean insertQA_SIMILAR(String insertQaSimilarSql, KBQA qa, DBConfig dbconf) throws SQLException {
         // TODO Auto-generated method stub
         if (qa == null || qa.getQuestions() == null) {
-            return;
+            return false;
         }
         Connection conn = null;
         PreparedStatement ps = null;
@@ -403,6 +408,7 @@ public class DbUtil {
             if (conn != null) {
                 conn.close();
             }
+            return true;
         }
     }
 
@@ -651,4 +657,195 @@ public class DbUtil {
         return id;
     }
 
+    public static boolean delQA(String deleteQaSql, String id, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean ret = false;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(deleteQaSql);
+
+            ps.setString(1, id);
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                ret = true;
+                System.out.println("delete qa record : id = " + id + " succeed!");
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return ret;
+
+    }
+
+    public static boolean updateQA(String updateQaSql, KBQA qa, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean ret = false;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(updateQaSql);
+            String id = qa.getId();
+
+            ps.setString(1, qa.getQuestion());
+            ps.setString(2, qa.getAnswer());
+            ps.setString(3, qa.getId());
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                ret = true;
+                System.out.println("import data : question = " + qa.getQuestion() + " succeed!");
+            }
+        } catch (Exception e) {
+            // e.toString()
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return ret;
+    }
+
+    public static boolean delQS(String deleteQaSimilarSql, KBQS qs, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean ret = false;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(deleteQaSimilarSql);
+
+            ps.setString(1, qs.getId());
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                ret = true;
+                System.out.println("delete qa_similar record : id = " + qs.getId() + " succeed!");
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return ret;
+    }
+
+    public static boolean updateQS(String updateQaSimilarSql, KBQS qs, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean ret = false;
+        String id = "";
+        id = "s";
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            ps = conn.prepareStatement(updateQaSimilarSql);
+
+            ps.setString(1, qs.getQuestion());
+
+            String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+            ps.setString(2, datetime);
+            ps.setString(3, qs.getUpdateBy());
+            ps.setString(4, qs.getId());
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                System.out.println("update data succeed!");
+                id = qs.getId();
+                ret = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+
+        }
+        return ret;
+    }
+
+    public static String insertQS(String insertQaSimilarSql, KBQS qs, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        String ret = null;
+        try {
+
+            // Class.forName(Common.DRIVER);q
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(insertQaSimilarSql);
+            String id = qs.getId();
+            if (id == null || id.equals("")) {
+                id = UUID.randomUUID().toString();
+            }
+            ps.setString(1, id);
+            ps.setString(2, qs.getQuestion());
+            ps.setString(3, qs.getQid());
+
+            String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+            ps.setString(4, datetime);
+            ps.setString(5, datetime);
+            ps.setString(6, qs.getCreateBy());
+            ps.setString(7, qs.getUpdateBy());
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                ret = id;
+                System.out.println("insert qa_similar row : question = " + qs.getQuestion() + " succeed!");
+            }
+        } catch (Exception e) {
+            // e.toString()
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return ret;
+    }
 }

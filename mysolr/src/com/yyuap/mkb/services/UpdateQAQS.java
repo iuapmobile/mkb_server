@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
@@ -20,13 +21,13 @@ import com.yyuap.mkb.services.util.MKBRequestProcessor;
  * Servlet implementation class UpdateQA
  */
 @WebServlet("/UpdateQA")
-public class UpdateQA extends HttpServlet {
+public class UpdateQAQS extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateQA() {
+    public UpdateQAQS() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -55,7 +56,6 @@ public class UpdateQA extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         
         
-
         String content_type = request.getContentType();
         JSONObject requestParam = new JSONObject();
 
@@ -64,11 +64,15 @@ public class UpdateQA extends HttpServlet {
         } else {
             requestParam = this.readJSON4Form_urlencoded(request);
         }
+        
         String id = requestParam.getString("id");
         String q = requestParam.getString("q");
         String a = requestParam.getString("a");
-        String[] qs = (String[]) requestParam.get("qs");
+        String strqs = requestParam.getString("qs");
+        JSONArray qs = JSONArray.parseArray(strqs);
+        String apiKey = request.getParameter("apiKey");
         
+       
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
@@ -81,7 +85,7 @@ public class UpdateQA extends HttpServlet {
             return;
         }
 
-        String apiKey = request.getParameter("apiKey");
+        
 
         // 1、获取租户信息
         Tenant tenant = null;
@@ -102,11 +106,11 @@ public class UpdateQA extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            boolean success = qam.updateQA(id, q, a, qs, tenant);
+            boolean success = qam.updateQAQS(id, q, a, qs, tenant);
             if (success) {
                 ro.setStatus(0);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             ro.setStatus(1169);
@@ -163,14 +167,12 @@ public class UpdateQA extends HttpServlet {
         String a = request.getParameter("a");
         param.put("a", a);
         
-        String[] qs = request.getParameterValues("qs");
+        String qs = request.getParameter("qs");
         param.put("qs", qs);
         
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
 
-     
-        
         return param;
     }
 }

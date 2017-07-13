@@ -62,7 +62,7 @@ public class Common {
     public static final String SELECT_ANSWER_SQL = "select * from qa where question = ?";
 
     public static final String DELETE_QA_SQL = "delete from qa where `id` = ?";
-    public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qaid` = ?";
+    public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";
 
     public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ? where `id` = ?";
 
@@ -77,5 +77,9 @@ public class Common {
     public static final String QA_Top5 = "select * from (select question, count(*) counts from yycloudkb.qa_tj group by question) t order by counts desc limit 5";
 
     public static final String UPDATE_QA_FEEDBACK_SQL =  "UPDATE qa_tj SET `score`=? WHERE `id`=?";
+
+    public static final String UPDATE_QA_SIMILAR_SQL = "update qa_similar set `question` = ?,  `updateTime` = ?, `updateBy`=? where `id`=?";
+    public static final String DELETE_QS_BY_ID_SQL = "delete from qa_similar where `id` = ?";
+    
 
 }

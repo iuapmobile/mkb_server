@@ -283,7 +283,7 @@ public class SolrManager {
         resHeader.put("QTime", 0);
         JSONObject param = new JSONObject();
         param.put("q", q);
-       
+
         param.put("indent", "on");
         param.put("wt", "json");
         resHeader.put("param", param);
@@ -369,7 +369,7 @@ public class SolrManager {
         System.out.println(rsp);
     }
 
-    public void indexTikaFile(String path, KBIndex kbIndex)
+    public void indexTikaFile(String path, KBIndex kbIndex,Tenant tenant)
             throws IOException, SAXException, TikaException, SQLException {
         String text = "";
         if (path.endsWith(".mp4")) {
@@ -409,7 +409,7 @@ public class SolrManager {
 
         // 下一步，考虑DB事务，异常时回滚
         DBManager save = new DBManager();
-        if (save.addKBIndex(kbIndex)) {
+        if (save.addKBIndex(kbIndex,tenant)) {
             try {
                 this.addDoc(kbIndex);
             } catch (Exception e) {
@@ -461,13 +461,13 @@ public class SolrManager {
         return null;
     }
 
-    public boolean saveExcelData2DB(String path, String type) throws IOException {
+    public boolean saveExcelData2DB(String path, String type, Tenant tenant) throws IOException {
         DBManager saveData2DB = new DBManager();
         try {
             if (type.equalsIgnoreCase("kbindex")) {
-                saveData2DB.saveKB(path, KBINDEXTYPE.KBINDEX);
+                saveData2DB.saveKB(path, KBINDEXTYPE.KBINDEX, tenant);
             } else if (type.equalsIgnoreCase("qa")) {
-                saveData2DB.saveKB(path, KBINDEXTYPE.QA);
+                saveData2DB.saveKB(path, KBINDEXTYPE.QA, tenant);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block

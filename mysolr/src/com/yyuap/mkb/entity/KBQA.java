@@ -5,6 +5,7 @@ package com.yyuap.mkb.entity;
 
 import java.util.ArrayList;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -23,6 +24,7 @@ public class KBQA extends KBEntity {
     private String qtype = "";
     private String[] questions = null;
     private String libraryPk = null;
+    private ArrayList<KBQS> qs;
 
     public String getId() {
         return id;
@@ -64,6 +66,16 @@ public class KBQA extends KBEntity {
         this.questions = qs;
     }
 
+    public void setQS(ArrayList<KBQS> qs) {
+        this.qs = qs;
+    }
+
+    public ArrayList<KBQS> getQS() {
+        if (this.qs == null)
+            this.qs = new ArrayList<KBQS>();
+        return this.qs;
+    }
+
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
         json.put("id", this.getId());
@@ -75,10 +87,11 @@ public class KBQA extends KBEntity {
         return json;
     }
 
-    public String getLibraryPk(){
+    public String getLibraryPk() {
         return this.libraryPk;
     }
+
     public void setLibraryPk(String libraryPk) {
-       this.libraryPk = libraryPk;   
+        this.libraryPk = libraryPk;
     }
 }

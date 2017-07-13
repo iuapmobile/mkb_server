@@ -9,7 +9,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
+import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.pl.DBManager;
+import com.yyuap.mkb.pl.KBDuplicateSQLException;
 
 public class QAManager {
     public QAManager() {
@@ -25,7 +27,8 @@ public class QAManager {
         return ret;
     }
 
-    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant) {
+    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant)
+            throws SQLException {
         String id = null;
         KBQA qa = new KBQA();
         qa.setId(UUID.randomUUID().toString());
@@ -38,12 +41,9 @@ public class QAManager {
         }
 
         DBManager dbmgr = new DBManager();
-        try {
-            id = dbmgr.insertQA(qa, tenant);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+        id = dbmgr.insertQA(qa, tenant);
+
         return id;
     }
 
@@ -67,9 +67,10 @@ public class QAManager {
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant) {
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant) throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
+        kbqa.setId(id);
         kbqa.setQuestion(q);
         kbqa.setAnswer(a);
         // kbqa.setQtype(t);
@@ -78,8 +79,8 @@ public class QAManager {
 
         DBManager dbmgr = new DBManager();
 
-        // success = dbmgr.insertQA(qa, tenant);
-        return false;
+        boolean success = dbmgr.updateQA(kbqa, tenant);
+        return success;
     }
 
     public JSONObject queryById(Tenant tenant, String id) {
@@ -119,5 +120,44 @@ public class QAManager {
         fb.setScore(score);
         String fb_id = dbmgr.addKBQAFeedback(fb, tenant);
         return fb_id;
+    }
+
+    public boolean delQA(String id, Tenant tenant) throws SQLException {
+        DBManager dbmgr = new DBManager();
+        boolean success = dbmgr.delQA(id, tenant);
+        return success;
+    }
+
+    public boolean updateQAQS(String id, String q, String a, JSONArray qs, Tenant tenant) throws SQLException {
+        // 根据数据构建Entity
+        KBQA kbqa = new KBQA();
+        kbqa.setId(id);
+        kbqa.setQuestion(q);
+        kbqa.setAnswer(a);
+        // kbqa.setQtype(t);
+
+        for (int i = 0, len = qs.size(); i < len; i++) {
+            JSONObject json = qs.getJSONObject(i);
+            KBQS kbqs = new KBQS();
+            kbqs.setId(json.getString("id"));
+            kbqs.setQuestion(json.getString("q"));
+            kbqs.setQid(kbqa.getId());
+            kbqs.setStatus(json.getString("status"));
+            kbqa.getQS().add(kbqs);
+        }
+
+        DBManager dbmgr = new DBManager();
+
+        boolean success = dbmgr.updateQAQS(kbqa, tenant);
+        return success;
+    }
+
+    public boolean delQABat(String[] ids, Tenant tenant) throws SQLException {
+        // TODO Auto-generated method stub
+        for (int i = 0, len = ids.length; i < len; i++) {
+            String id = ids[i];
+            this.delQA(id, tenant);
+        }
+        return false;
     }
 }

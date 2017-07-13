@@ -15,6 +15,7 @@ import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
+import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.fileUtil.ExcelReader;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
 
@@ -25,7 +26,7 @@ import com.yyuap.mkb.fileUtil.ExcelXReader;
 public class DBManager {
 
     @SuppressWarnings({ "rawtypes" })
-    public void saveKB(String path, KBINDEXTYPE type) throws IOException, SQLException {
+    public void saveKB(String path, KBINDEXTYPE type, Tenant tenant) throws IOException, SQLException {
 
         List<KBIndex> list = new ArrayList<KBIndex>();
         if (path.endsWith("xlsx")) {
@@ -36,10 +37,10 @@ public class DBManager {
             list = xlsMain.readXls(path, type);
         }
 
-        addKBIndexList(list);
+        addKBIndexList(list, tenant);
     }
 
-    public void saveQA(String path, String type) throws IOException, SQLException {
+    public void saveQA(String path, String type, Tenant tenant) throws IOException, SQLException {
 
         List<KBIndex> list = new ArrayList<KBIndex>();
         if (path.endsWith("xlsx")) {
@@ -50,24 +51,25 @@ public class DBManager {
             list = xlsMain.readXls(path, KBINDEXTYPE.KBINDEX);
         }
 
-        addKBIndexList(list);
+        addKBIndexList(list, tenant);
     }
 
-    public void addKBIndexList(List<KBIndex> list) throws SQLException {
+    public void addKBIndexList(List<KBIndex> list, Tenant tenant) throws SQLException {
         KBIndex kbIndex = new KBIndex();
         for (int i = 0; i < list.size(); i++) {
             kbIndex = list.get(i);
             if (kbIndex.getTitle().equals("")) {
                 continue;
             }
-            addKBIndex(kbIndex);
+            addKBIndex(kbIndex, tenant);
         }
     }
 
-    public boolean addKBIndex(KBIndex kbIndex) throws SQLException {
-        List list = DbUtil.selectOne(Common.SELECT_KBINDEXINFO_SQL, kbIndex);
+    public boolean addKBIndex(KBIndex kbIndex, Tenant tenant) throws SQLException {
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+        List list = DbUtil.selectOne(Common.SELECT_KBINDEXINFO_SQL, kbIndex, dbconf);
         if (!list.contains(1)) {
-            DbUtil.insert(Common.INSERT_KBINDEXINFO_SQL, kbIndex);
+            DbUtil.insert(Common.INSERT_KBINDEXINFO_SQL, kbIndex, dbconf);
             return false;
         } else {
             System.out.println("The Record was Exist : title. = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
@@ -97,33 +99,44 @@ public class DBManager {
 
     }
 
-    public String insertQA(KBQA qa, Tenant tenant) throws SQLException {
+    public String insertQA(KBQA qa, Tenant tenant) throws KBDuplicateSQLException, SQLException {
         // TODO Auto-generated method stub
-        if (qa == null) {
-            return null;
-        }
-
-        // 1、根据租户获取DBconfig
-        DBConfig dbconf = this.getDBConfigByTenant(tenant);
-
-        // 2、检查是否已经存在相同的q和a
-        ArrayList<KBQA> list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
-        if (list.size() == 0) {
-            // 2.1 问答
-            String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
-
-            // 2.2 相似问法
-            if (qa.getQuestions() != null) {
-                DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, id, dbconf);
+        try {
+            if (qa == null) {
+                return null;
             }
-            return id;
-        } else {
-            System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
-                    + qa.getAnswer() + ", and has been throw away!");
-            String id = list.get(0).getId();
-            throw new SQLException(
-                    "存在重复的记录id[" + id + "]，q=" + qa.getQuestion() + ", a=" + qa.getAnswer() + ", 未能持久化成功改次操作");
-            // return id;
+
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+            // 2、检查是否已经存在相同的q和a
+
+            ArrayList<KBQA> list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
+            if (list.size() == 0) {
+                // 2.1 问答
+                String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
+                qa.setId(id);
+                // 2.2 相似问法
+                if (qa.getQuestions() != null) {
+                    DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, dbconf);
+                }
+                return id;
+            } else {
+                System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
+                        + qa.getAnswer() + ", and has been throw away!");
+                String id = list.get(0).getId();
+
+                KBDuplicateSQLException e = new KBDuplicateSQLException(
+                        "存在重复的记录id[" + id + "]，q=" + qa.getQuestion() + ", a=" + qa.getAnswer() + ", 未能持久化成功改次操作");
+                e.getExtData().put("id", id);
+                throw e;
+            }
+        } catch (SQLException e) {
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else {
+                throw e;
+            }
         }
     }
 
@@ -234,6 +247,70 @@ public class DBManager {
             e.printStackTrace();
         }
         return id;
+    }
+
+    public boolean delQA(String id, Tenant tenant) throws SQLException {
+        try {
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+            boolean success = DbUtil.delQA(Common.DELETE_QA_SQL, id, dbconf);
+            boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, id, dbconf);
+
+            return success;
+        } catch (SQLException e) {
+            if (e instanceof KBDelSQLException) {
+                throw (KBDelSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    public boolean updateQA(KBQA kbqa, Tenant tenant) throws SQLException {
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
+
+        boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, kbqa.getId(), dbconf);
+
+        boolean success3 = DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, kbqa, dbconf);
+
+        return success && success2 && success3;
+    }
+
+    public boolean updateQAQS(KBQA kbqa, Tenant tenant) throws SQLException {
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
+        boolean success1 = false;
+        boolean success2 = false;
+        boolean success3 = false;
+        String id = null;
+        ArrayList<KBQS> qss = kbqa.getQS();
+        for (int i = 0, len = qss.size(); i < len; i++) {
+            KBQS qs = qss.get(i);
+            String status = qs.getStatus();
+            if (status != null) {
+                switch (status) {
+                case "added":
+                    id = DbUtil.insertQS(Common.INSERT_QA_SIMILAR_SQL, qs, dbconf);
+                    break;
+                case "modified":
+                    success2 = DbUtil.updateQS(Common.UPDATE_QA_SIMILAR_SQL, qs, dbconf);
+                    break;
+                case "deleted":
+                    success3 = DbUtil.delQS(Common.DELETE_QS_BY_ID_SQL, qs, dbconf);
+                    break;
+                default:
+                    break;
+                }
+            }
+
+        }
+
+        return success && success1 && success2 && success3;
     }
 
 }

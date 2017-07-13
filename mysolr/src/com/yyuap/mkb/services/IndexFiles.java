@@ -16,11 +16,11 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.tika.exception.TikaException;
 import org.xml.sax.SAXException;
 
+import com.yyuap.mkb.cbo.CBOManager;
+import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
 import com.yyuap.mkb.processor.SolrManager;
-
-
 
 /**
  * Servlet implementation class indexFiles
@@ -48,14 +48,29 @@ public class IndexFiles extends HttpServlet {
         String fileName = "/Users/gct/work/附件2 移动应用平台建设项目需求书V1.9.pdf";
 
         String path = request.getParameter("path");
-       
+
         String url = request.getParameter("url");
-       
+
         String excelPath = request.getParameter("excelPath");
         String rootPath = request.getParameter("rootPath");
-        
+
         // 1、如果有excelPath，表明这是一个excel，里面记录了要索引的File清单，excelPath是excel的地址
         // 2、如果没有excelPath，表明这是一个可以直接索引的文件，path是要索引文件的地址 url是其在线地址
+
+        String apiKey = request.getParameter("apiKey");
+
+        // 获取租户信息
+        Tenant tenant = null;
+        CBOManager api = new CBOManager();
+        try {
+            tenant = api.getTenantInfo(apiKey);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        if (tenant == null) {
+            return;
+        }
 
         SolrManager mgr = new SolrManager();
         if (excelPath != null && !excelPath.equals("")) {
@@ -70,7 +85,7 @@ public class IndexFiles extends HttpServlet {
                     while (_fullPath.contains("//")) {
                         _fullPath = _fullPath.replaceAll("//", "/");
                     }
-                    mgr.indexTikaFile(_fullPath, kb);
+                    mgr.indexTikaFile(_fullPath, kb, tenant);
                 } catch (SAXException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -85,7 +100,7 @@ public class IndexFiles extends HttpServlet {
         } else if (path != null && !path.equals("")) {
             try {
                 KBIndex kb = new KBIndex();
-                mgr.indexTikaFile(path, kb);
+                mgr.indexTikaFile(path, kb, tenant);
             } catch (SAXException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
