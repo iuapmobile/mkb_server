@@ -180,23 +180,10 @@ public class QAManager {
      * @throws SQLException
      * 
      */
-    public String addStore(String tenantid, String userid, String kbindexid, String title, 
-    		String descript,String url,String qid,String qsid,String question,String answer,Tenant tenant)
+    public String addStore(QaCollection qac ,Tenant tenant)
             throws SQLException {
         String id = null;
-        QaCollection qac = new QaCollection();
         qac.setId(UUID.randomUUID().toString());
-        qac.setTenantid(tenantid);
-        qac.setUserid(userid);
-        qac.setKbindexid(kbindexid);
-        qac.setTitle(title);
-        qac.setDescript(descript);
-        qac.setUrl(url);
-        qac.setQid(qid);
-        qac.setQsid(qsid);
-        qac.setQuestion(question);
-        qac.setAnswer(answer);
-
         DBManager dbmgr = new DBManager();
 
         id = dbmgr.insertQACollection(qac, tenant);

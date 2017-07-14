@@ -16,6 +16,7 @@ import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
+import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
@@ -68,15 +69,31 @@ public class AddStore extends HttpServlet {
         String qsid = request.getParameter("qsid");
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
+        
+       
 
-        if (answer != null && !answer.equals("") && userid != null && !userid.equals("")
-        		&& kbindexid != null && !kbindexid.equals("") && title != null && !title.equals("")
-        		&& descript != null && !descript.equals("") && url != null && !url.equals("")) {
+        if (userid != null && !userid.equals("") && url != null && !url.equals("")) {
 
         } else {
-            response.getWriter().append("Served at: ").append(request.getContextPath());
+        	ResultObjectFactory rof = new ResultObjectFactory();
+            ResultObject ro = rof.create(0);
+            ro.getResponse().put("reason", "用户名或者url为空，请检查. ");
+            ro.setStatus(1000);
+        	response.getWriter().write(ro.toString());
             return;
         }
+        
+        QaCollection qac = new QaCollection();//收藏表实体
+        qac.setTenantid(tenantid);
+        qac.setUserid(userid);
+        qac.setKbindexid(kbindexid);
+        qac.setTitle(title);
+        qac.setDescript(descript);
+        qac.setUrl(url);
+        qac.setQid(qid);
+        qac.setQsid(qsid);
+        qac.setQuestion(question);
+        qac.setAnswer(answer);
 
         String apiKey = request.getParameter("apiKey");
 
@@ -99,7 +116,7 @@ public class AddStore extends HttpServlet {
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
         try {
-            id = qam.addStore(tenantid, userid, kbindexid, title, descript, url, qid, qsid, question, answer, tenant);
+            id = qam.addStore(qac,tenant);
             ro.getResponse().put("id", id);
         } catch (SQLException e) {
             if (e instanceof KBDuplicateSQLException) {
