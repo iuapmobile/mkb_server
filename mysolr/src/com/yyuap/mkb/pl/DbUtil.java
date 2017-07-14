@@ -589,7 +589,7 @@ public class DbUtil {
 
     }
 
-    public static JSONArray selectQA_top5(String qaTop5SQL, DBConfig dbconf) throws SQLException {
+    public static JSONArray selectQA_topn(String qaTop5SQL, int topn, DBConfig dbconf) throws SQLException {
         // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
@@ -599,7 +599,7 @@ public class DbUtil {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
             ps = conn.prepareStatement(qaTop5SQL);
-
+            ps.setInt(1, topn);
             rs = ps.executeQuery();
             while (rs.next()) {
                 JSONObject json = new JSONObject();

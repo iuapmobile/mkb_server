@@ -9,9 +9,11 @@ public class ResultObject {
     JSONObject res = new JSONObject();
     JSONObject resHeader = new JSONObject();
     JSONArray docs = new JSONArray();
+    JSONObject param = new JSONObject();
 
     public ResultObject() {
         resHeader.put("status", "0");
+        resHeader.put("param", param);
         ret.put("responseHeader", resHeader);
 
         res.put("docs", docs);
