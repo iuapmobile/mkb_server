@@ -59,21 +59,25 @@ public class QATop extends HttpServlet {
         // response.setContentType("application/json");
         String content_type = request.getContentType();
         JSONObject requestParam = new JSONObject();
-         if (content_type != null &&
-         content_type.toLowerCase().indexOf("application/json") >= 0) {
-        
-         requestParam = this.readJSON4JSON(request);
-        
-         } else {
-         requestParam = this.readJSON4Form_urlencoded(request);
-         }
-         
+        if (content_type != null && content_type.toLowerCase().indexOf("application/json") >= 0) {
+
+            requestParam = this.readJSON4JSON(request);
+
+        } else {
+            requestParam = this.readJSON4Form_urlencoded(request);
+        }
+
         String apiKey = request.getParameter("apiKey");
         apiKey = requestParam.getString("apiKey");
-        
-        String topn = request.getParameter("top");
-        requestParam.getString("top");
 
+        String top = request.getParameter("top");
+        top = requestParam.getString("top");
+        int topn = 5;
+        try {
+            topn = Integer.parseInt(top);
+        } catch (Exception e) {
+            // 记录错误
+        }
         // 1、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
@@ -97,9 +101,7 @@ public class QATop extends HttpServlet {
         out.flush();
         out.close();
     }
-    
-    
-    
+
     private JSONObject readJSON4JSON(HttpServletRequest request) {
         JSONObject param = new JSONObject();
         StringBuffer json = new StringBuffer();
@@ -136,14 +138,13 @@ public class QATop extends HttpServlet {
     private JSONObject readJSON4Form_urlencoded(HttpServletRequest request) {
         JSONObject param = new JSONObject();
 
-       
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
 
-       
+        String top = request.getParameter("top");
+        param.put("top", top);
 
         return param;
     }
-
 
 }

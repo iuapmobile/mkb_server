@@ -82,9 +82,12 @@ public class Query extends HttpServlet {
             e1.printStackTrace();
         }
 
-        JSONObject ret = new JSONObject();
-        JSONObject res = new JSONObject();
-        ret.put("response", res);
+        
+        ResultObjectFactory rof = new ResultObjectFactory();
+        ResultObject ro = rof.create(0);
+        JSONObject ret = ro.getResult();
+        JSONObject res = ro.getResponse();
+       
         if (tenant != null) {
             QAManager qamgr = new QAManager();
 
@@ -150,8 +153,8 @@ public class Query extends HttpServlet {
         // 5、添加q的统计
         QAManager qamgr = new QAManager();
         String q_tj_id = qamgr.addTongji(q, a, tenant);
-        res = ret.getJSONObject("responseHeader");
-        JSONObject param = res.getJSONObject("param");
+        JSONObject resH = ret.getJSONObject("responseHeader");
+        JSONObject param = resH.getJSONObject("param");
         param.put("qid", q_tj_id);
 
         String result = ret.toString();

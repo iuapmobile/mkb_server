@@ -74,7 +74,7 @@ public class Common {
     public static final String INSERT_QA_TJ_SQL = "insert into qa_tj(id, question, answer, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
     
     //统计 top5
-    public static final String QA_Top5 = "select * from (select question, count(*) counts from yycloudkb.qa_tj group by question) t order by counts desc limit 5";
+    public static final String QA_TOPN = "select * from (select question, count(*) counts from yycloudkb.qa_tj group by question) t order by counts desc limit ?";
 
     public static final String UPDATE_QA_FEEDBACK_SQL =  "UPDATE qa_tj SET `score`=? WHERE `id`=?";
 

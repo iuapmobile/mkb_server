@@ -97,6 +97,7 @@ public class DelQABat extends HttpServlet {
             e.printStackTrace();
         }
         if (success) {
+            ro.setStatus(0);
             ro.getResponse().put("ids", ids);
         } else {
             ro.setStatus(1175);

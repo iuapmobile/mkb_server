@@ -222,7 +222,7 @@ public class DBManager {
         return id;
     }
 
-    public JSONArray query_tj(Tenant tenant) {
+    public JSONArray query_tj(int topn, Tenant tenant) {
         // TODO Auto-generated method stub
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
@@ -230,7 +230,7 @@ public class DBManager {
         // 2、检查是否已经存在相同的q和a
         JSONArray list = null;
         try {
-            list = DbUtil.selectQA_top5(Common.QA_Top5, dbconf);
+            list = DbUtil.selectQA_topn(Common.QA_TOPN, topn, dbconf);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -255,9 +255,15 @@ public class DBManager {
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
             boolean success = DbUtil.delQA(Common.DELETE_QA_SQL, id, dbconf);
+           
+            if(!success){
+                throw new KBDelSQLException("删除id["+id+"]失败!");
+            }
             boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, id, dbconf);
-
-            return success;
+            if(!success2){
+                throw new KBDelSQLException("级联删除id["+id+"]的相似问法时失败!"); 
+            }
+            return success && success2;
         } catch (SQLException e) {
             if (e instanceof KBDelSQLException) {
                 throw (KBDelSQLException) e;

@@ -66,8 +66,8 @@ public class UpdateQAQS extends HttpServlet {
         }
         
         String id = requestParam.getString("id");
-        String q = requestParam.getString("q");
-        String a = requestParam.getString("a");
+        String q = requestParam.getString("question");
+        String a = requestParam.getString("answer");
         String strqs = requestParam.getString("qs");
         JSONArray qs = JSONArray.parseArray(strqs);
         String apiKey = request.getParameter("apiKey");
@@ -161,11 +161,11 @@ public class UpdateQAQS extends HttpServlet {
         String id = request.getParameter("id");
         param.put("id", id);
         
-        String q = request.getParameter("q");
-        param.put("q", q);
+        String q = request.getParameter("question");
+        param.put("question", q);
         
-        String a = request.getParameter("a");
-        param.put("a", a);
+        String a = request.getParameter("answer");
+        param.put("answer", a);
         
         String qs = request.getParameter("qs");
         param.put("qs", qs);

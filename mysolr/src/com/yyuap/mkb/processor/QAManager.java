@@ -105,12 +105,12 @@ public class QAManager {
         return id;
     }
 
-    public JSONArray topN(String topn, Tenant tenant) {
+    public JSONArray topN(int topn, Tenant tenant) {
         // TODO Auto-generated method stub
         JSONArray array = new JSONArray();
 
         DBManager dbmgr = new DBManager();
-        array = dbmgr.query_tj(tenant);
+        array = dbmgr.query_tj(topn, tenant);
         return array;
     }
 
@@ -141,7 +141,7 @@ public class QAManager {
             JSONObject json = qs.getJSONObject(i);
             KBQS kbqs = new KBQS();
             kbqs.setId(json.getString("id"));
-            kbqs.setQuestion(json.getString("q"));
+            kbqs.setQuestion(json.getString("question"));
             kbqs.setQid(kbqa.getId());
             kbqs.setStatus(json.getString("status"));
             kbqa.getQS().add(kbqs);
@@ -159,7 +159,7 @@ public class QAManager {
             String id = ids[i];
             this.delQA(id, tenant);
         }
-        return false;
+        return true;
     }
     
     /**
