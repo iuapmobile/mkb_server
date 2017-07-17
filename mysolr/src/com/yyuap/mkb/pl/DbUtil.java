@@ -1009,4 +1009,50 @@ public class DbUtil {
         }
         return array;
     }
+    
+    public static JSONArray exportExcelQA(String sql, DBConfig dbconf) {
+        // TODO Auto-generated method stub
+        JSONArray array = new JSONArray();
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                JSONObject qa = new JSONObject();
+                qa.put("id", rs.getString("id"));
+                qa.put("question", rs.getString("question"));
+                qa.put("answer", rs.getString("answer"));
+                qa.put("q", rs.getString("q"));
+
+                array.add(qa);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+
+                    rs.close();
+
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+
+            }
+        }
+        return array;
+    }
 }

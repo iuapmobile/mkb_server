@@ -362,5 +362,18 @@ public class DBManager {
 
         return array;
     }
+    
+    public JSONArray exportExcelQA(Tenant tenant) {
+        // TODO Auto-generated method stub
+        JSONArray array = null;
+
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、
+        array = DbUtil.exportExcelQA(Common.SELECT_QA_EXPORT_SQL, dbconf);
+
+        return array;
+    }
 
 }

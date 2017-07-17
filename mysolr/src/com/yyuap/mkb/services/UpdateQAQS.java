@@ -70,8 +70,17 @@ public class UpdateQAQS extends HttpServlet {
         String a = requestParam.getString("answer");
         String strqs = requestParam.getString("qs");
         JSONArray qs = JSONArray.parseArray(strqs);
-        String apiKey = request.getParameter("apiKey");
+        String apiKey = requestParam.getString("apiKey");
         
+        if(apiKey == null || "".equals(apiKey)){
+        	ResultObjectFactory rof = new ResultObjectFactory();
+            ResultObject ro = rof.create(0);
+            ro.getResponse().put("reason", "apiKey为空 ");
+            ro.setStatus(-1);
+        	response.getWriter().write(ro.toString());
+            return;
+            
+        }
        
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());

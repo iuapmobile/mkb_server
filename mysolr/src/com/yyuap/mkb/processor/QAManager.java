@@ -200,4 +200,11 @@ public class QAManager {
         return json;
     }
     
+    public JSONArray exportQA(Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBManager dbmgr = new DBManager();
+        JSONArray array = dbmgr.exportExcelQA(tenant);
+        return array;
+    }
+    
 }
