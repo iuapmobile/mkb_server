@@ -421,10 +421,10 @@ public class DbUtil {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             //先根据前台传来的搜索内容  去qa表 查询 q和a匹配
-            String sql1 = selectAllQaSql + " where q like'%?%' or a like'%?%'"; 
+            String sql1 = selectAllQaSql + " where question like ? or answer like ?"; 
             ps = conn.prepareStatement(sql1);
-            ps.setString(1, content);
-            ps.setString(2, content);
+            ps.setString(1, "%"+content+"%");
+            ps.setString(2, "%"+content+"%");
             rs = ps.executeQuery();
             while (rs.next()) {
                 KBQA qa = new KBQA();
@@ -438,13 +438,13 @@ public class DbUtil {
                 list.add(qa);
             }
             //然后查询相似表  查询出  qid  再去  qa表查询
-            ps = conn.prepareStatement("select distinct qid from qa_similar where question like'%?%'");
-            ps.setString(1, content);
+            ps = conn.prepareStatement("select distinct qid from qa_similar where question like ?");
+            ps.setString(1, "%"+content+"%");
             rs = ps.executeQuery();
             while (rs.next()) {
                 qidList.add(rs.getString("qid"));
             }
-            String sql2 = selectAllQaSql + " where id in("+concat(qidList)+")";
+            String sql2 = selectAllQaSql + " where id in('"+concat("', '", qidList)+"')";
             ps = conn.prepareStatement(sql2);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -1177,23 +1177,30 @@ public class DbUtil {
      * @param values
      * @return
      */
-    public static String concat(Object[] objs)
+    public static String concat(String separator, Object[] objs)
     {
+        if (separator == null || objs == null)
+            throw new NullPointerException();
         StringBuffer sb = new StringBuffer();
         for (Object o : objs)
         {
             if (o == null)
                 continue;
-            sb.append(o.toString()).append(",");
+            sb.append(o.toString()).append(separator);
         }
-        if (sb.length() > ",".length())
-            sb.delete(sb.length() - ",".length(), sb.length());
+        if (sb.length() > separator.length())
+            sb.delete(sb.length() - separator.length(), sb.length());
         return sb.toString();
     }
-    public static String concat(Collection<?> objs)
+    public static String concat(String separator, Collection<?> objs)
     {
         if (objs == null)
             throw new NullPointerException();
-        return concat( objs.toArray());
+        return concat(separator, objs.toArray());
+    }
+    
+    public static String concat2SqlIn(Object[] objs)
+    {
+        return "'" + concat("','", objs) + "'";
     }
 }
