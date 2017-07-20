@@ -59,7 +59,7 @@ public class Common {
     public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String INSERT_QA_SIMILAR_SQL = "insert into qa_similar(id, question, qid, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
 
-    public static final String SELECT_ANSWER_SQL = "select * from qa where question = ?";
+    public static final String SELECT_ANSWER_SQL = "select * from qa where trim(question) = ?";
 
     public static final String DELETE_QA_SQL = "delete from qa where `id` = ?";
     public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";
@@ -86,8 +86,8 @@ public class Common {
     public static final String SELECT_QACOLLECTION_SQL = "select * from qa_collection where userid = ?";
     public static final String INSERT_QACOLLECTION_SQL = "INSERT INTO qa_collection(id,tenantid,userid,kbindexid,title,descript,url,qid,qsid,question,answer,createTime,updateTime,createBy,updateBy) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    public static final String SELECT_QA_EXPORT_SQL = "select a.id,a.question,a.answer,GROUP_CONCAT(b.question  separator  ',') q from yycloudkb.qa a "
-    												+" left join yycloudkb.qa_similar b on a.id=b.qid "
+    public static final String SELECT_QA_EXPORT_SQL = "select a.id,a.question,a.answer,GROUP_CONCAT(b.question  separator  ',') q from qa a "
+    												+" left join qa_similar b on a.id=b.qid "
     												+" group by a.id order by id ";
 }
 

@@ -48,7 +48,7 @@ public class QAManager {
         return id;
     }
 
-    public JSONObject query(Tenant tenant) {
+    public JSONObject query(Tenant tenant,String content) {
         JSONObject ret = new JSONObject();
 
         JSONObject res = new JSONObject();
@@ -60,11 +60,20 @@ public class QAManager {
         ret.put("responseHeader", resHeader);
 
         DBManager dbmgr = new DBManager();
-        List list = dbmgr.selectALLQA(tenant);
-        for (int i = 0, len = list.size(); i < len; i++) {
-            KBQA qa = (KBQA) list.get(i);
-            docs.add(qa.toJSON());
+        if(content == null || "".equals(content)){
+        	 List list = dbmgr.selectALLQA(tenant);
+             for (int i = 0, len = list.size(); i < len; i++) {
+                 KBQA qa = (KBQA) list.get(i);
+                 docs.add(qa.toJSON());
+             }
+        }else{
+        	List list = dbmgr.selectQA(tenant,content);
+            for (int i = 0, len = list.size(); i < len; i++) {
+                KBQA qa = (KBQA) list.get(i);
+                docs.add(qa.toJSON());
+            }
         }
+       
         return ret;
     }
 

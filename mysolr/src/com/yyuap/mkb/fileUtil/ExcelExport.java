@@ -1,5 +1,6 @@
 package com.yyuap.mkb.fileUtil;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Map;
@@ -28,8 +29,14 @@ public class ExcelExport {
 		OutputStream outXlsx = null;
 		SXSSFWorkbook wb = createXSSFWorkbook();
 		SXSSFSheet sheet = createSheet(wb,"QA");
-		
+//		File file = new File("D://问答知识库.xlsx");
 		try {
+//			if (!file.exists()) {
+//	            // 先得到文件的上级目录，并创建上级目录，在创建文件
+//	            file.getParentFile().mkdir();
+//	            file.createNewFile();
+//		    }
+//			outXlsx = new FileOutputStream(file);
 			outXlsx = new FileOutputStream("C://问答知识库.xlsx");
 			//在sheet里创建第一行，参数为行索引(excel的行)  
 			SXSSFRow row0 = (SXSSFRow) sheet.createRow(0);

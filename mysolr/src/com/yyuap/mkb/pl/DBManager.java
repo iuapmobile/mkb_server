@@ -6,7 +6,9 @@ package com.yyuap.mkb.pl;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -97,7 +99,7 @@ public class DBManager {
             KBQA qa = list.get(i);
             this.insertQA(qa, tenant);
         }
-
+        
     }
 
     public String insertQA(KBQA qa, Tenant tenant) throws KBDuplicateSQLException, SQLException {
@@ -153,7 +155,17 @@ public class DBManager {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        if (list.size() == 1) {
+        if(list.size()==0){
+        	try {
+				list = DbUtil.selectAnswerSimilar(Common.SELECT_QA_BY_ID_SQL, q, dbconf);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	if (list.size() == 1) {
+                ret = list.get(0);
+            }
+        }else if (list.size() == 1) {
             ret = list.get(0);
         }
 
@@ -179,6 +191,17 @@ public class DBManager {
 
         // 2、检查是否已经存在相同的q和a
         List list = DbUtil.selectALLQA(Common.SELECT_ALL_QA_SQL, dbconf);
+
+        return list;
+    }
+    
+    public List selectQA(Tenant tenant,String content) {
+        // TODO Auto-generated method stub
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、检查是否已经存在相同的q和a
+        List list = DbUtil.selectQA(Common.SELECT_ALL_QA_SQL, dbconf,content);
 
         return list;
     }
@@ -375,5 +398,12 @@ public class DBManager {
 
         return array;
     }
+    
+    public static void main(String[] args) {
+    	String str = "u订货可以在微信端使用吗？";
+    	String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]"; 
+    	str.replaceAll(regEx, "");
+    	System.out.println(str.replaceAll(regEx, ""));
+	}
 
 }

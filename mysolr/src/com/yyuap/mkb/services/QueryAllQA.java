@@ -52,7 +52,7 @@ public class QueryAllQA extends HttpServlet {
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
 
-        String q = request.getParameter("q");
+        String content = request.getParameter("content");
         String bot = request.getParameter("bot");
         if (bot == null) {
             bot = "true";
@@ -74,7 +74,7 @@ public class QueryAllQA extends HttpServlet {
 
             // 2、查询答案
             QAManager qamgr = new QAManager();
-            ret = qamgr.query(tenant);
+            ret = qamgr.query(tenant,content);
         }
         response.getWriter().write(ret.toString());
     }

@@ -52,12 +52,6 @@ public class ImportQA extends HttpServlet {
         String path = request.getParameter("path");// 文件服务器地址
         if (path != null && !path.equals("")) {
 
-            String ip = request.getParameter("ip");
-            String port = request.getParameter("port");
-          
-            String dbname = request.getParameter("dbname");
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
             String apiKey = request.getParameter("apiKey");
             
          // 1、获取租户信息
@@ -74,12 +68,18 @@ public class ImportQA extends HttpServlet {
 
             SolrManager mgr = new SolrManager();
             boolean success = mgr.importQA(path, tenant);
+            ResultObjectFactory rof = new ResultObjectFactory();
+            ResultObject ro = rof.create(0);
             if (success) {
                 // 手动导入
                 // mgr.addDocument(kbindex);
+            }else{
+            	ro.getResponse().put("reason", "导入失败，请联系管理员!");
+                ro.setStatus(-2);
+             	response.getWriter().write(ro.toString());
             }
+           
         }
-        response.getWriter().append("importQA Served at: ").append(request.getContextPath());
 
     }
 

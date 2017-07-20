@@ -9,15 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
@@ -318,6 +317,54 @@ public class DbUtil {
         }
         return list;
     }
+    
+    public static ArrayList<JSONObject> selectAnswerSimilar(String sql, String q, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+        ArrayList<String> qidList = new ArrayList<String>();//存放 qa的id
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+           
+            ps = conn.prepareStatement("select distinct qid from qa_similar where trim(question) = ?");
+            ps.setString(1, q);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                qidList.add(rs.getString("qid"));
+            }
+            //如果qid唯一  再去查询  说明 命中  唯一答案
+            if(qidList.size()==1){
+            	 ps = conn.prepareStatement(sql);
+
+                 ps.setString(1, qidList.get(0));
+
+                 rs = ps.executeQuery();
+                 while (rs.next()) {
+                     JSONObject obj = new JSONObject();
+                     String ques = rs.getString("question");
+                     String ans = rs.getString("answer");
+                     obj.put(q, ans);// 把  key的  ques  换成  q  要不 前面取值 报错
+                     list.add(obj);
+                 }
+            }
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return list;
+    }
 
     public static List selectALLQA(String selectAllQaSql, DBConfig dbconf) {
         // TODO Auto-generated method stub
@@ -330,6 +377,75 @@ public class DbUtil {
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(selectAllQaSql);
 
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                KBQA qa = new KBQA();
+
+                qa.setId(rs.getString("id"));
+                qa.setQuestion(rs.getString("question"));
+                qa.setAnswer(rs.getString("answer"));
+                qa.setQtype(rs.getString("qtype"));
+                qa.setCreateTime(rs.getString("createTime"));
+                qa.setUpdateTime(rs.getString("updateTime"));
+                list.add(qa);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+    
+    public static List selectQA(String selectAllQaSql, DBConfig dbconf,String content) {
+        // TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<KBQA> list = new ArrayList<KBQA>();
+        ArrayList<String> qidList = new ArrayList<String>();//存放 qid
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            //先根据前台传来的搜索内容  去qa表 查询 q和a匹配
+            String sql1 = selectAllQaSql + " where q like'%?%' or a like'%?%'"; 
+            ps = conn.prepareStatement(sql1);
+            ps.setString(1, content);
+            ps.setString(2, content);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                KBQA qa = new KBQA();
+
+                qa.setId(rs.getString("id"));
+                qa.setQuestion(rs.getString("question"));
+                qa.setAnswer(rs.getString("answer"));
+                qa.setQtype(rs.getString("qtype"));
+                qa.setCreateTime(rs.getString("createTime"));
+                qa.setUpdateTime(rs.getString("updateTime"));
+                list.add(qa);
+            }
+            //然后查询相似表  查询出  qid  再去  qa表查询
+            ps = conn.prepareStatement("select distinct qid from qa_similar where question like'%?%'");
+            ps.setString(1, content);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                qidList.add(rs.getString("qid"));
+            }
+            String sql2 = selectAllQaSql + " where id in("+concat(qidList)+")";
+            ps = conn.prepareStatement(sql2);
             rs = ps.executeQuery();
             while (rs.next()) {
                 KBQA qa = new KBQA();
@@ -1054,5 +1170,30 @@ public class DbUtil {
             }
         }
         return array;
+    }
+    
+    /**
+     * 将参数  转换成 in  后面   需要的数据
+     * @param values
+     * @return
+     */
+    public static String concat(Object[] objs)
+    {
+        StringBuffer sb = new StringBuffer();
+        for (Object o : objs)
+        {
+            if (o == null)
+                continue;
+            sb.append(o.toString()).append(",");
+        }
+        if (sb.length() > ",".length())
+            sb.delete(sb.length() - ",".length(), sb.length());
+        return sb.toString();
+    }
+    public static String concat(Collection<?> objs)
+    {
+        if (objs == null)
+            throw new NullPointerException();
+        return concat( objs.toArray());
     }
 }

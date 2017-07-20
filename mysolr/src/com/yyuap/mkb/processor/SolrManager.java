@@ -50,6 +50,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yonyou.um.mkb.solrManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
@@ -485,9 +486,37 @@ public class SolrManager {
         } catch (IOException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return false;
         }
 
         return true;
     }
+    
+    //////  pengjf 下面测试调用solrj 删除文档测试代码 begin  
+    /** 
+     * 根据id从索引库删除文档 
+     */
+    public static void deleteDocumentById() throws Exception {  
+        //选择具体的某一个solr core
+        HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/solr/"+"mycore");  
+        //删除文档  
+        server.deleteById("222");  
+        //删除所有的索引
+        //solr.deleteByQuery("*:*");
+        //提交修改  
+        server.commit();  
+        server.close();
+    }  
+    
+    public static void main(String[] args) {
+    	try {
+			deleteDocumentById();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+    
+    //////pengjf 下面测试调用solrj 删除文档测试代码 end  
 
 }

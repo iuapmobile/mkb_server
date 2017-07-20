@@ -7,9 +7,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.util.StringUtil;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -18,8 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
-
-import javafx.animation.KeyValue.Type;
+import com.yyuap.mkb.entity.KBQS;
 
 /**
  * @author gct
@@ -183,7 +186,10 @@ public class ExcelXReader {
 
         // HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
         XSSFWorkbook hssfWorkbook = new XSSFWorkbook(is);
-
+        
+        //标点符号 正则表达式
+        String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]";
+        
         KBQA kbqa = null;
         List<KBQA> list = new ArrayList<KBQA>();
         // foreach Sheet
@@ -197,22 +203,43 @@ public class ExcelXReader {
                 XSSFRow hssfRow = hssfSheet.getRow(rowNum);
                 if (hssfRow != null) {
                     kbqa = new KBQA();
-                    // 对应
-                    XSSFCell num_cell = hssfRow.getCell(0);// 问题
-                    XSSFCell q_cell = hssfRow.getCell(1);// 问题
-                    XSSFCell a_cell = hssfRow.getCell(2);// 答案
-
-                    String uuid = UUID.randomUUID().toString();
-                    kbqa.setId(uuid);
-                    kbqa.setQuestion(getValue(q_cell));
-                    kbqa.setAnswer(getValue(a_cell));
-
-                    if (kbqa.getQuestion().equals("") || kbqa.getAnswer().equals("")) {
-                        System.out.println("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
-                                + " title is empty!");
-                    } else {
-                        list.add(kbqa);
+                    //获取 最大列数 从0开始
+                    int cellNum = hssfRow.getLastCellNum();
+                    XSSFCell cellValue = null;
+                    String kbqauuid = UUID.randomUUID().toString();
+                    List<String> qsList = new ArrayList<String>();//相似问题list
+                    for(int i =0;i<=cellNum;i++){
+                    	cellValue = hssfRow.getCell(i);
+                    	if("".equals(getValue(cellValue))){
+                    		continue;
+                    	}
+                    	if(i==0){//先q赋值
+                    		kbqa.setQuestion(getValue(cellValue).replaceAll(regEx, ""));
+                    	}else if(i==1){//在a赋值，然后放到list中
+                    		kbqa.setAnswer(getValue(cellValue));
+                    		kbqa.setId(kbqauuid);
+                    	}else{
+                    		qsList.add(getValue(cellValue).replaceAll(regEx, ""));
+                    	}
                     }
+                    kbqa.setQuestions(qsList.toArray(new String[qsList.size()]));
+                    list.add(kbqa);
+                    // 对应
+//                    XSSFCell num_cell = hssfRow.getCell(0);// 问题
+//                    XSSFCell q_cell = hssfRow.getCell(1);// 问题
+//                    XSSFCell a_cell = hssfRow.getCell(2);// 答案
+//
+//                    String uuid = UUID.randomUUID().toString();
+//                    kbqa.setId(uuid);
+//                    kbqa.setQuestion(getValue(q_cell));
+//                    kbqa.setAnswer(getValue(a_cell));
+//
+//                    if (kbqa.getQuestion().equals("") || kbqa.getAnswer().equals("")) {
+//                        System.out.println("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
+//                                + " title is empty!");
+//                    } else {
+//                        list.add(kbqa);
+//                    }
                 }
             }
         }
