@@ -740,7 +740,7 @@ public class DbUtil {
             while (rs.next()) {
                 JSONObject json = new JSONObject();
                 json.put("question", rs.getString("question"));
-                json.put("askedNum", "1");//这应该是1  因为置顶 就是一个
+                json.put("askedNum", "-1");//这应该是-1  因为置顶 就是一个
                 array.add(json); 
                 rownum++;
                 list.add(rs.getString("question"));
