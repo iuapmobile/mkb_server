@@ -28,7 +28,7 @@ public class QAManager {
         return ret;
     }
 
-    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant)
+    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant,String istop)
             throws SQLException {
         String id = null;
         KBQA qa = new KBQA();
@@ -36,6 +36,7 @@ public class QAManager {
         qa.setLibraryPk(libraryPk);
         qa.setQuestion(question);
         qa.setAnswer(answer);
+        qa.setIstop(istop);//是否置顶
 
         if (questions != null && questions.length > 0) {
             qa.setQuestions(questions);
@@ -77,12 +78,13 @@ public class QAManager {
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant) throws SQLException {
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant,String istop) throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
         kbqa.setQuestion(q);
         kbqa.setAnswer(a);
+        kbqa.setIstop(istop);//是否置顶
         // kbqa.setQtype(t);
 
         kbqa.setQuestions(qs);

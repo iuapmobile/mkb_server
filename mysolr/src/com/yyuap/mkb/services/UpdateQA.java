@@ -67,6 +67,7 @@ public class UpdateQA extends HttpServlet {
         String id = requestParam.getString("id");
         String q = requestParam.getString("q");
         String a = requestParam.getString("a");
+        String istop = requestParam.getString("istop");//是否置顶
         String[] qs = (String[]) requestParam.get("qs");
         
         if (id == null || id.equals("")) {
@@ -102,7 +103,7 @@ public class UpdateQA extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            boolean success = qam.updateQA(id, q, a, qs, tenant);
+            boolean success = qam.updateQA(id, q, a, qs, tenant,istop);
             if (success) {
                 ro.setStatus(0);
             }

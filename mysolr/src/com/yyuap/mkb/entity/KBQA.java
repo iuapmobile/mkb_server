@@ -25,6 +25,9 @@ public class KBQA extends KBEntity {
     private String[] questions = null;
     private String libraryPk = null;
     private ArrayList<KBQS> qs;
+    
+    private String istop;//是否置顶
+    private String settoptime = "";//置顶时间
 
     public String getId() {
         return id;
@@ -94,4 +97,25 @@ public class KBQA extends KBEntity {
     public void setLibraryPk(String libraryPk) {
         this.libraryPk = libraryPk;
     }
+
+	public String getIstop() {
+		return istop;
+	}
+
+	public void setIstop(String istop) {
+		this.istop = istop;
+	}
+
+	public String getSettoptime() {
+		return settoptime;
+	}
+
+	public void setSettoptime(String settoptime) {
+		this.settoptime = settoptime;
+	}
+
+	
+    
+    
+    
 }

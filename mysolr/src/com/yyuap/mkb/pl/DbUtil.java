@@ -10,7 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -261,6 +264,13 @@ public class DbUtil {
             ps.setString(7, datetime);
             ps.setString(8, qa.getCreateBy());
             ps.setString(9, qa.getUpdateBy());
+            ps.setString(10, qa.getIstop());
+            if("1".equals(qa.getIstop())){
+            	ps.setString(11, datetime);
+            }else{
+            	ps.setString(11, null);
+            }
+           
 
             boolean flag = ps.execute();
             if (!flag) {
@@ -343,7 +353,7 @@ public class DbUtil {
                  rs = ps.executeQuery();
                  while (rs.next()) {
                      JSONObject obj = new JSONObject();
-                     String ques = rs.getString("question");
+                     //String ques = rs.getString("question");
                      String ans = rs.getString("answer");
                      obj.put(q, ans);// 把  key的  ques  换成  q  要不 前面取值 报错
                      list.add(obj);
@@ -415,6 +425,7 @@ public class DbUtil {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        Map<String,KBQA> map = new HashMap<String,KBQA>();
         ArrayList<KBQA> list = new ArrayList<KBQA>();
         ArrayList<String> qidList = new ArrayList<String>();//存放 qid
         try {
@@ -435,7 +446,8 @@ public class DbUtil {
                 qa.setQtype(rs.getString("qtype"));
                 qa.setCreateTime(rs.getString("createTime"));
                 qa.setUpdateTime(rs.getString("updateTime"));
-                list.add(qa);
+//                list.add(qa);
+                map.put(rs.getString("id"), qa);
             }
             //然后查询相似表  查询出  qid  再去  qa表查询
             ps = conn.prepareStatement("select distinct qid from qa_similar where question like ?");
@@ -456,7 +468,8 @@ public class DbUtil {
                 qa.setQtype(rs.getString("qtype"));
                 qa.setCreateTime(rs.getString("createTime"));
                 qa.setUpdateTime(rs.getString("updateTime"));
-                list.add(qa);
+//                list.add(qa);
+                map.put(rs.getString("id"), qa);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -476,6 +489,7 @@ public class DbUtil {
                 e.printStackTrace();
             }
         }
+        list = new ArrayList<KBQA>(map.values());
         return list;
     }
 
@@ -712,18 +726,56 @@ public class DbUtil {
         PreparedStatement ps = null;
         ResultSet rs = null;
         JSONArray array = new JSONArray();
+        List<String> list = new ArrayList<String>();
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
-            ps = conn.prepareStatement(qaTop5SQL);
+            
+           
+            //先查询置顶qa
+            ps = conn.prepareStatement(" select * from qa where istop=1 order by settoptime desc limit ? ");
             ps.setInt(1, topn);
             rs = ps.executeQuery();
+            int rownum = 0;
             while (rs.next()) {
                 JSONObject json = new JSONObject();
                 json.put("question", rs.getString("question"));
-                json.put("askedNum", rs.getString("counts"));
-                array.add(json);
+                json.put("askedNum", "1");//这应该是1  因为置顶 就是一个
+                array.add(json); 
+                rownum++;
+                list.add(rs.getString("question"));
             }
+            
+            //这说明 置顶的不满足需要查询的topn数据
+            if(topn-rownum>0){
+            	//根据参数列表的大小生成in串   
+                StringBuffer buffer = new StringBuffer();  
+                for (int i = 0; i < list.size(); i++)  
+                {  
+                    buffer.append("?, ");  
+                }  
+                buffer.deleteCharAt(buffer.length() - 1);  
+                buffer.deleteCharAt(buffer.length() - 1);  
+            	String sql = "select * from (select question, count(*) counts from yycloudkb.qa_tj "
+            			+ "where  "
+            			+ "question not in ("+ buffer.toString() +") "
+            			+ "group by question) t order by counts desc limit ?";
+            	ps = conn.prepareStatement(sql);
+            	//根据参数列表设置sql参数   
+                for (int i = 0; i < list.size(); i++)  
+                {  
+                	ps.setString(i + 1, list.get(i));  
+                }  
+                ps.setInt(list.size()+1, topn-rownum);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    JSONObject json = new JSONObject();
+                    json.put("question", rs.getString("question"));
+                    json.put("askedNum", rs.getString("counts"));
+                    array.add(json);
+                }
+            }
+            
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -826,7 +878,14 @@ public class DbUtil {
 
             ps.setString(1, qa.getQuestion());
             ps.setString(2, qa.getAnswer());
-            ps.setString(3, qa.getId());
+            ps.setString(3, qa.getIstop());
+            if(!"1".equals(qa.getIstop())){
+            	ps.setString(4, qa.getSettoptime());
+            }else{
+            	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+            	ps.setString(4, datetime);
+            }
+            ps.setString(5, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {

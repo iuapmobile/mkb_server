@@ -60,6 +60,10 @@ public class AddQA extends HttpServlet {
 
         String q = request.getParameter("q");
         String a = request.getParameter("a");
+        String istop = request.getParameter("istop");//是否置顶
+        if(null == istop || "".equals(istop)){
+        	istop = "0";
+        }
         String libraryPk = request.getParameter("libraryPk");
         String[] qs = request.getParameterValues("qs");
 
@@ -91,7 +95,7 @@ public class AddQA extends HttpServlet {
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
         try {
-            id = qam.addQA(libraryPk, q, a, qs, tenant);
+            id = qam.addQA(libraryPk, q, a, qs, tenant,istop);
             ro.getResponse().put("id", id);
         } catch (SQLException e) {
             if (e instanceof KBDuplicateSQLException) {

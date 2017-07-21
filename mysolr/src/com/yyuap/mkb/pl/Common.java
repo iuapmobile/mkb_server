@@ -56,7 +56,7 @@ public class Common {
     public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ?";
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
-    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
     public static final String INSERT_QA_SIMILAR_SQL = "insert into qa_similar(id, question, qid, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
 
     public static final String SELECT_ANSWER_SQL = "select * from qa where trim(question) = ?";
@@ -64,7 +64,7 @@ public class Common {
     public static final String DELETE_QA_SQL = "delete from qa where `id` = ?";
     public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";
 
-    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ? where `id` = ?";
+    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=? where `id` = ?";
 
     public static final String SELECT_QA_BY_ID_SQL = "select * from qa where id = ?";
     
@@ -75,7 +75,7 @@ public class Common {
     public static final String INSERT_QA_TJ_SQL = "insert into qa_tj(id, question, answer, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
     
     //统计 top5
-    public static final String QA_TOPN = "select * from (select question, count(*) counts from yycloudkb.qa_tj group by question) t order by counts desc limit ?";
+    public static final String QA_TOPN = "select * from (select question, count(*) counts from yycloudkb.qa_tj where  question not in ? group by question) t order by counts desc limit ?";
 
     public static final String UPDATE_QA_FEEDBACK_SQL =  "UPDATE qa_tj SET `score`=? WHERE `id`=?";
 
