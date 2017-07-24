@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class CBOManager {
 
@@ -60,5 +59,53 @@ public class CBOManager {
         }
 
         return tenant;
+    }
+    
+    public TenantInfo getTenantInfoForLogin(String username,String password) throws SQLException {
+
+    	TenantInfo tenantinfo = null;
+
+        String sql = "select * from mkb.u_tenant where tusername = ? and tpassword = ? ";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            Class.forName(CommonSQL.DRIVER);
+            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            rs = ps.executeQuery();
+
+            int num = 0;
+            while (rs.next()) {
+                num++;
+                if (num > 1) {
+                    throw new Exception("Exception: find [" + num + "] tenants  by tusername = '" + username + "' and tpassword = '"+password+"'");
+                }
+                tenantinfo = new TenantInfo();
+                tenantinfo.setTid(rs.getString("tid"));
+                tenantinfo.setTname(rs.getString("tname"));
+                tenantinfo.setApiKey(rs.getString("apiKey"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return tenantinfo;
     }
 }

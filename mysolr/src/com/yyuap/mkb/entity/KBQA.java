@@ -87,6 +87,8 @@ public class KBQA extends KBEntity {
         json.put("qtype", this.getQtype());
         json.put("createTime", this.getCreateTime());
         json.put("updateTime", this.getUpdateTime());
+        json.put("isstop", this.getIstop());
+        json.put("settoptime", this.getSettoptime());
         return json;
     }
 
