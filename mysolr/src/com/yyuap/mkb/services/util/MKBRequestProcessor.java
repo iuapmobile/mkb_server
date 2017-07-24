@@ -1,6 +1,7 @@
 package com.yyuap.mkb.services.util;
 
 import java.io.BufferedReader;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,6 +46,14 @@ public class MKBRequestProcessor {
         JSONObject param = new JSONObject();
 
         String q = request.getParameter("q");
+        if (request.getMethod() != null && request.getMethod().toLowerCase().equals("get")) {
+            try {
+                q = java.net.URLDecoder.decode(q, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         param.put("q", q);
 
         String apiKey = request.getParameter("apiKey");

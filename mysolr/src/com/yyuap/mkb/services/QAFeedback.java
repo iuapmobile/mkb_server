@@ -1,24 +1,16 @@
 package com.yyuap.mkb.services;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.processor.SolrManager;
-import com.yyuap.mkb.services.util.MKBRequestProcessor;
-import com.yyuap.mkb.turbot.MKBHttpClientUtil;
 
 /**
  * Servlet implementation class Feedback

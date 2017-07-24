@@ -7,6 +7,7 @@ public class CommonSQL {
     public static final String DB_NAME = "mkb";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "1234qwer";//mac
+    //public static final String PASSWORD = "1qazZAQ!";//mac
     public static final String IP = "127.0.0.1";
     public static final String PORT = "3306";
     
