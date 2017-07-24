@@ -2,10 +2,6 @@ package com.yyuap.mkb.services;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +12,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.processor.SolrManager;
-import com.yyuap.mkb.turbot.MKBHttpClientUtil;
 
 /**
  * Servlet implementation class mkbQuery

@@ -76,7 +76,10 @@ public class SolrManager {
     }
 
     public SolrManager(String kbcore) {
-        SOLR_URL = "http://127.0.0.1:8080/kb/" + kbcore;
+        String x = "ddd";
+        if (x == "ddd") {
+            SOLR_URL = "http://127.0.0.1:8080/kb/" + kbcore;
+        }
     }
 
     public SolrManager(String ip, String port, String kb, String kbcore) {
@@ -370,7 +373,7 @@ public class SolrManager {
         System.out.println(rsp);
     }
 
-    public void indexTikaFile(String path, KBIndex kbIndex,Tenant tenant)
+    public void indexTikaFile(String path, KBIndex kbIndex, Tenant tenant)
             throws IOException, SAXException, TikaException, SQLException {
         String text = "";
         if (path.endsWith(".mp4")) {
@@ -410,7 +413,7 @@ public class SolrManager {
 
         // 下一步，考虑DB事务，异常时回滚
         DBManager save = new DBManager();
-        if (save.addKBIndex(kbIndex,tenant)) {
+        if (save.addKBIndex(kbIndex, tenant)) {
             try {
                 this.addDoc(kbIndex);
             } catch (Exception e) {
@@ -491,32 +494,32 @@ public class SolrManager {
 
         return true;
     }
-    
-    //////  pengjf 下面测试调用solrj 删除文档测试代码 begin  
-    /** 
-     * 根据id从索引库删除文档 
+
+    ////// pengjf 下面测试调用solrj 删除文档测试代码 begin
+    /**
+     * 根据id从索引库删除文档
      */
-    public static void deleteDocumentById() throws Exception {  
-        //选择具体的某一个solr core
-        HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/solr/"+"mycore");  
-        //删除文档  
-        server.deleteById("222");  
-        //删除所有的索引
-        //solr.deleteByQuery("*:*");
-        //提交修改  
-        server.commit();  
+    public static void deleteDocumentById() throws Exception {
+        // 选择具体的某一个solr core
+        HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/solr/" + "mycore");
+        // 删除文档
+        server.deleteById("222");
+        // 删除所有的索引
+        // solr.deleteByQuery("*:*");
+        // 提交修改
+        server.commit();
         server.close();
-    }  
-    
+    }
+
     public static void main(String[] args) {
-    	try {
-			deleteDocumentById();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-    
-    //////pengjf 下面测试调用solrj 删除文档测试代码 end  
+        try {
+            deleteDocumentById();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    ////// pengjf 下面测试调用solrj 删除文档测试代码 end
 
 }

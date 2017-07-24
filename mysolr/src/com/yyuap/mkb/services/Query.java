@@ -1,14 +1,10 @@
 package com.yyuap.mkb.services;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +17,7 @@ import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.processor.QAManager;
 import com.yyuap.mkb.processor.SolrManager;
 import com.yyuap.mkb.services.util.MKBRequestProcessor;
-import com.yyuap.mkb.turbot.MKBHttpClientUtil;
+import com.yyuap.mkb.turbot.MKBHttpClient;
 
 /**
  * Servlet implementation class mkbQuery
@@ -101,9 +97,13 @@ public class Query extends HttpServlet {
                 res.put("botResponse", botRes);
             } else {
                 // 3、启用搜索引擎
-                SolrManager solrmng = new SolrManager(tenant.gettkbcore());
-
+                
+                
                 try {
+                String corename = tenant.gettkbcore();
+                SolrManager solrmng = new SolrManager(corename);
+
+                
 
                     ret = solrmng.query(requestParam);// 获取查询结果
 
@@ -113,7 +113,7 @@ public class Query extends HttpServlet {
                     if (bot == null || !bot.equalsIgnoreCase("false")) {
                         // 如果是机器人请求
 
-                        MKBHttpClientUtil httpclient = new MKBHttpClientUtil();
+                        MKBHttpClient httpclient = new MKBHttpClient();
 
                         Map<String, String> createMap = new HashMap<String, String>();
                         createMap.put("key", tenant.getbotKey());

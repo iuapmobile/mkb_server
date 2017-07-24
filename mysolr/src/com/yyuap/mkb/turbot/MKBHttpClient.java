@@ -5,10 +5,9 @@ import java.util.Iterator;
 import java.util.List;  
 import java.util.Map;  
 import java.util.Map.Entry;  
-import org.apache.http.HttpEntity;  
-import org.apache.http.HttpResponse;  
+import org.apache.http.HttpEntity;   
 import org.apache.http.NameValuePair;  
-import org.apache.http.client.HttpClient;  
+ 
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -22,7 +21,7 @@ import org.apache.http.util.EntityUtils;
 //import org.apache.http.client.HttpClient;
 //import org.apache.http.client.methods.HttpPost;
 
-public class MKBHttpClientUtil {
+public class MKBHttpClient {
     public String doPost(String url,Map<String,String> map,String charset){  
         CloseableHttpClient httpClient = null;  
         HttpPost httpPost = null;  
