@@ -100,7 +100,7 @@ public class DBManager {
             KBQA qa = list.get(i);
             this.insertQA(qa, tenant);
         }
-        
+
     }
 
     public String insertQA(KBQA qa, Tenant tenant) throws KBDuplicateSQLException, SQLException {
@@ -118,6 +118,7 @@ public class DBManager {
             ArrayList<KBQA> list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
             if (list.size() == 0) {
                 // 2.1 问答
+                String idd = "";
                 String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
                 qa.setId(id);
                 // 2.2 相似问法
@@ -138,6 +139,8 @@ public class DBManager {
         } catch (SQLException e) {
             if (e instanceof KBDuplicateSQLException) {
                 throw (KBDuplicateSQLException) e;
+            } else if (e instanceof KBInsertSQLException) {
+                throw (KBInsertSQLException) e;
             } else {
                 throw e;
             }
@@ -156,17 +159,17 @@ public class DBManager {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        if(list.size()==0){
-        	try {
-				list = DbUtil.selectAnswerSimilar(Common.SELECT_QA_BY_ID_SQL, q, dbconf);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	if (list.size() == 1) {
+        if (list.size() == 0) {
+            try {
+                list = DbUtil.selectAnswerSimilar(Common.SELECT_QA_BY_ID_SQL, q, dbconf);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (list.size() == 1) {
                 ret = list.get(0);
             }
-        }else if (list.size() == 1) {
+        } else if (list.size() == 1) {
             ret = list.get(0);
         }
 
@@ -195,14 +198,14 @@ public class DBManager {
 
         return list;
     }
-    
-    public List selectQA(Tenant tenant,String content) {
+
+    public List selectQA(Tenant tenant, String content) {
         // TODO Auto-generated method stub
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
         // 2、检查是否已经存在相同的q和a
-        List list = DbUtil.selectQA(Common.SELECT_ALL_QA_SQL, dbconf,content);
+        List list = DbUtil.selectQA(Common.SELECT_ALL_QA_SQL, dbconf, content);
 
         return list;
     }
@@ -279,13 +282,13 @@ public class DBManager {
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
             boolean success = DbUtil.delQA(Common.DELETE_QA_SQL, id, dbconf);
-           
-            if(!success){
-                throw new KBDelSQLException("删除id["+id+"]失败!");
+
+            if (!success) {
+                throw new KBDelSQLException("删除id[" + id + "]失败!");
             }
             boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, id, dbconf);
-            if(!success2){
-                throw new KBDelSQLException("级联删除id["+id+"]的相似问法时失败!"); 
+            if (!success2) {
+                throw new KBDelSQLException("级联删除id[" + id + "]的相似问法时失败!");
             }
             return success && success2;
         } catch (SQLException e) {
@@ -343,9 +346,10 @@ public class DBManager {
 
         return success && success1 && success2 && success3;
     }
-    
+
     /**
      * pengjf 2017年7月13日18:10:36
+     * 
      * @param qac
      * @param tenant
      * @return
@@ -361,7 +365,7 @@ public class DBManager {
 
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
-            
+
             String id = DbUtil.insertQaCollectioin(Common.INSERT_QACOLLECTION_SQL, qac, dbconf);
             return id;
 
@@ -417,7 +421,7 @@ public class DBManager {
 
         return array;
     }
-    
+
     public JSONArray exportExcelQA(Tenant tenant) {
         // TODO Auto-generated method stub
         JSONArray array = null;
@@ -430,12 +434,12 @@ public class DBManager {
 
         return array;
     }
-    
+
     public static void main(String[] args) {
-    	String str = "u订货可以在微信端使用吗？";
-    	String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]"; 
-    	str.replaceAll(regEx, "");
-    	System.out.println(str.replaceAll(regEx, ""));
-	}
+        String str = "u订货可以在微信端使用吗？";
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]";
+        str.replaceAll(regEx, "");
+        System.out.println(str.replaceAll(regEx, ""));
+    }
 
 }

@@ -75,7 +75,7 @@ public class UpdateQAQS extends HttpServlet {
         if(apiKey == null || "".equals(apiKey)){
         	ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
-            ro.getResponse().put("reason", "apiKey为空 ");
+            ro.setReason( "apiKey为空 ");
             ro.setStatus(-1);
         	response.getWriter().write(ro.toString());
             return;
