@@ -86,6 +86,9 @@ public class Common {
     public static final String SELECT_QACOLLECTION_SQL = "select * from qa_collection where userid = ?";
     public static final String INSERT_QACOLLECTION_SQL = "INSERT INTO qa_collection(id,tenantid,userid,kbindexid,title,descript,url,qid,qsid,question,answer,createTime,updateTime,createBy,updateBy) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
+    public static final String DELETE_QACOLLECTION_SQL = "delete from qa_collection where id = ?";
+
+    
     public static final String SELECT_QA_EXPORT_SQL = "select a.id,a.question,a.answer,GROUP_CONCAT(b.question  separator  ',') q from qa a "
     												+" left join qa_similar b on a.id=b.qid "
     												+" group by a.id order by id ";

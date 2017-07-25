@@ -210,6 +210,21 @@ public class QAManager {
         json.put("qacollection", array);
         return json;
     }
+    /**
+     * 取消收藏
+     * @param id
+     * @param tenant
+     * @return
+     * @throws SQLException
+     */
+    public boolean deleteCollect(String id ,Tenant tenant)
+            throws SQLException {
+        DBManager dbmgr = new DBManager();
+
+        boolean flag = dbmgr.deleteCollect(id, tenant);
+
+        return flag;
+    }
     
     public JSONArray exportQA(Tenant tenant) {
         // TODO Auto-generated method stub

@@ -2,6 +2,7 @@ package com.yyuap.mkb.services;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -10,23 +11,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
+import com.yyuap.mkb.entity.KBQA;
+import com.yyuap.mkb.entity.QaCollection;
+import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DBManager;
-import com.yyuap.mkb.processor.SolrManager;
+import com.yyuap.mkb.pl.KBDuplicateSQLException;
+import com.yyuap.mkb.processor.QAManager;
 
 /**
- * Servlet implementation class updateDoc
+ * Servlet implementation class AddStore
  */
-@WebServlet("/updateDoc")
-public class UpdateDoc extends HttpServlet {
+@WebServlet("/DelteCollect")
+public class DelteCollect extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UpdateDoc() {
+    public DelteCollect() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,39 +53,35 @@ public class UpdateDoc extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        request.setCharacterEncoding("UTF-8");
-        SolrManager solr = new SolrManager();
 
+        // 这句话的意�?�，是让浏览器用utf8来解析返回的数据
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        // 这句话的意�?�，是告诉servlet用UTF-8转码，�?�不是用默认的ISO8859
+        response.setCharacterEncoding("UTF-8");
+
+        //如果可以传收藏的id过来，就不用下面这个
+//        String userid = request.getParameter("userid");
+//        String url = request.getParameter("url");
+        
         String id = request.getParameter("id");
-        String title = request.getParameter("title");
-        String descript = request.getParameter("descript");
-        String descriptImg = request.getParameter("descriptImg");
-        String keywords = request.getParameter("keywords");
-        String url = request.getParameter("url");
-        String text = request.getParameter("text");
         
+       
 
-        KBIndex kbindex = new KBIndex();
-        kbindex.setId(id);
-        kbindex.setTitle(title);
-        kbindex.setDescript(descript);
-        kbindex.setDescriptImg(descriptImg);
-        kbindex.setKeywords(keywords);
-        kbindex.setUrl(url);
-        kbindex.setText(text);
-        
-        //pengjf 获取apikey
-        String apiKey = request.getParameter("apiKey");
-        if(apiKey==null || "".equals(apiKey)){
+        if (id != null && !id.equals("")) {
+
+        } else {
         	ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
-            ro.getResponse().put("reason", "apikey为空");
-            ro.setStatus(-1);
+            ro.getResponse().put("reason", "收藏ID为空，请检查. ");
+            ro.setStatus(1000);
         	response.getWriter().write(ro.toString());
             return;
         }
-        // 1、获取租户信息
+        
+
+        String apiKey = request.getParameter("apiKey");
+
+        // 1、获取租户信�?
         Tenant tenant = null;
         CBOManager api = new CBOManager();
         try {
@@ -91,30 +93,28 @@ public class UpdateDoc extends HttpServlet {
         if (tenant == null) {
             return;
         }
-        
 
-        //  1、先更新DB
-        DBManager saveData2DB = new DBManager();
-        boolean success = false;
-
+        // 2、根据租户调用QAManager
+        QAManager qam = new QAManager();
+        ResultObjectFactory rof = new ResultObjectFactory();
+        ResultObject ro = rof.create(0);
         try {
-            success = saveData2DB.updateKBIndex(kbindex,tenant);
-        } catch (SQLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
+            boolean flag  = qam.deleteCollect(id,tenant);
+        } catch (SQLException e) {
+            if (e instanceof KBDuplicateSQLException) {
 
-        if (success) {
-            try {
-                solr.delDocById(id);
-                solr.addDoc(kbindex);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
+                KBDuplicateSQLException ee = (KBDuplicateSQLException) e;
+
+                ro.getResponse().put("id", ee.getId());
+                ro.getResponse().put("reason", ee.getMessage());
+                ro.setStatus(ee.getKBExceptionCode());
+            } else {
+                ro.setStatus(1000);
                 e.printStackTrace();
             }
         }
+        response.getWriter().write(ro.toString());
 
-        response.getWriter().append("Served at: ").append(request.getContextPath());
     }
 
 }

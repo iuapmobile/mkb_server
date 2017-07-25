@@ -136,7 +136,8 @@ public class DbUtil {
         List list = new ArrayList();
         try {
             Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, kbIndex.getTitle());
@@ -193,7 +194,7 @@ public class DbUtil {
         return rs;
     }
 
-    public static void update(String sql, KBIndex kbIndex) throws SQLException {
+    public static void update(String sql, KBIndex kbIndex,DBConfig dbconf) throws SQLException {
         // "insert into kbIndexInfo(title, decript, descriptImg, url,
         // author,keywords,tag,category,grade,domain,createTime,updateTime)
         // values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -205,7 +206,7 @@ public class DbUtil {
         PreparedStatement ps = null;
         try {
             Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, kbIndex.getTitle());
@@ -729,7 +730,7 @@ public class DbUtil {
         List<String> list = new ArrayList<String>();
         try {
             Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             
            
             //先查询置顶qa
@@ -800,7 +801,7 @@ public class DbUtil {
         String id = "";
         try {
             Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(insertQaFeedbackSql);
 
             ps.setString(1, fb.getScore());
@@ -949,7 +950,7 @@ public class DbUtil {
         id = "s";
         try {
             Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(updateQaSimilarSql);
 
             ps.setString(1, qs.getQuestion());
@@ -1184,6 +1185,50 @@ public class DbUtil {
         }
         return array;
     }
+    
+    /**
+     * pengjf 2017年7月13日18:26:40
+     * 取消收藏
+     * @param deleteSql
+     * @param id
+     * @param dbconf
+     * @return
+     * @throws SQLException
+     */
+    public static boolean deleteQaCollectioin(String deleteSql, String id, DBConfig dbconf) throws SQLException {
+        // TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        String ret = null;
+        boolean flag = true;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(deleteSql);
+            ps.setString(1, id);
+
+
+            ps.execute();
+        } catch (Exception e) {
+            // e.toString()
+        	flag = false;
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return flag;
+    }
+    
     
     public static JSONArray exportExcelQA(String sql, DBConfig dbconf) {
         // TODO Auto-generated method stub

@@ -81,8 +81,9 @@ public class DBManager {
         }
     }
 
-    public boolean updateKBIndex(KBIndex kbindex) throws SQLException {
-        DbUtil.update(Common.UPDATE_KBINDEXINFO_SQL, kbindex);
+    public boolean updateKBIndex(KBIndex kbindex,Tenant tenant) throws SQLException {
+    	DBConfig dbconf = this.getDBConfigByTenant(tenant);
+        DbUtil.update(Common.UPDATE_KBINDEXINFO_SQL, kbindex,dbconf);
         return false;
     }
 
@@ -371,6 +372,37 @@ public class DBManager {
                 throw e;
             }
         }
+    }
+    
+    /**
+     * 取消收藏
+     * pengjf 2017年7月13日18:10:36
+     * @param id
+     * @param tenant
+     * @return
+     * @throws KBDuplicateSQLException
+     * @throws SQLException
+     */
+    public boolean deleteCollect(String id, Tenant tenant) throws SQLException {
+        // TODO Auto-generated method stub
+    	boolean flag = true;
+        try {
+
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+            
+            flag = DbUtil.deleteQaCollectioin(Common.DELETE_QACOLLECTION_SQL, id, dbconf);
+            
+
+        } catch (SQLException e) {
+        	 flag = false;
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+        return flag;
     }
     
     public JSONArray selectQaCoolectionByUserid(Tenant tenant, String userid) {

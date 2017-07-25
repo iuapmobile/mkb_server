@@ -1,15 +1,17 @@
 package com.yyuap.mkb.cbo;
 
+import com.yyuap.mkb.services.util.PropertiesUtil;
+
 public class CommonSQL {
 
     public static final String DRIVER = "com.mysql.jdbc.Driver";
     
-    public static final String DB_NAME = "mkb";
-    public static final String USERNAME = "root";
-    public static final String PASSWORD = "1234qwer";//mac
+    public static final String DB_NAME = PropertiesUtil.getJdbcString("db_name");
+    public static final String USERNAME = PropertiesUtil.getJdbcString("username");
+    public static final String PASSWORD = PropertiesUtil.getJdbcString("password");//mac
     //public static final String PASSWORD = "1qazZAQ!";//mac
-    public static final String IP = "127.0.0.1";
-    public static final String PORT = "3306";
+    public static final String IP = PropertiesUtil.getJdbcString("ip");
+    public static final String PORT = PropertiesUtil.getJdbcString("port");
     
     public static final String URL = "jdbc:mysql://" + IP + ":" + PORT + "/" + DB_NAME +"?useUnicode=true&characterEncoding=utf-8";
     
