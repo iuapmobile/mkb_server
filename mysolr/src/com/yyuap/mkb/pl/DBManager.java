@@ -441,5 +441,24 @@ public class DBManager {
         str.replaceAll(regEx, "");
         System.out.println(str.replaceAll(regEx, ""));
     }
+    
+    public boolean setIsTop(String qaid,String istop ,Tenant tenant) throws SQLException {
+        // TODO Auto-generated method stub
+        try {
+
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+            boolean flag = DbUtil.updateQAIsTop(Common.UPDATE_QAISTOP_SQL, qaid, istop,dbconf);
+            return flag;
+
+        } catch (SQLException e) {
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+    }
 
 }

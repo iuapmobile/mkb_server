@@ -1282,6 +1282,47 @@ public class DbUtil {
         }
         return array;
     }
+    
+    public static boolean updateQAIsTop(String updateQaSql, String qaid,String istop, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean ret = false;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            ps = conn.prepareStatement(updateQaSql);
+
+            ps.setString(1, istop);
+            if (!"1".equals(istop)) {
+            	ps.setString(2, null);
+            } else {
+                String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+                ps.setString(2, datetime);
+            }
+            ps.setString(3, qaid);
+
+            boolean flag = ps.execute();
+            if (!flag) {
+                ret = true;
+                System.out.println("update istop data : id = " + qaid + " succeed!");
+            }
+        } catch (Exception e) {
+            // e.toString()
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return ret;
+    }
 
     /**
      * 将参数 转换成 in 后面 需要的数据

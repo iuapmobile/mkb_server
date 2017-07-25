@@ -233,4 +233,13 @@ public class QAManager {
         return array;
     }
     
+    public boolean setIsTop(String qaid,String istop ,Tenant tenant)
+            throws SQLException {
+        DBManager dbmgr = new DBManager();
+
+        boolean flag = dbmgr.setIsTop(qaid,istop, tenant);
+
+        return flag;
+    }
+    
 }

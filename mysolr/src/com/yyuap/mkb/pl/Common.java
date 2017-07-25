@@ -66,6 +66,9 @@ public class Common {
 
     public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=? where `id` = ?";
 
+    public static final String UPDATE_QAISTOP_SQL = "update qa set istop = ?,settoptime=? where `id` = ?";
+
+    
     public static final String SELECT_QA_BY_ID_SQL = "select * from qa where id = ?";
     
 
