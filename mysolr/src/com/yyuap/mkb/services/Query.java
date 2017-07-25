@@ -82,7 +82,7 @@ public class Query extends HttpServlet {
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
         JSONObject ret = ro.getResult();
-        JSONObject res = ro.getResponse();
+        //JSONObject res = ro.getResponse();
        
         if (tenant != null) {
             QAManager qamgr = new QAManager();
@@ -94,7 +94,8 @@ public class Query extends HttpServlet {
                 botRes.put("code", "100000");
                 a = uniqueQA.getString(q);
                 botRes.put("text", a);
-                res.put("botResponse", botRes);
+                ro.setBotResponse(botRes);
+                //res.put("botResponse", botRes);
             } else {
                 // 3、启用搜索引擎
                 
@@ -145,9 +146,11 @@ public class Query extends HttpServlet {
             resHeader.put("param", param);
             resHeader.put("status", 0);
             ret.put("responseHeader", resHeader);
-
-            res.put("numFound", 0);
-            res.put("start", 0);
+            
+            //res.put("numFound", 0);
+            //res.put("start", 0);
+            ro.setNumFound(0);
+            ro.setStart(0);
         }
 
         // 5、添加q的统计

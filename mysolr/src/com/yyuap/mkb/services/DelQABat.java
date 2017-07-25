@@ -98,7 +98,7 @@ public class DelQABat extends HttpServlet {
         }
         if (success) {
             ro.setStatus(0);
-            ro.getResponse().put("ids", ids);
+            ro.setResponseKV("ids", ids);
         } else {
             ro.setStatus(1175);
         }

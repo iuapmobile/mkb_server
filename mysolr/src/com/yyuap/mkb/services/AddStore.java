@@ -69,21 +69,19 @@ public class AddStore extends HttpServlet {
         String qsid = request.getParameter("qsid");
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
-        
-       
 
         if (userid != null && !userid.equals("") && url != null && !url.equals("")) {
 
         } else {
-        	ResultObjectFactory rof = new ResultObjectFactory();
+            ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
-            ro.getResponse().put("reason", "用户名或者url为空，请检查. ");
+            ro.setReason("用户名或者url为空，请检查. ");
             ro.setStatus(1000);
-        	response.getWriter().write(ro.toString());
+            response.getWriter().write(ro.toString());
             return;
         }
-        
-        QaCollection qac = new QaCollection();//收藏表实体
+
+        QaCollection qac = new QaCollection();// 收藏表实体
         qac.setTenantid(tenantid);
         qac.setUserid(userid);
         qac.setKbindexid(kbindexid);
@@ -116,15 +114,15 @@ public class AddStore extends HttpServlet {
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
         try {
-            id = qam.addStore(qac,tenant);
-            ro.getResponse().put("id", id);
+            id = qam.addStore(qac, tenant);
+            ro.setResponseKV("id", id);
         } catch (SQLException e) {
             if (e instanceof KBDuplicateSQLException) {
 
                 KBDuplicateSQLException ee = (KBDuplicateSQLException) e;
 
-                ro.getResponse().put("id", ee.getId());
-                ro.getResponse().put("reason", ee.getMessage());
+                ro.setResponseKV("id", ee.getId());
+                ro.setReason(ee.getMessage());
                 ro.setStatus(ee.getKBExceptionCode());
             } else {
                 ro.setStatus(1000);

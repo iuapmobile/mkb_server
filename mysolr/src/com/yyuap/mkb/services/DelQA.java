@@ -83,7 +83,7 @@ public class DelQA extends HttpServlet {
             e.printStackTrace();
         }
         if (success) {
-            ro.getResponse().put("id", id);
+            ro.setResponseKV("id", id);
         } else {
             ro.setStatus(1175);
         }

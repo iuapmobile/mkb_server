@@ -14,8 +14,6 @@ import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.processor.SolrManager;
 
-
-
 /**
  * Servlet implementation class importQA
  */
@@ -53,8 +51,8 @@ public class ImportQA extends HttpServlet {
         if (path != null && !path.equals("")) {
 
             String apiKey = request.getParameter("apiKey");
-            
-         // 1、获取租户信息
+
+            // 1、获取租户信息
             Tenant tenant = null;
             CBOManager api = new CBOManager();
             try {
@@ -63,8 +61,6 @@ public class ImportQA extends HttpServlet {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-            
-            
 
             SolrManager mgr = new SolrManager();
             boolean success = mgr.importQA(path, tenant);
@@ -73,12 +69,12 @@ public class ImportQA extends HttpServlet {
             if (success) {
                 // 手动导入
                 // mgr.addDocument(kbindex);
-            }else{
-            	ro.getResponse().put("reason", "导入失败，请联系管理员!");
+            } else {
+                ro.setReason("导入失败，请联系管理员!");
                 ro.setStatus(-2);
-             	response.getWriter().write(ro.toString());
+                response.getWriter().write(ro.toString());
             }
-           
+
         }
 
     }

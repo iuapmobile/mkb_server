@@ -92,8 +92,8 @@ public class QATop extends HttpServlet {
         JSONArray array = qamgr.topN(topn, tenant);
 
         ResultObject ro = (new ResultObjectFactory()).create(0);
-        JSONObject res = ro.getResponse();
-        res.put("docs", array);
+        //JSONObject res = ro.getResponse();
+        ro.setDocs(array);
         String result = ro.toString();
         PrintWriter out = response.getWriter();
         // out.write(result);

@@ -19,6 +19,7 @@ import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
+import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.processor.QAManager;
 
 /**
@@ -60,9 +61,9 @@ public class AddQA extends HttpServlet {
 
         String q = request.getParameter("q");
         String a = request.getParameter("a");
-        String istop = request.getParameter("istop");//是否置顶
-        if(null == istop || "".equals(istop)){
-        	istop = "0";
+        String istop = request.getParameter("istop");// 是否置顶
+        if (null == istop || "".equals(istop)) {
+            istop = "0";
         }
         String libraryPk = request.getParameter("libraryPk");
         String[] qs = request.getParameterValues("qs");
@@ -95,16 +96,23 @@ public class AddQA extends HttpServlet {
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
         try {
-            id = qam.addQA(libraryPk, q, a, qs, tenant,istop);
-            ro.getResponse().put("id", id);
+            id = qam.addQA(libraryPk, q, a, qs, tenant, istop);
+            ro.setResponseKV("id", id);
         } catch (SQLException e) {
             if (e instanceof KBDuplicateSQLException) {
 
-                KBDuplicateSQLException ee = (KBDuplicateSQLException) e;
+                KBDuplicateSQLException ex = (KBDuplicateSQLException) e;
 
-                ro.getResponse().put("id", ee.getId());
-                ro.getResponse().put("reason", ee.getMessage());
-                ro.setStatus(ee.getKBExceptionCode());
+                ro.setResponseKV("id", ex.getId());
+
+                ro.setReason(ex.getMessage());
+                ro.setStatus(ex.getKBExceptionCode());
+            }
+            if (e instanceof KBInsertSQLException) {
+                KBInsertSQLException ex = (KBInsertSQLException) e;
+
+                ro.setReason(ex.getMessage());
+                ro.setStatus(ex.getKBExceptionCode());
             } else {
                 ro.setStatus(1000);
                 e.printStackTrace();
