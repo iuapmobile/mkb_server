@@ -72,7 +72,7 @@ public class DelteCollect extends HttpServlet {
         } else {
         	ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
-            ro.getResponse().put("reason", "收藏ID为空，请检查. ");
+            ro.setReason("收藏ID为空，请检查. ");
             ro.setStatus(1000);
         	response.getWriter().write(ro.toString());
             return;
@@ -105,8 +105,8 @@ public class DelteCollect extends HttpServlet {
 
                 KBDuplicateSQLException ee = (KBDuplicateSQLException) e;
 
-                ro.getResponse().put("id", ee.getId());
-                ro.getResponse().put("reason", ee.getMessage());
+                ro.setResponseKV("id", ee.getId());
+                ro.setReason(ee.getMessage());
                 ro.setStatus(ee.getKBExceptionCode());
             } else {
                 ro.setStatus(1000);

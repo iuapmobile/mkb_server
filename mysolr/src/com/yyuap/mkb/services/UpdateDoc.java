@@ -74,7 +74,7 @@ public class UpdateDoc extends HttpServlet {
         if(apiKey==null || "".equals(apiKey)){
         	ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
-            ro.getResponse().put("reason", "apikey为空");
+            ro.setReason("apikey为空");
             ro.setStatus(-1);
         	response.getWriter().write(ro.toString());
             return;
