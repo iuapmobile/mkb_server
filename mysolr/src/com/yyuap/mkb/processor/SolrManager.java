@@ -480,19 +480,19 @@ public class SolrManager {
         return true;
     }
 
-    public boolean importQA(String path, Tenant tenant) {
+    public int importQA(String path, Tenant tenant) {
         // TODO Auto-generated method stub
         DBManager dbMgr = new DBManager();
-
+        int num = 0;
         try {
-            dbMgr.insertQAFromExcel(path, tenant);
+            num = dbMgr.insertQAFromExcel(path, tenant);
         } catch (IOException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            return false;
+            return 0;
         }
 
-        return true;
+        return num;
     }
 
     ////// pengjf 下面测试调用solrj 删除文档测试代码 begin

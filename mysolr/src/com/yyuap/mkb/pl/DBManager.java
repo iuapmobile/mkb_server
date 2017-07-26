@@ -87,7 +87,7 @@ public class DBManager {
         return false;
     }
 
-    public void insertQAFromExcel(String path, Tenant tenant) throws IOException, SQLException {
+    public int insertQAFromExcel(String path, Tenant tenant) throws IOException, SQLException {
         // TODO Auto-generated method stub
         List<KBQA> list = new ArrayList<KBQA>();
         if (path.endsWith("xlsx")) {
@@ -96,11 +96,20 @@ public class DBManager {
         } else {
 
         }
+        int num = 0;
+        int numErr = 0;
         for (int i = 0, len = list.size(); i < len; i++) {
             KBQA qa = list.get(i);
-            this.insertQA(qa, tenant);
+            try {
+                String newid = this.insertQA(qa, tenant);
+                if (newid != null && !newid.equals("")) {
+                    num++;
+                }
+            } catch (SQLException e) {
+                numErr++;
+            }
         }
-
+        return num;
     }
 
     public String insertQA(KBQA qa, Tenant tenant) throws KBDuplicateSQLException, SQLException {
