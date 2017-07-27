@@ -15,6 +15,7 @@ public class Tenant {
 
     private String botKey;
     private String tkbcore;
+    private String tname;
 
     public Tenant() {
 
@@ -27,13 +28,19 @@ public class Tenant {
     public void settid(String id) {
         this.tid = id;
     }
+    public String gettname() {
+        return this.tname;
+    }
 
+    public void settname(String tname) {
+        this.tname = tname;
+    }
     public String gettusername() {
         return this.tusername;
     }
 
-    public void settusername(String val) {
-        this.tusername = val;
+    public void settusername(String tusername) {
+        this.tusername = tusername;
     }
 
     public String gettAPIKey() {

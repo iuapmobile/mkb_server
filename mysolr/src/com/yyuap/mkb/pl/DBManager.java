@@ -251,7 +251,7 @@ public class DBManager {
         try {
             id = DbUtil.insertQA_TJ(Common.INSERT_QA_TJ_SQL, qa, dbconf);
 
-            System.out.println("记录查询 : question = " + qa.getQuestion() + " by tusername=" + tenant.gettusername()
+            System.out.println("+++++记录查询 : question = " + qa.getQuestion() + " by tname="+tenant.gettname()+", tusername=" + tenant.gettusername()
                     + ", apiKey=" + tenant.gettAPIKey());
 
             return id;

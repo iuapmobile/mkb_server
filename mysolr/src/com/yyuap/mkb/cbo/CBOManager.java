@@ -33,6 +33,7 @@ public class CBOManager {
                     throw new Exception("Exception: find [" + num + "] tenants  by APIKey = '" + apiKey + "'");
                 }
                 tenant = new Tenant();
+                tenant.settname(rs.getString("tname"));
                 tenant.settusername(rs.getString("tusername"));
                 tenant.setAPIKey(rs.getString("apiKey"));
                 tenant.setdbip(rs.getString("dbip"));
