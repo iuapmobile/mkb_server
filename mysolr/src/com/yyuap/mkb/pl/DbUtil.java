@@ -882,7 +882,7 @@ public class DbUtil {
             ps.setString(2, qa.getAnswer());
             ps.setString(3, qa.getIstop());
             if (!"1".equals(qa.getIstop())) {
-                ps.setString(4, qa.getSettoptime());
+                ps.setString(4, null);
             } else {
                 String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
                 ps.setString(4, datetime);

@@ -70,15 +70,15 @@ public class AddStore extends HttpServlet {
         String question = request.getParameter("question");
         String answer = request.getParameter("answer");
 
-        if (userid != null && !userid.equals("") && url != null && !url.equals("")) {
-
+        if ((userid == null || userid.equals("")) || (url == null || url.equals(""))) {
+        	 ResultObjectFactory rof = new ResultObjectFactory();
+             ResultObject ro = rof.create(0);
+             ro.setReason("用户名或者url为空，请检查. ");
+             ro.setStatus(1000);
+             response.getWriter().write(ro.toString());
+             return;
         } else {
-            ResultObjectFactory rof = new ResultObjectFactory();
-            ResultObject ro = rof.create(0);
-            ro.setReason("用户名或者url为空，请检查. ");
-            ro.setStatus(1000);
-            response.getWriter().write(ro.toString());
-            return;
+           
         }
 
         QaCollection qac = new QaCollection();// 收藏表实体

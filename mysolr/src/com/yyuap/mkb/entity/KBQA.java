@@ -26,8 +26,8 @@ public class KBQA extends KBEntity {
     private String libraryPk = null;
     private ArrayList<KBQS> qs;
     
-    private String istop;//是否置顶
-    private String settoptime = "";//置顶时间
+    private String istop="0";//是否置顶
+    private String settoptime = null;//置顶时间
 
     public String getId() {
         return id;
