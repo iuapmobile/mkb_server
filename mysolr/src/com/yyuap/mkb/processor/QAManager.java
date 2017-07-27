@@ -28,15 +28,15 @@ public class QAManager {
         return ret;
     }
 
-    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant,String istop)
-            throws SQLException {
+    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant,
+            String istop) throws SQLException {
         String id = null;
         KBQA qa = new KBQA();
         qa.setId(UUID.randomUUID().toString());
         qa.setLibraryPk(libraryPk);
         qa.setQuestion(question);
         qa.setAnswer(answer);
-        qa.setIstop(istop);//是否置顶
+        qa.setIstop(istop);// 是否置顶
 
         if (questions != null && questions.length > 0) {
             qa.setQuestions(questions);
@@ -49,7 +49,7 @@ public class QAManager {
         return id;
     }
 
-    public JSONObject query(Tenant tenant,String content) {
+    public JSONObject query(Tenant tenant, String content) {
         JSONObject ret = new JSONObject();
 
         JSONObject res = new JSONObject();
@@ -61,30 +61,31 @@ public class QAManager {
         ret.put("responseHeader", resHeader);
 
         DBManager dbmgr = new DBManager();
-        if(content == null || "".equals(content)){
-        	 List list = dbmgr.selectALLQA(tenant);
-             for (int i = 0, len = list.size(); i < len; i++) {
-                 KBQA qa = (KBQA) list.get(i);
-                 docs.add(qa.toJSON());
-             }
-        }else{
-        	List list = dbmgr.selectQA(tenant,content);
+        if (content == null || "".equals(content)) {
+            List list = dbmgr.selectALLQA(tenant);
+            for (int i = 0, len = list.size(); i < len; i++) {
+                KBQA qa = (KBQA) list.get(i);
+                docs.add(qa.toJSON());
+            }
+        } else {
+            List list = dbmgr.selectQA(tenant, content);
             for (int i = 0, len = list.size(); i < len; i++) {
                 KBQA qa = (KBQA) list.get(i);
                 docs.add(qa.toJSON());
             }
         }
-       
+
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant,String istop) throws SQLException {
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop)
+            throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
         kbqa.setQuestion(q);
         kbqa.setAnswer(a);
-        kbqa.setIstop(istop);//是否置顶
+        kbqa.setIstop(istop);// 是否置顶
         // kbqa.setQtype(t);
 
         kbqa.setQuestions(qs);
@@ -140,7 +141,7 @@ public class QAManager {
         return success;
     }
 
-    public boolean updateQAQS(String id, String q, String a, JSONArray qs, Tenant tenant) throws SQLException {
+    public String updateQAQS(String id, String q, String a, JSONArray qs, Tenant tenant) throws SQLException {
         // 根据数据构建Entity
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
@@ -160,8 +161,8 @@ public class QAManager {
 
         DBManager dbmgr = new DBManager();
 
-        boolean success = dbmgr.updateQAQS(kbqa, tenant);
-        return success;
+        String qid = dbmgr.updateQAQS(kbqa, tenant);
+        return qid;
     }
 
     public boolean delQABat(String[] ids, Tenant tenant) throws SQLException {
@@ -172,27 +173,34 @@ public class QAManager {
         }
         return true;
     }
-    
+
     /**
-     * pengjf 2017年7月13日17:58:03
-     * 保存收藏
-     * @param tenantid  租户
-     * @param userid 用户
-     * @param kbindexid kbindexinfo表中id
+     * pengjf 2017年7月13日17:58:03 保存收藏
+     * 
+     * @param tenantid
+     *            租户
+     * @param userid
+     *            用户
+     * @param kbindexid
+     *            kbindexinfo表中id
      * @param title
      * @param descript
      * @param url
-     * @param qid 目前没用到
-     * @param qsid 目前没用到
-     * @param question 目前没用到
-     * @param answer 目前没用到
-     * @param tenant 目前没用到
+     * @param qid
+     *            目前没用到
+     * @param qsid
+     *            目前没用到
+     * @param question
+     *            目前没用到
+     * @param answer
+     *            目前没用到
+     * @param tenant
+     *            目前没用到
      * @return
      * @throws SQLException
      * 
      */
-    public String addStore(QaCollection qac ,Tenant tenant)
-            throws SQLException {
+    public String addStore(QaCollection qac, Tenant tenant) throws SQLException {
         String id = null;
         qac.setId(UUID.randomUUID().toString());
         DBManager dbmgr = new DBManager();
@@ -201,45 +209,45 @@ public class QAManager {
 
         return id;
     }
-    
-    public JSONObject queryQaCollectionByUserid(Tenant tenant,  String userid) {
+
+    public JSONObject queryQaCollectionByUserid(Tenant tenant, String userid) {
         // TODO Auto-generated method stub
-    	JSONObject json = new JSONObject();
+        JSONObject json = new JSONObject();
         DBManager dbmgr = new DBManager();
         JSONArray array = dbmgr.selectQaCoolectionByUserid(tenant, userid);
         json.put("qacollection", array);
         return json;
     }
+
     /**
      * 取消收藏
+     * 
      * @param id
      * @param tenant
      * @return
      * @throws SQLException
      */
-    public boolean deleteCollect(String id ,Tenant tenant)
-            throws SQLException {
+    public boolean deleteCollect(String id, Tenant tenant) throws SQLException {
         DBManager dbmgr = new DBManager();
 
         boolean flag = dbmgr.deleteCollect(id, tenant);
 
         return flag;
     }
-    
+
     public JSONArray exportQA(Tenant tenant) {
         // TODO Auto-generated method stub
         DBManager dbmgr = new DBManager();
         JSONArray array = dbmgr.exportExcelQA(tenant);
         return array;
     }
-    
-    public boolean setIsTop(String qaid,String istop ,Tenant tenant)
-            throws SQLException {
+
+    public boolean setIsTop(String qaid, String istop, Tenant tenant) throws SQLException {
         DBManager dbmgr = new DBManager();
 
-        boolean flag = dbmgr.setIsTop(qaid,istop, tenant);
+        boolean flag = dbmgr.setIsTop(qaid, istop, tenant);
 
         return flag;
     }
-    
+
 }

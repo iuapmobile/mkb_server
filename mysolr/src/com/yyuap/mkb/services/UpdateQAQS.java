@@ -54,8 +54,7 @@ public class UpdateQAQS extends HttpServlet {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
-        
-        
+
         String content_type = request.getContentType();
         JSONObject requestParam = new JSONObject();
 
@@ -64,24 +63,24 @@ public class UpdateQAQS extends HttpServlet {
         } else {
             requestParam = this.readJSON4Form_urlencoded(request);
         }
-        
+
         String id = requestParam.getString("id");
         String q = requestParam.getString("question");
         String a = requestParam.getString("answer");
         String strqs = requestParam.getString("qs");
         JSONArray qs = JSONArray.parseArray(strqs);
         String apiKey = requestParam.getString("apiKey");
-        
-        if(apiKey == null || "".equals(apiKey)){
-        	ResultObjectFactory rof = new ResultObjectFactory();
+
+        if (apiKey == null || "".equals(apiKey)) {
+            ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
-            ro.setReason( "apiKey为空 ");
+            ro.setReason("apiKey为空 ");
             ro.setStatus(-1);
-        	response.getWriter().write(ro.toString());
+            response.getWriter().write(ro.toString());
             return;
-            
+
         }
-       
+
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
@@ -93,8 +92,6 @@ public class UpdateQAQS extends HttpServlet {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
         }
-
-        
 
         // 1、获取租户信息
         Tenant tenant = null;
@@ -115,21 +112,24 @@ public class UpdateQAQS extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            boolean success = qam.updateQAQS(id, q, a, qs, tenant);
-            if (success) {
+            String editId = qam.updateQAQS(id, q, a, qs, tenant);
+            if (editId != null && editId.equals("")) {
                 ro.setStatus(0);
+                ro.setResponseKV("id", editId);
+            } else {
+                ro.setStatus(1175);
+                ro.setReason("更新失败!");
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             ro.setStatus(1169);
+            ro.setReason(e.toString());
         }
 
         response.getWriter().write(ro.toString());
     }
 
-    
-    
     private JSONObject readJSON4JSON(HttpServletRequest request) {
         JSONObject param = new JSONObject();
         StringBuffer json = new StringBuffer();
@@ -169,16 +169,16 @@ public class UpdateQAQS extends HttpServlet {
 
         String id = request.getParameter("id");
         param.put("id", id);
-        
+
         String q = request.getParameter("question");
         param.put("question", q);
-        
+
         String a = request.getParameter("answer");
         param.put("answer", a);
-        
+
         String qs = request.getParameter("qs");
         param.put("qs", qs);
-        
+
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
 

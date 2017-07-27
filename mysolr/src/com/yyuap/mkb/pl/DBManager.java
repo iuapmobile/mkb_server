@@ -81,9 +81,9 @@ public class DBManager {
         }
     }
 
-    public boolean updateKBIndex(KBIndex kbindex,Tenant tenant) throws SQLException {
-    	DBConfig dbconf = this.getDBConfigByTenant(tenant);
-        DbUtil.update(Common.UPDATE_KBINDEXINFO_SQL, kbindex,dbconf);
+    public boolean updateKBIndex(KBIndex kbindex, Tenant tenant) throws SQLException {
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+        DbUtil.update(Common.UPDATE_KBINDEXINFO_SQL, kbindex, dbconf);
         return false;
     }
 
@@ -322,10 +322,12 @@ public class DBManager {
         return success && success2 && success3;
     }
 
-    public boolean updateQAQS(KBQA kbqa, Tenant tenant) throws SQLException {
+    // 更新成功后，返回更新的qeustion id
+    public String updateQAQS(KBQA kbqa, Tenant tenant) throws SQLException {
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
+        // 后期改成事务处理
         boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
         boolean success1 = false;
         boolean success2 = false;
@@ -353,7 +355,11 @@ public class DBManager {
 
         }
 
-        return success && success1 && success2 && success3;
+        if (success && success1 && success2 && success3) {
+            return kbqa.getId();
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -386,10 +392,10 @@ public class DBManager {
             }
         }
     }
-    
+
     /**
-     * 取消收藏
-     * pengjf 2017年7月13日18:10:36
+     * 取消收藏 pengjf 2017年7月13日18:10:36
+     * 
      * @param id
      * @param tenant
      * @return
@@ -398,17 +404,16 @@ public class DBManager {
      */
     public boolean deleteCollect(String id, Tenant tenant) throws SQLException {
         // TODO Auto-generated method stub
-    	boolean flag = true;
+        boolean flag = true;
         try {
 
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
-            
+
             flag = DbUtil.deleteQaCollectioin(Common.DELETE_QACOLLECTION_SQL, id, dbconf);
-            
 
         } catch (SQLException e) {
-        	 flag = false;
+            flag = false;
             if (e instanceof KBDuplicateSQLException) {
                 throw (KBDuplicateSQLException) e;
             } else {
@@ -417,7 +422,7 @@ public class DBManager {
         }
         return flag;
     }
-    
+
     public JSONArray selectQaCoolectionByUserid(Tenant tenant, String userid) {
         // TODO Auto-generated method stub
         JSONArray array = null;
@@ -450,15 +455,15 @@ public class DBManager {
         str.replaceAll(regEx, "");
         System.out.println(str.replaceAll(regEx, ""));
     }
-    
-    public boolean setIsTop(String qaid,String istop ,Tenant tenant) throws SQLException {
+
+    public boolean setIsTop(String qaid, String istop, Tenant tenant) throws SQLException {
         // TODO Auto-generated method stub
         try {
 
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
-            boolean flag = DbUtil.updateQAIsTop(Common.UPDATE_QAISTOP_SQL, qaid, istop,dbconf);
+            boolean flag = DbUtil.updateQAIsTop(Common.UPDATE_QAISTOP_SQL, qaid, istop, dbconf);
             return flag;
 
         } catch (SQLException e) {
