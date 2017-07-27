@@ -45,7 +45,7 @@ public class CBOManager {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -60,10 +60,10 @@ public class CBOManager {
 
         return tenant;
     }
-    
-    public TenantInfo getTenantInfoForLogin(String username,String password) throws SQLException {
 
-    	TenantInfo tenantinfo = null;
+    public TenantInfo getTenantInfoForLogin(String username, String password) throws SQLException {
+
+        TenantInfo tenantinfo = null;
 
         String sql = "select * from mkb.u_tenant where tusername = ? and tpassword = ? ";
         Connection conn = null;
@@ -84,7 +84,8 @@ public class CBOManager {
             while (rs.next()) {
                 num++;
                 if (num > 1) {
-                    throw new Exception("Exception: find [" + num + "] tenants  by tusername = '" + username + "' and tpassword = '"+password+"'");
+                    throw new Exception("Exception: find [" + num + "] tenants  by tusername = '" + username
+                            + "' and tpassword = '" + password + "'");
                 }
                 tenantinfo = new TenantInfo();
                 tenantinfo.setTid(rs.getString("tid"));

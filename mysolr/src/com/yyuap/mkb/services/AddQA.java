@@ -20,6 +20,7 @@ import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 import com.yyuap.mkb.pl.KBInsertSQLException;
+import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.processor.QAManager;
 
 /**
@@ -77,24 +78,29 @@ public class AddQA extends HttpServlet {
 
         String apiKey = request.getParameter("apiKey");
 
+        ResultObjectFactory rof = new ResultObjectFactory();
+        ResultObject ro = rof.create(0);
+        
         // 1、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
         try {
             tenant = api.getTenantInfo(apiKey);
-        } catch (SQLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        if (tenant == null) {
+            if (tenant == null) {
+                String _rea = "找不到aipKey[" + apiKey + "]对应的租户";
+                throw new KBSQLException(_rea);
+            }
+        } catch (Exception e1) {
+            ro.setStatus(1000);
+            ro.setReason(e1.getMessage());
+            response.getWriter().write(ro.toString());
             return;
         }
 
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         String id;
-        ResultObjectFactory rof = new ResultObjectFactory();
-        ResultObject ro = rof.create(0);
+
         try {
             id = qam.addQA(libraryPk, q, a, qs, tenant, istop);
             ro.setResponseKV("id", id);
@@ -107,8 +113,7 @@ public class AddQA extends HttpServlet {
 
                 ro.setReason(ex.getMessage());
                 ro.setStatus(ex.getKBExceptionCode());
-            }
-            if (e instanceof KBInsertSQLException) {
+            } else if (e instanceof KBInsertSQLException) {
                 KBInsertSQLException ex = (KBInsertSQLException) e;
 
                 ro.setReason(ex.getMessage());
