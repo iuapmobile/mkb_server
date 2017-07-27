@@ -277,8 +277,8 @@ public class SolrManager {
          */
 
         SolrDocumentList solrDocumentList = response.getResults();
-        System.out.println("通过文档集合获取查询的结果");
-        System.out.println("查询结果的总数量：" + solrDocumentList.getNumFound());
+        //System.out.println("通过文档集合获取查询的结果");
+        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
 
         JSONObject json = new JSONObject();
 

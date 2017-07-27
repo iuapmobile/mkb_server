@@ -681,7 +681,7 @@ public class DbUtil {
         // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
-        String id = null;
+        String id = "";
         try {
 
             // Class.forName(Common.DRIVER);
@@ -704,7 +704,6 @@ public class DbUtil {
 
             if (!flag) {
                 id = newid;
-                System.out.println("import data[qa_tj] : question = " + qa.getQuestion() + " succeed!");
             }
         } catch (Exception e) {
             e.printStackTrace();

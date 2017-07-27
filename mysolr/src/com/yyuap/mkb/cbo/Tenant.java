@@ -3,12 +3,13 @@ package com.yyuap.mkb.cbo;
 public class Tenant {
 
     private String tid = "";
+    private String tusername = "";
     private String apiKey = "";
 
     private String dbip = "";
     private String dbport = "";
     private String dbname = "";
-   
+
     private String dbusername = "";
     private String dbpassword = "";
 
@@ -25,6 +26,14 @@ public class Tenant {
 
     public void settid(String id) {
         this.tid = id;
+    }
+
+    public String gettusername() {
+        return this.tusername;
+    }
+
+    public void settusername(String val) {
+        this.tusername = val;
     }
 
     public String gettAPIKey() {
@@ -87,6 +96,7 @@ public class Tenant {
         // TODO Auto-generated method stub
         return this.dbusername;
     }
+
     public void setdbusername(String username) {
         // TODO Auto-generated method stub
         this.dbusername = username;
