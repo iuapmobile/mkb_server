@@ -169,30 +169,6 @@ public class DbUtil {
         return list;
     }
 
-    public static ResultSet selectAll(String sql) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            Class.forName(Common.DRIVER);
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
-            ps = conn.prepareStatement(sql);
-            rs = ps.executeQuery();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (ps != null) {
-                ps.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        }
-        return rs;
-    }
 
     public static void update(String sql, KBIndex kbIndex,DBConfig dbconf) throws SQLException {
         // "insert into kbIndexInfo(title, decript, descriptImg, url,
@@ -735,7 +711,7 @@ public class DbUtil {
            
             //先查询置顶qa
 
-            conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            //conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
 
             ps = conn.prepareStatement(" select * from qa where istop=1 order by settoptime desc limit ? ");
             ps.setInt(1, topn);

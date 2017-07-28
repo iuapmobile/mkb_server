@@ -31,11 +31,11 @@ public class Common {
 //    public static final String IP = "127.0.0.1";
 //    public static final String PORT = "3306";
 
-    public static final String DB_NAME = "yycloudkb";
-    public static final String USERNAME = "root";
-    public static final String PASSWORD = "1234qwer";
-    public static final String IP = "127.0.0.1";
-    public static final String PORT = "3306";
+//    public static final String DB_NAME = "yycloudkb";
+//    public static final String USERNAME = "root";
+//    public static final String PASSWORD = "1234qwer";
+//    public static final String IP = "127.0.0.1";
+//    public static final String PORT = "3306";
     //
 
     /*
@@ -45,8 +45,8 @@ public class Common {
      * final String PORT = "3306";
      */
 
-    public static final String URL = "jdbc:mysql://" + IP + ":" + PORT + "/" + DB_NAME
-            + "?useUnicode=true&characterEncoding=utf-8";
+//    public static final String URL = "jdbc:mysql://" + IP + ":" + PORT + "/" + DB_NAME
+//            + "?useUnicode=true&characterEncoding=utf-8";
 
     // sql
     public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexInfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
