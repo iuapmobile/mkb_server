@@ -63,6 +63,13 @@ public class MKBRequestProcessor {
         param.put("bot", bot);
 
         String buserid = request.getParameter("buserid");
+        param.put("buserid", buserid);
+
+        String rows = request.getParameter("rows");
+        param.put("rows", rows);
+
+        String start = request.getParameter("start");
+        param.put("start", start);
 
         return param;
     }

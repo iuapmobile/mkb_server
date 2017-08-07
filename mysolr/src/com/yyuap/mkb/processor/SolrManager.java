@@ -19,6 +19,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.TextField;
 import org.apache.solr.client.*;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.impl.*;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -201,15 +202,26 @@ public class SolrManager {
         // 1、设置solr查询参数
         String _q = requestParam.getString("q");
 
-        int num = 10;
-        String strNum = requestParam.getString("num");
+        int rows = 10;
+        int start = 0;
+        String strNum = requestParam.getString("rows");
+        String strStart = requestParam.getString("start");
         if (strNum == null || strNum.equals("")) {
-            num = 10;
+            rows = 10;
         } else {
             try {
-                num = Integer.parseInt(strNum);
+                rows = Integer.parseInt(strNum);
             } catch (Exception e) {
-                num = 10;
+                rows = 10;
+            }
+        }
+        if (strStart == null || strStart.equals("")) {
+            start = 0;
+        } else {
+            try {
+                start = Integer.parseInt(strStart);
+            } catch (Exception e) {
+                start = 0;
             }
         }
         String q = _q;
@@ -234,9 +246,12 @@ public class SolrManager {
         String qf = requestParam.getString("qf");
         query.set("defType", "edismax");
         if (qf == null || qf.equals("")) {
-            qf = "keywords^1000 question^200 answer^100 title^50 descript^30 text^10";
+            qf = "product^1 subproduct^1 keywords^100 question^1 answer^0.1 title^1 descript^0.1 text^0.01";
         }
         query.set("qf", qf);
+        //query.addSort("s_kbsrc", ORDER.desc);
+        //query.addSort("s_subproduct", ORDER.desc);
+    
 
         // 参数fq, 给query增加过滤查询条件
         // query.addFilterQuery("id:[0 TO 9]");//id为0-4
@@ -250,8 +265,8 @@ public class SolrManager {
         // query.setSort("id",SolrQuery.ORDER.desc);
 
         // 设置分页参数
-        query.setStart(0);
-        query.setRows(num);// 每一页多少值
+        query.setStart(start);
+        query.setRows(rows);// 每一页多少值
 
         /*
          * //参数hl,设置高亮 query.setParam("hl", "true");
@@ -277,7 +292,7 @@ public class SolrManager {
          */
 
         SolrDocumentList solrDocumentList = response.getResults();
-        //System.out.println("通过文档集合获取查询的结果");
+        // System.out.println("通过文档集合获取查询的结果");
         System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
 
         JSONObject json = new JSONObject();
@@ -334,6 +349,91 @@ public class SolrManager {
          * +"    description:"+per.getDescription()); } }
          */
 
+    }
+
+    public JSONObject queryQuestion(JSONObject requestParam) throws SolrServerException, IOException {
+
+        HttpSolrClient solrServer = this.getHttpSolrClient();
+        SolrQuery query = new SolrQuery();
+        // 1、参数q处理：设置solr查询参数q
+        String q = requestParam.getString("q");
+
+        String sa = requestParam.getString("sa"); // semantic analysis => sa
+        if (sa != null && sa.equalsIgnoreCase("true") && !q.equals("")) {
+            // 进行语义分析
+            SemanticAnalysis sap = new SemanticAnalysis();
+            SAConfig conf = new SAConfig();
+            conf.httpArg = ("s=" + q);
+            String _keywords = sap.getKeywords(conf);
+            q = this.process(_keywords);
+        }
+
+        // 非空处理
+        if (q == null || q.equals("")) {
+            q = "*:*";
+        }
+
+        query.set("q", q);
+        // 2、参数qf处理：设置权重
+        String qf = requestParam.getString("qf");
+        query.set("defType", "edismax");
+        if (qf == null || qf.equals("")) {
+            qf = "question";
+        }
+        query.set("qf", qf);
+
+        // 参数Num处理：设置分页参数
+        int num = 10;
+        String strNum = requestParam.getString("num");
+        if (strNum == null || strNum.equals("")) {
+            num = 10;
+        } else {
+            try {
+                num = Integer.parseInt(strNum);
+            } catch (Exception e) {
+                System.out.println("查询参数num为[" + strNum + "]，其值不是一个有效的整数，已默认处理为取前10条");
+                num = 10;
+            }
+        }
+        query.setStart(0);
+        query.setRows(num);// 每一页多少值
+
+        // 获取查询结果
+        QueryResponse qResponse = solrServer.query(query);
+        SolrDocumentList solrDocumentList = qResponse.getResults();
+
+        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
+
+        JSONObject jsonRet = new JSONObject();
+
+        JSONObject resHeader = new JSONObject();
+        resHeader.put("status", 0);
+        resHeader.put("QTime", 0);
+        JSONObject param = new JSONObject();
+        param.put("q", q);
+        param.put("indent", "on");
+        param.put("wt", "json");
+        resHeader.put("param", param);
+        resHeader.put("status", 0);
+        jsonRet.put("responseHeader", resHeader);
+
+        JSONObject response = new JSONObject();
+        response.put("numFound", solrDocumentList.getNumFound());
+        response.put("start", 0);
+
+        JSONArray docs = new JSONArray();
+        for (SolrDocument doc : solrDocumentList) {
+            JSONObject obj = new JSONObject();
+            obj.put("id", doc.get("id"));
+            obj.put("question", doc.get("question"));
+            obj.put("answer", doc.get("answer"));
+            obj.put("url", doc.get("url"));
+            docs.add(obj);
+        }
+        response.put("docs", docs);
+
+        jsonRet.put("response", response);
+        return jsonRet;
     }
 
     private String process(String src) {

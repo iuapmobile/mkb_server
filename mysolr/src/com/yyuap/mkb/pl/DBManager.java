@@ -163,7 +163,7 @@ public class DBManager {
 
         ArrayList<JSONObject> list = new ArrayList<JSONObject>();
         try {
-            list = DbUtil.selectAnswer(Common.SELECT_ANSWER_SQL, q, dbconf);
+            list = DbUtil.selectAnswer(Common.SELECT_ANSWER_BY_Q_SQL, q, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -172,14 +172,13 @@ public class DBManager {
             try {
                 list = DbUtil.selectAnswerSimilar(Common.SELECT_QA_BY_ID_SQL, q, dbconf);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("selectUniqueAnswer方法异常，取相似问题时，出现异常");
             }
             if (list.size() == 1) {
                 ret = list.get(0);
             }
-        } else if (list.size() == 1) {
-            ret = list.get(0);
+        } else if (list.size() >= 1) {
+            ret = list.get(0);// 取第一个
         }
 
         return ret;
@@ -251,8 +250,9 @@ public class DBManager {
         try {
             id = DbUtil.insertQA_TJ(Common.INSERT_QA_TJ_SQL, qa, dbconf);
 
-            System.out.println("+++++记录查询 : question = " + qa.getQuestion() + " by tname="+tenant.gettname()+", tusername=" + tenant.gettusername()
-                    + ", apiKey=" + tenant.gettAPIKey());
+            System.out.println("+++++记录查询[" + tenant.gettname() + "] : question = " + qa.getQuestion() + " answer = "
+                    + qa.getAnswer() + " simscore = " + qa.getSimscore() + " by tname=" + tenant.gettname()
+                    + ", tusername=" + tenant.gettusername() + ", apiKey=" + tenant.gettAPIKey());
 
             return id;
         } catch (SQLException e) {

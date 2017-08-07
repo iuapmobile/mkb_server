@@ -12,7 +12,7 @@ public class CBOManager {
 
         Tenant tenant = null;
 
-        String sql = CommonSQL.SELECT_TENANT_BY_TID_SQL;
+        String sql = CommonSQL.SELECT_TENANT_BY_APIKEY_SQL;
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -43,8 +43,11 @@ public class CBOManager {
                 tenant.setdbpassword(rs.getString("dbpassword"));
 
                 tenant.settkbcore(rs.getString("tkbcore"));
+                tenant.settqakbcore(rs.getString("tqakbcore"));
 
                 tenant.setbotKey(rs.getString("botKey"));
+                tenant.setSimscore(rs.getFloat("simscore"));
+                tenant.setRecommended(rs.getBoolean("recommended"));
             }
 
         } catch (Exception e) {

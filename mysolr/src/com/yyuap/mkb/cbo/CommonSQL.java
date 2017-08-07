@@ -27,7 +27,7 @@ public class CommonSQL {
     // + "?useUnicode=true&characterEncoding=utf-8";
 
     // 租户API调用
-    public static final String SELECT_TENANT_BY_TID_SQL = "select * from mkb.u_tenant where apiKey = ?";
+    public static final String SELECT_TENANT_BY_APIKEY_SQL = "select * from mkb.u_tenant where apiKey = ?";
 
     // 租户使用者登陆使用
     public static final String SELECT_TENANT_BY_TUSERNAME_SQL = "select * from u_tenant where tusername = ? and tpassword = ?";

@@ -137,7 +137,7 @@ public class DbUtil {
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-            
+
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, kbIndex.getTitle());
@@ -169,8 +169,7 @@ public class DbUtil {
         return list;
     }
 
-
-    public static void update(String sql, KBIndex kbIndex,DBConfig dbconf) throws SQLException {
+    public static void update(String sql, KBIndex kbIndex, DBConfig dbconf) throws SQLException {
         // "insert into kbIndexInfo(title, decript, descriptImg, url,
         // author,keywords,tag,category,grade,domain,createTime,updateTime)
         // values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -286,7 +285,10 @@ public class DbUtil {
                 JSONObject obj = new JSONObject();
                 String ques = rs.getString("question");
                 String ans = rs.getString("answer");
-                obj.put(ques, ans);
+                obj.put(q, ans);//不能写成ques，sql比较不区分大小写
+                obj.put("request_q", q);
+                obj.put("kb_q", ques);
+                obj.put("a", ans);
                 list.add(obj);
             }
         } catch (Exception e) {
@@ -322,7 +324,7 @@ public class DbUtil {
                 qidList.add(rs.getString("qid"));
             }
             // 如果qid唯一 再去查询 说明 命中 唯一答案
-            if (qidList.size() == 1) {
+            if (qidList.size() > 0) {
                 ps = conn.prepareStatement(sql);
 
                 ps.setString(1, qidList.get(0));
@@ -332,6 +334,9 @@ public class DbUtil {
                     JSONObject obj = new JSONObject();
                     // String ques = rs.getString("question");
                     String ans = rs.getString("answer");
+                    obj.put("request_q", q);
+                    obj.put("kb_q", rs.getString("question"));
+                    obj.put("a", rs.getString("answer"));
                     obj.put(q, ans);// 把 key的 ques 换成 q 要不 前面取值 报错
                     list.add(obj);
                 }
@@ -707,11 +712,11 @@ public class DbUtil {
             Class.forName(Common.DRIVER);
 
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-            
-           
-            //先查询置顶qa
 
-            //conn = DriverManager.getConnection(Common.URL, Common.USERNAME, Common.PASSWORD);
+            // 先查询置顶qa
+
+            // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
+            // Common.PASSWORD);
 
             ps = conn.prepareStatement(" select * from qa where istop=1 order by settoptime desc limit ? ");
             ps.setInt(1, topn);
@@ -1167,10 +1172,9 @@ public class DbUtil {
         return array;
     }
 
-    
     /**
-     * pengjf 2017年7月13日18:26:40
-     * 取消收藏
+     * pengjf 2017年7月13日18:26:40 取消收藏
+     * 
      * @param deleteSql
      * @param id
      * @param dbconf
@@ -1193,11 +1197,10 @@ public class DbUtil {
             ps = conn.prepareStatement(deleteSql);
             ps.setString(1, id);
 
-
             ps.execute();
         } catch (Exception e) {
             // e.toString()
-        	flag = false;
+            flag = false;
             e.printStackTrace();
         } finally {
             if (ps != null) {
@@ -1210,8 +1213,7 @@ public class DbUtil {
 
         return flag;
     }
-    
-    
+
     public static JSONArray exportExcelQA(String sql, DBConfig dbconf) {
         // TODO Auto-generated method stub
         JSONArray array = new JSONArray();
@@ -1257,8 +1259,9 @@ public class DbUtil {
         }
         return array;
     }
-    
-    public static boolean updateQAIsTop(String updateQaSql, String qaid,String istop, DBConfig dbconf) throws SQLException {
+
+    public static boolean updateQAIsTop(String updateQaSql, String qaid, String istop, DBConfig dbconf)
+            throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         boolean ret = false;
@@ -1273,7 +1276,7 @@ public class DbUtil {
 
             ps.setString(1, istop);
             if (!"1".equals(istop)) {
-            	ps.setString(2, null);
+                ps.setString(2, null);
             } else {
                 String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
                 ps.setString(2, datetime);
