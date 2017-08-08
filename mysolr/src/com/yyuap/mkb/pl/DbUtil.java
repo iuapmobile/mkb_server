@@ -285,7 +285,7 @@ public class DbUtil {
                 JSONObject obj = new JSONObject();
                 String ques = rs.getString("question");
                 String ans = rs.getString("answer");
-                obj.put(q, ans);//不能写成ques，sql比较不区分大小写
+                obj.put(q, ans);// 不能写成ques，sql比较不区分大小写
                 obj.put("request_q", q);
                 obj.put("kb_q", ques);
                 obj.put("a", ans);
@@ -493,12 +493,15 @@ public class DbUtil {
 
             for (int i = 0, len = qa.getQuestions().length; i < len; i++) {
 
+                String qs = qa.getQuestions()[i];
+                if (qs == null || qs.equals(""))
+                    continue;
                 ps = conn.prepareStatement(insertQaSimilarSql);
 
                 String id = UUID.randomUUID().toString();
 
                 ps.setString(1, id);
-                ps.setString(2, qa.getQuestions()[i]);
+                ps.setString(2, qs);
                 ps.setString(3, qa.getId());
 
                 String dt = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
@@ -508,7 +511,11 @@ public class DbUtil {
                 ps.setString(7, "");
                 boolean flag = ps.execute();
                 if (!flag) {
-                    System.out.println("import data : question_similar = " + qa.getQuestions()[i] + " succeed!");
+                    System.out.println(
+                            "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " succeed!");
+                } else {
+                    System.out.println(
+                            "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " failed!");
                 }
 
             }

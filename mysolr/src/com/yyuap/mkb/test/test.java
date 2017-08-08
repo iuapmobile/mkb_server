@@ -83,10 +83,9 @@ public class test {
         createMap.put("client_id", "ah7yAv2YGjEyYNZEUdsrVNfG");
         createMap.put("client_secret", "ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj");
         String charset = "gbk";
-        // String tokenURL =
-        // "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=ah7yAv2YGjEyYNZEUdsrVNfG&client_secret=ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj";
+        
         String tokenURL = "https://aip.baidubce.com/oauth/2.0/token";
-
+      
         String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
         JSONObject obj = JSONObject.parseObject(botRes);
         String access_token = obj.getString("access_token");
@@ -94,14 +93,9 @@ public class test {
 
         //String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim?access_token=" + access_token;
         String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token="+ access_token;
-        // String url = "http://www.tuling123.com/v1/setting/importfaq";
-        // String str =
-        // "{\"apikey\":\"f08c391260304acc81f8fdb27de44832\",\"data\":[{\"question\":\"测试问题1\",\"answer\":\"测试答案1\"},{\"question\":\"测试问题2\",\"answer\":\"测试答案2\"}]}";
+        url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer?access_token="+ access_token;
 
-        // ArrayList<String> list1 = new ArrayList<String>();
-        // ArrayList<String> list2 = new ArrayList<String>();
-        // list.add("")
-
+        
         
         try {
            
