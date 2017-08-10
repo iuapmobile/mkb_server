@@ -25,6 +25,7 @@ import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.QaCollection;
+import com.yyuap.mkb.processor.SolrManager;
 
 /**
  * @author gct
@@ -246,11 +247,14 @@ public class DbUtil {
             } else {
                 ps.setString(11, null);
             }
-
+            ps.setString(12, qa.getUrl());// url
+            ps.setString(13, qa.getKbid());// kbid
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
-                System.out.println("import data : question = " + qa.getQuestion() + " succeed!");
+                System.out.println("insert a row into QA table success!: question=" + qa.getQuestion() + ", answer="
+                        + qa.getAnswer() + ", url=" + qa.getUrl());
+
             }
         } catch (Exception e) {
             // e.toString()
@@ -475,14 +479,15 @@ public class DbUtil {
         return list;
     }
 
-    public static boolean insertQA_SIMILAR(String insertQaSimilarSql, KBQA qa, DBConfig dbconf) throws SQLException {
+    public static ArrayList<String> insertQA_SIMILAR(String insertQaSimilarSql, KBQA qa, DBConfig dbconf)
+            throws SQLException {
         // TODO Auto-generated method stub
         if (qa == null || qa.getQuestions() == null) {
-            return false;
+            return null;
         }
         Connection conn = null;
         PreparedStatement ps = null;
-
+        ArrayList<String> ids = new ArrayList<String>();
         try {
 
             // Class.forName(Common.DRIVER);
@@ -494,8 +499,11 @@ public class DbUtil {
             for (int i = 0, len = qa.getQuestions().length; i < len; i++) {
 
                 String qs = qa.getQuestions()[i];
-                if (qs == null || qs.equals(""))
+                if (qs == null || qs.equals("")) {
+                    ids.add("");
                     continue;
+                }
+
                 ps = conn.prepareStatement(insertQaSimilarSql);
 
                 String id = UUID.randomUUID().toString();
@@ -511,6 +519,12 @@ public class DbUtil {
                 ps.setString(7, "");
                 boolean flag = ps.execute();
                 if (!flag) {
+                    ids.add(id);
+                    KBQS kbqs = new KBQS();
+                    kbqs.setId(id);
+                    kbqs.setQuestion(qs);
+                    kbqs.setQid(qa.getId());
+                    qa.getQS().add(kbqs);
                     System.out.println(
                             "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " succeed!");
                 } else {
@@ -528,7 +542,7 @@ public class DbUtil {
             if (conn != null) {
                 conn.close();
             }
-            return true;
+            return ids;
         }
     }
 

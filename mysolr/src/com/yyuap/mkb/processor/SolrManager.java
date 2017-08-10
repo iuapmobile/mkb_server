@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,8 @@ import com.yonyou.um.mkb.solrManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
+import com.yyuap.mkb.entity.KBQA;
+import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.nlp.SAConfig;
 import com.yyuap.mkb.nlp.SemanticAnalysis;
 import com.yyuap.mkb.pl.DBConfig;
@@ -71,10 +74,6 @@ public class SolrManager {
     private static CoreContainer coreContainer = null;
     private static EmbeddedSolrServer server = null;
     HttpSolrClient solr = null;
-
-    public SolrManager() {
-
-    }
 
     public SolrManager(String kbcore) {
         String x = "ddd";
@@ -154,15 +153,30 @@ public class SolrManager {
         }
     }
 
-    public void addDoc(KBIndex kbindex) throws Exception {
+    public void delDocByQid(String id) {
+        try {
+            HttpSolrClient client = this.getHttpSolrClient();
+            client.deleteByQuery("qid:" + id);
+            client.commit();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addDoc(KBIndex kbindex) throws SolrServerException, IOException {
         String id = kbindex.getId();
         String title = kbindex.getTitle();
         String descript = kbindex.getDescript();
+        String question = kbindex.getQuestion();
+        String answer = kbindex.getAnswer();
         String descriptImg = kbindex.getDescriptImg();
         String keywords = kbindex.getKeywords();
         String url = kbindex.getUrl();
         String text = kbindex.getText();
-
+        String qid = kbindex.getQid();
+        String kbid = kbindex.getKbid();
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -174,10 +188,14 @@ public class SolrManager {
         document.addField("id", id);
         document.addField("title", title);
         document.addField("descript", descript);
+        document.addField("question", question);
+        document.addField("answer", answer);
         document.addField("descriptImg", descriptImg);
         document.addField("keywords", keywords);
         document.addField("url", url);
         document.addField("text", text);
+        document.addField("qid", qid);
+        document.addField("kbid", kbid);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long times = System.currentTimeMillis();
@@ -186,13 +204,58 @@ public class SolrManager {
         String tim = sdf.format(date);
         System.out.println(tim);
 
-        document.addField("createTime", tim);
-        document.addField("updateTime", tim);
+        // document.addField("createTime", tim);
+        // document.addField("updateTime", tim);
 
         // 4.提交文档到索引库
         solr.add(document);
         // 5.提交
         solr.commit();
+    }
+
+    public void addQADoc(KBQA kbqa) throws SolrServerException, IOException {
+        KBIndex kbindex = new KBIndex();
+
+        kbindex.setId(kbqa.getId());// 必须和数据库种对id相同，以便删除
+        kbindex.setTitle(kbqa.getQuestion());
+        kbindex.setDescript(kbqa.getAnswer());
+        kbindex.setQuestion(kbqa.getQuestion());
+        kbindex.setAnser(kbqa.getAnswer());
+        kbindex.setUrl(kbqa.getUrl());
+        kbindex.setKbid(kbqa.getKbid());
+
+        this.addDoc(kbindex);
+    }
+
+    public void addQASimilarDoc(KBQA kbqa) throws SolrServerException, IOException {
+        // String[] qs = kbqa.getQuestions();
+        ArrayList<KBQS> kbqsList = kbqa.getQS();
+
+        for (int i = 0, len = kbqsList.size(); i < len; i++) {
+            KBQS kbqs = kbqsList.get(i);
+            if (kbqs == null)
+                continue;
+            String qid = kbqa.getId();
+            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+            // String q = kbqa.getQuestion();
+            String a = kbqa.getAnswer();
+            String qs = kbqs.getQuestion();
+            String url = kbqa.getUrl();
+            String kbid = kbqa.getKbid();
+
+            KBIndex kbindex = new KBIndex();
+            kbindex.setId(id);
+            kbindex.setTitle(qs);
+            kbindex.setDescript(a);
+            kbindex.setQuestion(qs);
+            kbindex.setAnser(a);
+            kbindex.setUrl(url);
+            kbindex.setQid(qid);
+            kbindex.setKbid(kbid);
+
+            this.addDoc(kbindex);
+        }
+
     }
 
     public JSONObject query(JSONObject requestParam) throws Exception {
@@ -249,9 +312,8 @@ public class SolrManager {
             qf = "product^1 subproduct^1 keywords^100 question^1 answer^0.1 title^1 descript^0.1 text^0.01";
         }
         query.set("qf", qf);
-        //query.addSort("s_kbsrc", ORDER.desc);
-        //query.addSort("s_subproduct", ORDER.desc);
-    
+        // query.addSort("s_kbsrc", ORDER.desc);
+        // query.addSort("s_subproduct", ORDER.desc);
 
         // 参数fq, 给query增加过滤查询条件
         // query.addFilterQuery("id:[0 TO 9]");//id为0-4
@@ -580,7 +642,7 @@ public class SolrManager {
         return true;
     }
 
-    public int importQA(String path, Tenant tenant) {
+    public int importQA(String path, Tenant tenant) throws Exception {
         // TODO Auto-generated method stub
         DBManager dbMgr = new DBManager();
         int num = 0;

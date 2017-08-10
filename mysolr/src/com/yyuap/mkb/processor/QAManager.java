@@ -2,6 +2,7 @@ package com.yyuap.mkb.processor;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,26 +86,46 @@ public class QAManager {
         return ret;
     }
 
-    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant,
-            String istop) throws SQLException {
+    public String addQA(JSONObject json, Tenant tenant) throws Exception {
         String id = null;
         KBQA qa = new KBQA();
         qa.setId(UUID.randomUUID().toString());
-        qa.setLibraryPk(libraryPk);
-        qa.setQuestion(question);
-        qa.setAnswer(answer);
-        qa.setIstop(istop);// 是否置顶
+        qa.setLibraryPk(json.getString("libraryPk"));
+        qa.setQuestion(json.getString("q"));
+        qa.setAnswer(json.getString("a"));
+        qa.setIstop(json.getString("istop"));// 是否置顶
+        qa.setUrl(json.getString("url"));// 是否置顶
+        qa.setKbid(json.getString("kbid"));// 是否置顶
 
+        String[] questions = (String[]) json.get("qs");
         if (questions != null && questions.length > 0) {
             qa.setQuestions(questions);
         }
 
         DBManager dbmgr = new DBManager();
 
-        id = dbmgr.insertQA(qa, tenant);
-
-        return id;
+        return dbmgr.insertQA(qa, tenant);
     }
+
+    // public String addQA(KBQA kbqa, Tenant tenant) throws Exception {
+    // String id = null;
+    // KBQA qa = new KBQA();
+    // qa.setId(UUID.randomUUID().toString());
+    // qa.setLibraryPk(libraryPk);
+    // qa.setQuestion(question);
+    // qa.setAnswer(answer);
+    // qa.setIstop(istop);// 是否置顶
+    //
+    // //qa.setUrl(url);
+    //
+    // if (questions != null && questions.length > 0) {
+    // qa.setQuestions(questions);
+    // }
+    //
+    // DBManager dbmgr = new DBManager();
+    //
+    // return dbmgr.insertQA(qa, tenant);
+    // }
 
     public JSONObject query(Tenant tenant, String content) {
         JSONObject ret = new JSONObject();

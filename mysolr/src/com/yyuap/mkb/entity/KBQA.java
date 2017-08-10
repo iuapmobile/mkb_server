@@ -29,6 +29,8 @@ public class KBQA extends KBEntity {
     private String istop = "0";// 是否置顶
     private String settoptime = null;// 置顶时间
     private float simscore = -1;
+    private String url = "";// answer可能是一个url
+    private String kbid = "";// 改问答属于那一个知识库（id）
 
     public String getId() {
         return id;
@@ -91,7 +93,7 @@ public class KBQA extends KBEntity {
         json.put("isstop", this.getIstop());
         json.put("settoptime", this.getSettoptime());
         json.put("simscore", this.getSimscore());
-        
+
         return json;
     }
 
@@ -128,5 +130,24 @@ public class KBQA extends KBEntity {
 
         this.simscore = value;
     }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getKbid() {
+
+        return this.kbid;
+    }
+
+    public void setKbid(String kbid) {
+        this.kbid = kbid;
+    }
+
+    
 
 }

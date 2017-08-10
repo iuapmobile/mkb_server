@@ -71,7 +71,7 @@ public class ImportExcel2DB extends HttpServlet {
                 type = KBINDEXTYPE.KBINDEX.toString().toLowerCase();
             }
 
-            SolrManager mgr = new SolrManager();
+            SolrManager mgr = new SolrManager(tenant.gettkbcore());
             boolean success = mgr.saveExcelData2DB(path, type,tenant);
             if (success) {
                 // 手动导入

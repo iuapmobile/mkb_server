@@ -32,6 +32,10 @@ public class KBIndex extends KBEntity {
     private String text = "";
 
     private String filePath = "";
+    private String question = "";
+    private String answer = "";
+    private String kbid = "";
+    private String qid = "";
 
     public String getId() {
         return id;
@@ -55,6 +59,22 @@ public class KBIndex extends KBEntity {
 
     public void setDescript(String descript) {
         this.descript = descript;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnser(String answer) {
+        this.answer = answer;
     }
 
     public String getDomain() {
@@ -151,5 +171,23 @@ public class KBIndex extends KBEntity {
 
     public void setFilePath(String path) {
         this.filePath = path;
+    }
+
+    public void setKbid(String kbid) {
+        this.kbid = kbid;
+
+    }
+
+    public String getKbid() {
+        return this.kbid;
+
+    }
+
+    public void setQid(String qid) {
+        this.qid = qid;
+    }
+
+    public String getQid() {
+        return this.qid;
     }
 }

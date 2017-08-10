@@ -1,6 +1,7 @@
 package com.yyuap.mkb.services;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -51,6 +52,9 @@ public class ImportQA extends HttpServlet {
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
 
+        ResultObjectFactory rof = new ResultObjectFactory();
+        ResultObject ro = rof.create(0);
+
         String path = request.getParameter("path");// 文件服务器地址
         if (path != null && !path.equals("")) {
 
@@ -62,28 +66,44 @@ public class ImportQA extends HttpServlet {
             try {
                 tenant = api.getTenantInfo(apiKey);
             } catch (SQLException e1) {
-                // TODO Auto-generated catch block
+                ro.setStatus(1000);
+                ro.setReason("获取租户信息异常，apiKey=" + apiKey);
                 e1.printStackTrace();
             }
+            if (tenant != null) {
+                try {
+                    SolrManager mgr = new SolrManager(tenant.gettkbcore());
+                    int num = mgr.importQA(path, tenant);
 
-            SolrManager mgr = new SolrManager();
-            int num = mgr.importQA(path, tenant);
-            ResultObjectFactory rof = new ResultObjectFactory();
-            ResultObject ro = rof.create(0);
-            if (num > 0) {
-                // 手动导入
-                // mgr.addDocument(kbindex);
-                ro.setReason("成功导入" + num + "条记录，请联系管理员!");
-                ro.setStatus(0);
-                response.getWriter().write(ro.toString());
-            } else {
-                ro.setReason("导入失败，请联系管理员!");
-                ro.setStatus(-2);
-                response.getWriter().write(ro.toString());
+                    if (num > 0) {
+                        // 手动导入
+                        // mgr.addDocument(kbindex);
+                        ro.setReason("成功导入" + num + "条记录!");
+                        ro.setStatus(0);
+
+                    } else {
+                        ro.setReason("没有导入数据!");
+                        ro.setStatus(-2);
+                    }
+
+                } catch (Exception e) {
+                    ro.setReason("导入异常!" + e.toString());
+                    ro.setStatus(-3);
+                }
             }
+        } else {
+            // 没有指定倒入文件的地址
+            ro.setStatus(1000);
+            ro.setReason("未指定导入文件的路径（含文件名）");
 
         }
 
+        String result = ro.getResult().toString();
+        PrintWriter out = response.getWriter();
+        // out.write(result);
+        out.print(result);
+        out.flush();
+        out.close();
     }
 
 }
