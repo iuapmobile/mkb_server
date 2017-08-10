@@ -26,6 +26,7 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.turbot.MKBHttpClient;
 
+//develop
 public class test {
     // public static void main1(String[] args) throws IOException {
     //
@@ -51,12 +52,12 @@ public class test {
         list.add("用户如何填已有的表单？PC端.");
         list.add("你好,用户怎么填已有的表单？PC端。");
         list.add("用户怎么填已有的表单？PC端");
-//        list.add("你好,用户如何填已有的表单，PC端");
-//        list.add("你好,用户如何填PC端已有的表单");
-//        list.add("你好,用户怎么在PC端填写已有的表单");
-//        list.add("你好,用户怎样在PC端填报已有的表单");
-//        list.add("你好,用户怎么在PC端填入已有的表单");
-//        list.add("你好,用户怎么在PC端填已有表单");
+        // list.add("你好,用户如何填已有的表单，PC端");
+        // list.add("你好,用户如何填PC端已有的表单");
+        // list.add("你好,用户怎么在PC端填写已有的表单");
+        // list.add("你好,用户怎样在PC端填报已有的表单");
+        // list.add("你好,用户怎么在PC端填入已有的表单");
+        // list.add("你好,用户怎么在PC端填已有表单");
         list.add("今天天气怎么样");
         list.add("我有一张单据如何保存");
         list.add("填写报销单的时候我怎么才能保证填写正确");
@@ -83,31 +84,31 @@ public class test {
         createMap.put("client_id", "ah7yAv2YGjEyYNZEUdsrVNfG");
         createMap.put("client_secret", "ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj");
         String charset = "gbk";
-        
+
         String tokenURL = "https://aip.baidubce.com/oauth/2.0/token";
-      
+
         String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
         JSONObject obj = JSONObject.parseObject(botRes);
         String access_token = obj.getString("access_token");
         System.out.println("access_token: " + access_token);
 
-        //String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim?access_token=" + access_token;
-        String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token="+ access_token;
-        url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer?access_token="+ access_token;
+        // String url =
+        // "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim?access_token="
+        // + access_token;
+        String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token=" + access_token;
+        url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/lexer?access_token=" + access_token;
 
-        
-        
         try {
-           
-            for (int i = 0; i < list.size(); i=i+1) {
+
+            for (int i = 0; i < list.size(); i = i + 1) {
                 org.apache.commons.httpclient.methods.PostMethod post = new PostMethod(url);
                 RequestEntity re;
-                
+
                 JSONObject json = new JSONObject();
                 json.put("text_1", "你好,用户如何填已有的表单？PC端");
                 json.put("text_2", list.get(i));
-//                json.put("text_1", "浙富股份");
-//                json.put("text_2", "万事通自考网");
+                // json.put("text_1", "浙富股份");
+                // json.put("text_2", "万事通自考网");
                 String str = json.toString();
                 re = new StringRequestEntity(str, "application/json", "gbk");
 
@@ -119,15 +120,11 @@ public class test {
                 client.executeMethod(post);
 
                 String dataStr = getRespMsgByBodyStream(post.getResponseBodyAsStream());
-                
+
                 JSONObject jsonRet = JSONObject.parseObject(dataStr);
-               
+
                 System.out.println(dataStr);
-                
-                
-                
-                
-                
+
             }
         } catch (UnsupportedEncodingException e) {
             // TODO 自动生成的 catch 块
