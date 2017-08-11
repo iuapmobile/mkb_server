@@ -43,7 +43,7 @@ public class QAManager {
             JSONArray array = topQ.getJSONObject("response").getJSONArray("docs");
 
             Float scoreMax = 0f;
-            for (int i = 0, len = array.size(); i < len; i = i + 100) {
+            for (int i = 0, len = array.size(); i < len; i = i+100) {
                 String _q = array.getJSONObject(i).getString("question");
                 String _a = array.getJSONObject(i).getString("answer");
                 String _url = array.getJSONObject(i).getString("url");

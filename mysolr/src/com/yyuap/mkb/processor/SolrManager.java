@@ -258,7 +258,7 @@ public class SolrManager {
 
     }
 
-    public JSONObject query(JSONObject requestParam) throws Exception {
+    public JSONObject query(JSONObject requestParam, Tenant tenant) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
@@ -309,11 +309,41 @@ public class SolrManager {
         String qf = requestParam.getString("qf");
         query.set("defType", "edismax");
         if (qf == null || qf.equals("")) {
-            qf = "product^1 subproduct^1 keywords^100 question^1 answer^0.1 title^1 descript^0.1 text^0.01";
+            // keywords^100 product^1 subproduct^1 title^2
+            String t_qf = tenant.getSolr_qf();
+            if (t_qf == null || t_qf.equals("")) {
+                qf = "product^1 subproduct^1 keywords^100 question^1 answer^0.1 title^1 descript^0.1 text^0.01";
+            } else {
+                qf = t_qf;
+            }
         }
         query.set("qf", qf);
-        // query.addSort("s_kbsrc", ORDER.desc);
-        // query.addSort("s_subproduct", ORDER.desc);
+        //query.set("op", "AND");
+
+        String t_sort = tenant.getSolr_sort();
+        if (t_sort != null && !t_sort.equals("")) {
+            String[] sorts = t_sort.split(",");
+            for (int i = 0, len = sorts.length; i < len; i++) {
+                String[] sortItems = sorts[i].split(" ");
+                if (sortItems.length != 2 || sortItems[0] == null || sortItems[0].equals("") || sortItems[1] == null
+                        || sortItems[1].equals("")) {
+                    continue;
+                } else {
+                    if (sortItems[1].equalsIgnoreCase("desc")) {
+                        query.addSort(sortItems[0], ORDER.desc);
+                    } else if (sortItems[1].equalsIgnoreCase("asc")) {
+                        query.addSort(sortItems[0], ORDER.asc);
+                    } else {
+                        // nothing to do
+                    }
+                }
+            }
+            // query.addSort("s_top", ORDER.desc);
+            // query.addSort("s_kbsrc", ORDER.desc);
+            // query.addSort("s_kbsrc", ORDER.desc);
+        } else {
+            // 未设定排序
+        }
 
         // 参数fq, 给query增加过滤查询条件
         // query.addFilterQuery("id:[0 TO 9]");//id为0-4
@@ -448,13 +478,13 @@ public class SolrManager {
         int num = 10;
         String strNum = requestParam.getString("num");
         if (strNum == null || strNum.equals("")) {
-            num = 10;
+            num = 3;
         } else {
             try {
                 num = Integer.parseInt(strNum);
             } catch (Exception e) {
                 System.out.println("查询参数num为[" + strNum + "]，其值不是一个有效的整数，已默认处理为取前10条");
-                num = 10;
+                num = 3;
             }
         }
         query.setStart(0);

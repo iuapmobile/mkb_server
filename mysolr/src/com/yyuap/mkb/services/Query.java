@@ -95,7 +95,7 @@ public class Query extends HttpServlet {
                 try {
                     String corename = tenant.gettkbcore();
                     SolrManager solrmng = new SolrManager(corename);
-                    JSONObject _ret = solrmng.query(requestParam);// 获取查询结果,，一个新的对象
+                    JSONObject _ret = solrmng.query(requestParam, tenant);// 获取查询结果,，一个新的对象
                     ro.set(_ret);// 导致botResponse需要重新赋值
                 } catch (Exception e) {
                     System.out.println("==========>推荐出错！q=" + q + " tname=" + tenant.gettname() + " apiKey=" + apiKey
@@ -118,11 +118,21 @@ public class Query extends HttpServlet {
             }
 
             // 3、没有唯一答案时，外接bot处理
-            if (uniqueQA == null || (uniqueQA.getString("a").equals("") && uniqueQA.getString("url").equals(""))) {
-                if (bot == null || !bot.equalsIgnoreCase("false")) {
-                    JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
-                    ro.setBotResponse(jsonTu);
+            try {
+                if (uniqueQA == null || (uniqueQA.getString("a").equals("") && uniqueQA.getString("url").equals(""))) {
+                    if (bot == null || !bot.equalsIgnoreCase("false")) {
+                        JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
+                        ro.setBotResponse(jsonTu);
+                    }
                 }
+            } catch (Exception e) {
+                JSONObject botRes = new JSONObject();
+                botRes.put("request_q", q);
+                
+                botRes.put("a", "我还不太明白您的意思");
+               
+               
+                processBotResponse(ro, botRes);
             }
 
         } else {

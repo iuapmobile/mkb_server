@@ -19,6 +19,8 @@ public class Tenant {
     private String tqakbcore;
     private float _simscore = 0.618f;
     private boolean _recommended = true;
+    private String _solr_qf;
+    private String _solr_sort;
 
     public Tenant() {
 
@@ -136,5 +138,21 @@ public class Tenant {
 
     public void setRecommended(boolean value) {
         this._recommended = value;
+    }
+    
+    public String getSolr_qf() {
+        return this._solr_qf;
+    }
+
+    public void setSolr_qf(String value) {
+        this._solr_qf = value;
+    }
+    
+    public String getSolr_sort() {
+        return this._solr_sort;
+    }
+
+    public void setSolr_sort(String value) {
+        this._solr_sort = value;
     }
 }
