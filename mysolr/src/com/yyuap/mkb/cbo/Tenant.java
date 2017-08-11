@@ -16,6 +16,9 @@ public class Tenant {
     private String botKey;
     private String tkbcore;
     private String tname;
+    private String tqakbcore;
+    private float _simscore = 0.618f;
+    private boolean _recommended = true;
 
     public Tenant() {
 
@@ -28,6 +31,7 @@ public class Tenant {
     public void settid(String id) {
         this.tid = id;
     }
+
     public String gettname() {
         return this.tname;
     }
@@ -35,6 +39,7 @@ public class Tenant {
     public void settname(String tname) {
         this.tname = tname;
     }
+
     public String gettusername() {
         return this.tusername;
     }
@@ -91,6 +96,14 @@ public class Tenant {
         this.tkbcore = kbcore;
     }
 
+    public String gettqakbcore() {
+        return this.tqakbcore;
+    }
+
+    public void settqakbcore(String qakbcore) {
+        this.tqakbcore = qakbcore;
+    }
+
     public String getbotKey() {
         return this.botKey;
     }
@@ -107,5 +120,21 @@ public class Tenant {
     public void setdbusername(String username) {
         // TODO Auto-generated method stub
         this.dbusername = username;
+    }
+
+    public float getSimscore() {
+        return this._simscore;
+    }
+
+    public void setSimscore(float value) {
+        this._simscore = value;
+    }
+
+    public boolean getRecommended() {
+        return this._recommended;
+    }
+
+    public void setRecommended(boolean value) {
+        this._recommended = value;
     }
 }

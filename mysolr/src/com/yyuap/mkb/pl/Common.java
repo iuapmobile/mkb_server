@@ -56,10 +56,11 @@ public class Common {
     public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ?";
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
-    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
     public static final String INSERT_QA_SIMILAR_SQL = "insert into qa_similar(id, question, qid, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
 
-    public static final String SELECT_ANSWER_SQL = "select * from qa where trim(question) = ?";
+    public static final String SELECT_ANSWER_BY_Q_SQL = "select * from qa where trim(question) = ?";
+    public static final String SELECT_ANSWER_BY_QS_SQL = "select * from qa_similar where trim(question) = ?";
 
     public static final String DELETE_QA_SQL = "delete from qa where `id` = ?";
     public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";

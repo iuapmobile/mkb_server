@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
@@ -22,6 +23,7 @@ import com.yyuap.mkb.pl.KBDuplicateSQLException;
 import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.processor.QAManager;
+import com.yyuap.mkb.processor.SolrManager;
 
 /**
  * Servlet implementation class addQA
@@ -62,6 +64,8 @@ public class AddQA extends HttpServlet {
 
         String q = request.getParameter("q");
         String a = request.getParameter("a");
+        String url = request.getParameter("url");
+        String kbid = request.getParameter("kbid");// 改问答属于那一个知识库，一个用户可以有多个知识库
         String istop = request.getParameter("istop");// 是否置顶
         if (null == istop || "".equals(istop)) {
             istop = "0";
@@ -80,7 +84,7 @@ public class AddQA extends HttpServlet {
 
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
-        
+
         // 1、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
@@ -97,14 +101,21 @@ public class AddQA extends HttpServlet {
             return;
         }
 
-        // 2、根据租户调用QAManager
-        QAManager qam = new QAManager();
-        String id;
-
         try {
-            id = qam.addQA(libraryPk, q, a, qs, tenant, istop);
+
+            // 2、插入数据库
+            JSONObject json = new JSONObject();
+            json.put("q", q);
+            json.put("a", a);
+            json.put("qs", qs);
+            json.put("url", url);
+            json.put("kbid", kbid);
+            json.put("istop", istop);
+            json.put("libraryPk", libraryPk);
+            QAManager qam = new QAManager();
+            String id = qam.addQA(json, tenant);
             ro.setResponseKV("id", id);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             if (e instanceof KBDuplicateSQLException) {
 
                 KBDuplicateSQLException ex = (KBDuplicateSQLException) e;
@@ -120,6 +131,7 @@ public class AddQA extends HttpServlet {
                 ro.setStatus(ex.getKBExceptionCode());
             } else {
                 ro.setStatus(1000);
+                ro.setReason(e.toString());
                 e.printStackTrace();
             }
         }

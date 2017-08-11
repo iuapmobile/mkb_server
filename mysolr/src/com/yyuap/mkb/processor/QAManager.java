@@ -1,8 +1,12 @@
 package com.yyuap.mkb.processor;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.apache.solr.client.solrj.SolrServerException;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -11,6 +15,7 @@ import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.QaCollection;
+import com.yyuap.mkb.nlp.BaiAdapter;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 
@@ -19,35 +24,108 @@ public class QAManager {
 
     }
 
-    public JSONObject getUniqueAnswer(String q, Tenant tenant) {
+    public JSONObject getUniqueAnswer(String q, Tenant tenant) throws SolrServerException, IOException {
         // TODO Auto-generated method stub
         JSONObject ret = null;
 
         DBManager dbmgr = new DBManager();
         ret = dbmgr.selectUniqueAnswer(q, tenant);
+        if (ret == null || ret.equals("")) {
+            // 1、通过solr查询出前x条，进行相似度处理
+
+            String corename = tenant.gettqakbcore();
+
+            SolrManager solr = new SolrManager(corename);
+            JSONObject requestParam = new JSONObject();
+            requestParam.put("q", q);
+            requestParam.put("num", 3);
+            JSONObject topQ = solr.queryQuestion(requestParam);
+            JSONArray array = topQ.getJSONObject("response").getJSONArray("docs");
+
+            Float scoreMax = 0f;
+            for (int i = 0, len = array.size(); i < len; i = i + 100) {
+                String _q = array.getJSONObject(i).getString("question");
+                String _a = array.getJSONObject(i).getString("answer");
+                String _url = array.getJSONObject(i).getString("url");
+
+                float simscoreDef = 0f;
+                try {
+                    simscoreDef = tenant.getSimscore();
+                } catch (Exception e) {
+                    simscoreDef = 0.618f;
+                }
+                float score = 0f;
+
+                if (_q == null || _q.equals("") || q == null || q.equals("")) {
+
+                } else if (_q.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
+                    score = 2;
+                } else {
+                    BaiAdapter bai = new BaiAdapter();
+                    score = bai.simnet(_q, q);
+                }
+
+                if (score > simscoreDef) {
+                    if (scoreMax < score) {
+                        scoreMax = score;
+                        JSONObject botRes = new JSONObject();
+                        botRes.put("request_q", q);
+                        botRes.put("kb_q", _q);
+                        botRes.put("a", _a);
+                        botRes.put("url", _url);
+                        botRes.put("simscore", score);
+                        botRes.put(q, _a);
+                        ret = botRes;
+                    }
+                } else {
+                    // 知识库中没有答案
+                }
+            }
+
+        }
         return ret;
     }
 
-    public String addQA(String libraryPk, String question, String answer, String[] questions, Tenant tenant,
-            String istop) throws SQLException {
+    public String addQA(JSONObject json, Tenant tenant) throws Exception {
         String id = null;
         KBQA qa = new KBQA();
         qa.setId(UUID.randomUUID().toString());
-        qa.setLibraryPk(libraryPk);
-        qa.setQuestion(question);
-        qa.setAnswer(answer);
-        qa.setIstop(istop);// 是否置顶
+        qa.setLibraryPk(json.getString("libraryPk"));
+        qa.setQuestion(json.getString("q"));
+        qa.setAnswer(json.getString("a"));
+        qa.setIstop(json.getString("istop"));// 是否置顶
+        qa.setUrl(json.getString("url"));// 是否置顶
+        qa.setKbid(json.getString("kbid"));// 是否置顶
 
+        String[] questions = (String[]) json.get("qs");
         if (questions != null && questions.length > 0) {
             qa.setQuestions(questions);
         }
 
         DBManager dbmgr = new DBManager();
 
-        id = dbmgr.insertQA(qa, tenant);
-
-        return id;
+        return dbmgr.insertQA(qa, tenant);
     }
+
+    // public String addQA(KBQA kbqa, Tenant tenant) throws Exception {
+    // String id = null;
+    // KBQA qa = new KBQA();
+    // qa.setId(UUID.randomUUID().toString());
+    // qa.setLibraryPk(libraryPk);
+    // qa.setQuestion(question);
+    // qa.setAnswer(answer);
+    // qa.setIstop(istop);// 是否置顶
+    //
+    // //qa.setUrl(url);
+    //
+    // if (questions != null && questions.length > 0) {
+    // qa.setQuestions(questions);
+    // }
+    //
+    // DBManager dbmgr = new DBManager();
+    //
+    // return dbmgr.insertQA(qa, tenant);
+    // }
 
     public JSONObject query(Tenant tenant, String content) {
         JSONObject ret = new JSONObject();

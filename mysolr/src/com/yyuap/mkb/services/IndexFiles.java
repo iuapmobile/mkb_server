@@ -72,7 +72,7 @@ public class IndexFiles extends HttpServlet {
             return;
         }
 
-        SolrManager mgr = new SolrManager();
+        SolrManager mgr = new SolrManager(tenant.gettkbcore());
         if (excelPath != null && !excelPath.equals("")) {
 
             ExcelXReader reader = new ExcelXReader();

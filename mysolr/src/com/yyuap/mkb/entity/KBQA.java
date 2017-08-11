@@ -25,9 +25,12 @@ public class KBQA extends KBEntity {
     private String[] questions = null;
     private String libraryPk = null;
     private ArrayList<KBQS> qs;
-    
-    private String istop="0";//是否置顶
-    private String settoptime = null;//置顶时间
+
+    private String istop = "0";// 是否置顶
+    private String settoptime = null;// 置顶时间
+    private float simscore = -1;
+    private String url = "";// answer可能是一个url
+    private String kbid = "";// 改问答属于那一个知识库（id）
 
     public String getId() {
         return id;
@@ -89,6 +92,8 @@ public class KBQA extends KBEntity {
         json.put("updateTime", this.getUpdateTime());
         json.put("isstop", this.getIstop());
         json.put("settoptime", this.getSettoptime());
+        json.put("simscore", this.getSimscore());
+
         return json;
     }
 
@@ -100,24 +105,49 @@ public class KBQA extends KBEntity {
         this.libraryPk = libraryPk;
     }
 
-	public String getIstop() {
-		return istop;
-	}
+    public String getIstop() {
+        return istop;
+    }
 
-	public void setIstop(String istop) {
-		this.istop = istop;
-	}
+    public void setIstop(String istop) {
+        this.istop = istop;
+    }
 
-	public String getSettoptime() {
-		return settoptime;
-	}
+    public String getSettoptime() {
+        return settoptime;
+    }
 
-	public void setSettoptime(String settoptime) {
-		this.settoptime = settoptime;
-	}
+    public void setSettoptime(String settoptime) {
+        this.settoptime = settoptime;
+    }
 
-	
+    public float getSimscore() {
+
+        return this.simscore;
+    }
+
+    public void setSimscore(float value) {
+
+        this.simscore = value;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getKbid() {
+
+        return this.kbid;
+    }
+
+    public void setKbid(String kbid) {
+        this.kbid = kbid;
+    }
+
     
-    
-    
+
 }

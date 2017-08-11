@@ -39,7 +39,7 @@ public class AddDoc extends HttpServlet {
             throws ServletException, IOException {
         // TODO Auto-generated method stub
         request.setCharacterEncoding("UTF-8");
-        SolrManager solr = new SolrManager();
+
         try {
             String apiKey = request.getParameter("apiKey");
 
@@ -76,6 +76,7 @@ public class AddDoc extends HttpServlet {
             boolean success = saveData2DB.addKBIndex(kbindex, tenant);
 
             if (success) {
+                SolrManager solr = new SolrManager(tenant.gettkbcore());
                 solr.addDoc(kbindex);
             }
 

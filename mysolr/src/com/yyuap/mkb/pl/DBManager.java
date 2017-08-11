@@ -21,6 +21,7 @@ import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.fileUtil.ExcelReader;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
+import com.yyuap.mkb.processor.SolrManager;
 
 /**
  * @author gct
@@ -87,7 +88,7 @@ public class DBManager {
         return false;
     }
 
-    public int insertQAFromExcel(String path, Tenant tenant) throws IOException, SQLException {
+    public int insertQAFromExcel(String path, Tenant tenant) throws Exception {
         // TODO Auto-generated method stub
         List<KBQA> list = new ArrayList<KBQA>();
         if (path.endsWith("xlsx")) {
@@ -112,8 +113,9 @@ public class DBManager {
         return num;
     }
 
-    public String insertQA(KBQA qa, Tenant tenant) throws KBDuplicateSQLException, SQLException {
-        // TODO Auto-generated method stub
+    public String insertQA(KBQA qa, Tenant tenant) throws Exception {
+        String ret = null;
+
         try {
             if (qa == null) {
                 return null;
@@ -123,18 +125,27 @@ public class DBManager {
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
             // 2、检查是否已经存在相同的q和a
-
             ArrayList<KBQA> list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
             if (list.size() == 0) {
-                // 2.1 问答
-                String idd = "";
+                // 2.1 插入问答
                 String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
                 qa.setId(id);
-                // 2.2 相似问法
+                ret = id;
+
+                // 成功插入数据库后开始增加solr索引
+                SolrManager solr = new SolrManager(tenant.gettkbcore());
+                solr.addQADoc(qa);
+
+                // 2.2 插入相似问法
+                ArrayList<String> qs_ids = new ArrayList<String>();
                 if (qa.getQuestions() != null) {
-                    DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, dbconf);
+                    qs_ids = DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, dbconf);
+
+                    // 成功插入数据库后开始增加solr索引
+                    solr.addQASimilarDoc(qa);
                 }
-                return id;
+
+                return ret;
             } else {
                 System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
                         + qa.getAnswer() + ", and has been throw away!");
@@ -145,7 +156,7 @@ public class DBManager {
                 e.getExtData().put("id", id);
                 throw e;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             if (e instanceof KBDuplicateSQLException) {
                 throw (KBDuplicateSQLException) e;
             } else if (e instanceof KBInsertSQLException) {
@@ -163,7 +174,7 @@ public class DBManager {
 
         ArrayList<JSONObject> list = new ArrayList<JSONObject>();
         try {
-            list = DbUtil.selectAnswer(Common.SELECT_ANSWER_SQL, q, dbconf);
+            list = DbUtil.selectAnswer(Common.SELECT_ANSWER_BY_Q_SQL, q, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -172,14 +183,13 @@ public class DBManager {
             try {
                 list = DbUtil.selectAnswerSimilar(Common.SELECT_QA_BY_ID_SQL, q, dbconf);
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("selectUniqueAnswer方法异常，取相似问题时，出现异常");
             }
             if (list.size() == 1) {
                 ret = list.get(0);
             }
-        } else if (list.size() == 1) {
-            ret = list.get(0);
+        } else if (list.size() >= 1) {
+            ret = list.get(0);// 取第一个
         }
 
         return ret;
@@ -251,8 +261,9 @@ public class DBManager {
         try {
             id = DbUtil.insertQA_TJ(Common.INSERT_QA_TJ_SQL, qa, dbconf);
 
-            System.out.println("+++++记录查询 : question = " + qa.getQuestion() + " by tname="+tenant.gettname()+", tusername=" + tenant.gettusername()
-                    + ", apiKey=" + tenant.gettAPIKey());
+            System.out.println("+++++记录查询[" + tenant.gettname() + "] : question = " + qa.getQuestion() + " answer = "
+                    + qa.getAnswer() + " simscore = " + qa.getSimscore() + " by tname=" + tenant.gettname()
+                    + ", tusername=" + tenant.gettusername() + ", apiKey=" + tenant.gettAPIKey());
 
             return id;
         } catch (SQLException e) {
@@ -299,10 +310,17 @@ public class DBManager {
             if (!success) {
                 throw new KBDelSQLException("删除id[" + id + "]失败!");
             }
+            // 成功删除数据库后开始删除solr索引
+            SolrManager solr = new SolrManager(tenant.gettkbcore());
+            solr.delDocById(id);
+
             boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, id, dbconf);
             if (!success2) {
                 throw new KBDelSQLException("级联删除id[" + id + "]的相似问法时失败!");
             }
+
+            // 成功删除数据库后开始删除solr索引
+            solr.delDocByQid(id);
             return success && success2;
         } catch (SQLException e) {
             if (e instanceof KBDelSQLException) {
@@ -321,9 +339,9 @@ public class DBManager {
 
         boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, kbqa.getId(), dbconf);
 
-        boolean success3 = DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, kbqa, dbconf);
+        ArrayList<String> ids = DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, kbqa, dbconf);
 
-        return success && success2 && success3;
+        return success && success2 && ids.size() > 0;
     }
 
     // 更新成功后，返回更新的qeustion id
