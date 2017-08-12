@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.solr.client.solrj.SolrServerException;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.Tenant;
@@ -231,28 +233,49 @@ public class DBManager {
 
     public JSONObject selectQAById(Tenant tenant, String id) {
         // TODO Auto-generated method stub
+//        JSONObject json = null;
+//        // 1、根据租户获取DBconfig
+//        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+//        String[] arrayParams = { id };
+//
+//        // 2、
+//        json = DbUtil.selectQAById(Common.SELECT_QA_BY_ID_SQL, arrayParams, dbconf);
+//
+//        return json;
+    	
+    	 // 成功删除数据库后开始删除solr索引
+        SolrManager solr = new SolrManager(tenant.gettkbcore());
         JSONObject json = null;
-        // 1、根据租户获取DBconfig
-        DBConfig dbconf = this.getDBConfigByTenant(tenant);
-        String[] arrayParams = { id };
-
-        // 2、
-        json = DbUtil.selectQAById(Common.SELECT_QA_BY_ID_SQL, arrayParams, dbconf);
-
+        try {
+			json = solr.selectQAById(tenant,id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return json;
     }
 
     public JSONArray selectSimilarQByQid(Tenant tenant, String id) {
-        // TODO Auto-generated method stub
-        JSONArray array = null;
-
-        // 1、根据租户获取DBconfig
-        DBConfig dbconf = this.getDBConfigByTenant(tenant);
-
-        // 2、
-        array = DbUtil.selectSimilarQByQid(Common.SELECT_QA_SIMILAR_BY_ID_SQL, new String[] { id }, dbconf);
-
-        return array;
+//        // TODO Auto-generated method stub
+//        JSONArray array = null;
+//
+//        // 1、根据租户获取DBconfig
+//        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+//
+//        // 2、
+//        array = DbUtil.selectSimilarQByQid(Common.SELECT_QA_SIMILAR_BY_ID_SQL, new String[] { id }, dbconf);
+//
+//        return array;
+    	
+    	 SolrManager solr = new SolrManager(tenant.gettkbcore());
+    	 JSONArray array = null;
+         try {
+        	 array = solr.selectSimilarQByQid(tenant,id);
+ 		} catch (Exception e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+         return array;
     }
 
     public String insertQA_tj(KBQA qa, Tenant tenant) {
@@ -310,6 +333,13 @@ public class DBManager {
             if (!success) {
                 throw new KBDelSQLException("删除id[" + id + "]失败!");
             }
+            
+            boolean success3 = DbUtil.delQA("delete from qa_similar where id = ?", id, dbconf);
+
+            if (!success3) {
+                throw new KBDelSQLException("删除id[" + id + "]失败!");
+            }
+            
             // 成功删除数据库后开始删除solr索引
             SolrManager solr = new SolrManager(tenant.gettkbcore());
             solr.delDocById(id);
@@ -321,7 +351,7 @@ public class DBManager {
 
             // 成功删除数据库后开始删除solr索引
             solr.delDocByQid(id);
-            return success && success2;
+            return success && success2&&success3;
         } catch (SQLException e) {
             if (e instanceof KBDelSQLException) {
                 throw (KBDelSQLException) e;
@@ -334,13 +364,47 @@ public class DBManager {
     public boolean updateQA(KBQA kbqa, Tenant tenant) throws SQLException {
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
-
+        // 成功插入数据库后开始增加solr索引
+        SolrManager solr = new SolrManager(tenant.gettkbcore());
         boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
+        if(success){
+            try {
+				solr.addQADoc(kbqa);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 
         boolean success2 = DbUtil.delQA(Common.DELETE_QA_SIMILAR_SQL, kbqa.getId(), dbconf);
+        if(success2){
+        	try {
+				solr.delQASimilarDoc(kbqa);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 
         ArrayList<String> ids = DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, kbqa, dbconf);
-
+        if(ids.size() > 0){
+        	 // 成功插入数据库后开始增加solr索引
+            try {
+				solr.addQASimilarDoc(kbqa);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
         return success && success2 && ids.size() > 0;
     }
 
@@ -348,7 +412,8 @@ public class DBManager {
     public String updateQAQS(KBQA kbqa, Tenant tenant) throws SQLException {
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
-
+        // 成功插入数据库后开始增加solr索引
+        SolrManager solr = new SolrManager(tenant.gettkbcore());
         // 后期改成事务处理
         boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
         boolean success1 = false;
@@ -363,12 +428,44 @@ public class DBManager {
                 switch (status) {
                 case "added":
                     id = DbUtil.insertQS(Common.INSERT_QA_SIMILAR_SQL, qs, dbconf);
+                    qs.setId(id);
+                    // 成功插入数据库后开始增加solr索引
+                    try {
+						solr.addQASimilarDoc(kbqa);
+						
+					} catch (SolrServerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     break;
                 case "modified":
                     success2 = DbUtil.updateQS(Common.UPDATE_QA_SIMILAR_SQL, qs, dbconf);
+                    // 成功插入数据库后开始增加solr索引
+                    try {
+						solr.updateQASimilarDoc(kbqa);
+					} catch (SolrServerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     break;
                 case "deleted":
                     success3 = DbUtil.delQS(Common.DELETE_QS_BY_ID_SQL, qs, dbconf);
+                    // 删除
+                    try {
+						solr.delQASimilarDoc(kbqa);
+					} catch (SolrServerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     break;
                 default:
                     break;

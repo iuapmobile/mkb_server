@@ -966,6 +966,7 @@ public class DbUtil {
             if (!flag) {
                 System.out.println("update data succeed!");
                 id = qs.getId();
+                qs.setUpdateTime(datetime);
                 ret = true;
             }
         } catch (Exception e) {
@@ -1011,6 +1012,8 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
+                qs.setCreateTime(datetime);
+                qs.setUpdateTime(datetime);
                 System.out.println("insert qa_similar row : question = " + qs.getQuestion() + " succeed!");
             }
         } catch (Exception e) {
