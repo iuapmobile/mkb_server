@@ -416,6 +416,17 @@ public class DBManager {
         SolrManager solr = new SolrManager(tenant.gettkbcore());
         // 后期改成事务处理
         boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
+        if(success){
+        	try {
+				solr.addQADoc(kbqa);
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
         boolean success1 = false;
         boolean success2 = false;
         boolean success3 = false;
@@ -431,7 +442,7 @@ public class DBManager {
                     qs.setId(id);
                     // 成功插入数据库后开始增加solr索引
                     try {
-						solr.addQASimilarDoc(kbqa);
+						solr.addQASimilarDoc(kbqa,qs);
 						
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
@@ -445,7 +456,7 @@ public class DBManager {
                     success2 = DbUtil.updateQS(Common.UPDATE_QA_SIMILAR_SQL, qs, dbconf);
                     // 成功插入数据库后开始增加solr索引
                     try {
-						solr.updateQASimilarDoc(kbqa);
+						solr.updateQASimilarDoc(kbqa,qs);
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -458,7 +469,7 @@ public class DBManager {
                     success3 = DbUtil.delQS(Common.DELETE_QS_BY_ID_SQL, qs, dbconf);
                     // 删除
                     try {
-						solr.delQASimilarDoc(kbqa);
+						solr.delQASimilarDoc(kbqa,qs);
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

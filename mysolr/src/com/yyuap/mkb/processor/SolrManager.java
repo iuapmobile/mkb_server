@@ -329,6 +329,33 @@ public class SolrManager {
 
     }
     
+    public void addQASimilarDoc(KBQA kbqa,KBQS kbqs) throws SolrServerException, IOException {
+            String qid = kbqa.getId();
+            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+            // String q = kbqa.getQuestion();
+            String a = kbqa.getAnswer();
+            String qs = kbqs.getQuestion();
+            String url = kbqa.getUrl();
+            String kbid = kbqa.getKbid();
+            String updateTime = kbqs.getUpdateTime();
+            String createTime = kbqs.getCreateTime();
+
+            KBIndex kbindex = new KBIndex();
+            kbindex.setId(id);
+            kbindex.setTitle(qs);
+            kbindex.setDescript(a);
+            kbindex.setQuestion(qs);
+            kbindex.setAnser(a);
+            kbindex.setUrl(url);
+            kbindex.setQid(qid);
+            kbindex.setKbid(kbid);
+            kbindex.setUpdateTime(updateTime);
+            kbindex.setCreateTime(createTime);
+
+            this.addDoc(kbindex);
+
+    }
+    
     public void updateQASimilarDoc(KBQA kbqa) throws SolrServerException, IOException {
         // String[] qs = kbqa.getQuestions();
         ArrayList<KBQS> kbqsList = kbqa.getQS();
@@ -364,6 +391,40 @@ public class SolrManager {
 
             this.updateDoc(kbindex);
         }
+
+    }
+    
+    public void updateQASimilarDoc(KBQA kbqa,KBQS kbqs) throws SolrServerException, IOException {
+        // String[] qs = kbqa.getQuestions();
+            String qid = kbqa.getId();
+            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+            // String q = kbqa.getQuestion();
+            String a = kbqa.getAnswer();
+            String qs = kbqs.getQuestion();
+            String url = kbqa.getUrl();
+            String kbid = kbqa.getKbid();
+            String updateTime = kbqs.getUpdateTime();
+            String createTime = kbqs.getCreateTime();
+
+            KBIndex kbindex = new KBIndex();
+            kbindex.setId(id);
+            kbindex.setTitle(qs);
+            kbindex.setDescript(a);
+            kbindex.setQuestion(qs);
+            kbindex.setAnser(a);
+            kbindex.setUrl(url);
+            kbindex.setQid(qid);
+            kbindex.setKbid(kbid);
+            kbindex.setUpdateTime(updateTime);
+            kbindex.setCreateTime(createTime);
+
+            this.updateDoc(kbindex);
+
+    }
+    
+    public void delQASimilarDoc(KBQA kbqa,KBQS kbqs) throws SolrServerException, IOException {
+            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+            this.delDocById(id);
 
     }
     
