@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.nlp.BaiAdapter;
+import com.yyuap.mkb.processor.IntentPredictionManager;
+import com.yyuap.mkb.processor.MKBSessionManager;
 import com.yyuap.mkb.processor.QAManager;
 import com.yyuap.mkb.processor.SolrManager;
 import com.yyuap.mkb.services.util.MKBRequestProcessor;
@@ -67,6 +71,7 @@ public class Query extends HttpServlet {
         }
 
         String q = requestParam.getString("q");
+        String q_old = requestParam.getString("q");
         String bot = requestParam.getString("bot");
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
@@ -76,6 +81,15 @@ public class Query extends HttpServlet {
         CBOManager api = new CBOManager();
         try {
             tenant = api.getTenantInfo(apiKey);
+
+            MKBSessionManager sessionMgr = new MKBSessionManager();
+            if (tenant.getUseSynonym()) {
+                String new_q = sessionMgr.findKeywordFromSynonym(q, request, tenant);
+                if (new_q != null && !new_q.equals("")) {
+                    q = new_q;
+                    requestParam.put("q", q);
+                }
+            }
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -88,6 +102,27 @@ public class Query extends HttpServlet {
 
         if (tenant != null) {
             JSONObject uniqueQA = null;
+
+            // 0\预测
+            try {
+                JSONObject botConfig = tenant.getBotSkillConfigJSON();
+                if (botConfig != null) {
+                    // {"skills": {"intent": true,"prediction": true}}
+                    JSONObject skills = botConfig.getJSONObject("skills");
+                    boolean prediction = skills.getBooleanValue("prediction");
+                    if (prediction) {
+                        IntentPredictionManager intentMgr = new IntentPredictionManager();
+                        JSONObject obj = intentMgr.predictIntent(q);
+                        if (obj != null) {
+                            ro.setBotResponse(obj);
+                            response.getWriter().write(ro.getResutlString());
+                            return;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // 1、是否推荐，启用搜索引擎进行推荐
             boolean recommended = tenant.getRecommended();
@@ -128,10 +163,9 @@ public class Query extends HttpServlet {
             } catch (Exception e) {
                 JSONObject botRes = new JSONObject();
                 botRes.put("request_q", q);
-                
+
                 botRes.put("a", "我还不太明白您的意思");
-               
-               
+
                 processBotResponse(ro, botRes);
             }
 
@@ -147,7 +181,7 @@ public class Query extends HttpServlet {
         // 5、添加q的统计
         QAManager qamgr = new QAManager();
         String a = ro.getBotResponse().getString("text");
-        String q_tj_id = qamgr.addTongji(q, a, tenant);
+        String q_tj_id = qamgr.addTongji(q_old, a, tenant);
         JSONObject resH = ro.getResponseHeader();
         JSONObject _resH = ro.getResponseHeader();
         JSONObject param = resH.getJSONObject("param");

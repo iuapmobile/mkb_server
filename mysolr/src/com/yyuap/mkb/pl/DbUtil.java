@@ -24,6 +24,7 @@ import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
+import com.yyuap.mkb.entity.KBSynonym;
 import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.processor.SolrManager;
 
@@ -1354,5 +1355,51 @@ public class DbUtil {
 
     public static String concat2SqlIn(Object[] objs) {
         return "'" + concat("','", objs) + "'";
+    }
+
+    public static ArrayList<KBSynonym> selectSynonym(String selectSynonymSql, String[] strings, DBConfig dbconf) {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<KBSynonym> list = new ArrayList<KBSynonym>();
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+
+            ps = conn.prepareStatement(selectSynonymSql);
+            // ps.setString(1, "%" + content + "%");
+            // ps.setString(2, "%" + content + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                KBSynonym kbs = new KBSynonym();
+                kbs.setId(rs.getString("id"));
+                kbs.setKeyword(rs.getString("keyword"));
+                kbs.setSynonym(rs.getString("synonym"));
+
+                list.add(kbs);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        return list;
     }
 }

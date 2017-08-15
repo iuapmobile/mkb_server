@@ -20,6 +20,7 @@ import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
+import com.yyuap.mkb.entity.KBSynonym;
 import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.fileUtil.ExcelReader;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
@@ -603,6 +604,19 @@ public class DBManager {
                 throw e;
             }
         }
+    }
+
+    public ArrayList<KBSynonym> selectSynonym(Tenant tenant) {
+
+        ArrayList<KBSynonym> ret = null;
+
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、
+        ret = DbUtil.selectSynonym(Common.SELECT_SYNONYM_SQL, new String[] { tenant.gettAPIKey() }, dbconf);
+
+        return ret;
     }
 
 }

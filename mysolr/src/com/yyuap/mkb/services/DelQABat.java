@@ -66,7 +66,7 @@ public class DelQABat extends HttpServlet {
         }
 
         //Object _ids = requestParam.get("ids");
-        String[] _ids = request.getParameterValues("ids[]");
+        String[] _ids = request.getParameterValues("ids");
         if (_ids == null || _ids.equals("")) {
             return;
         }

@@ -217,9 +217,9 @@ public class SolrManager {
         // 5.提交
         solr.commit();
     }
-    
+
     public void updateDoc(KBIndex kbindex) throws SolrServerException, IOException {
-    	
+
         String id = kbindex.getId();
         String title = kbindex.getTitle();
         String descript = kbindex.getDescript();
@@ -239,7 +239,6 @@ public class SolrManager {
 
         // 2.创建一文档对象
         SolrInputDocument document = new SolrInputDocument();
-        
 
         // 3.向文档对象中添加域 （先定义后使用）
         document.addField("id", id);
@@ -253,11 +252,11 @@ public class SolrManager {
         document.addField("text", text);
         document.addField("qid", qid);
         document.addField("kbid", kbid);
-        
+
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
-        
-        document.addField("_version_",1);
+
+        document.addField("_version_", 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long times = System.currentTimeMillis();
@@ -274,7 +273,6 @@ public class SolrManager {
         // 5.提交
         solr.commit();
     }
-    
 
     public void addQADoc(KBQA kbqa) throws SolrServerException, IOException {
         KBIndex kbindex = new KBIndex();
@@ -300,8 +298,8 @@ public class SolrManager {
             KBQS kbqs = kbqsList.get(i);
             if (kbqs == null)
                 continue;
-            if(kbqs.getId()==null)
-            	continue;
+            if (kbqs.getId() == null)
+                continue;
             String qid = kbqa.getId();
             String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
             // String q = kbqa.getQuestion();
@@ -328,44 +326,44 @@ public class SolrManager {
         }
 
     }
-    
-    public void addQASimilarDoc(KBQA kbqa,KBQS kbqs) throws SolrServerException, IOException {
-            String qid = kbqa.getId();
-            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
-            // String q = kbqa.getQuestion();
-            String a = kbqa.getAnswer();
-            String qs = kbqs.getQuestion();
-            String url = kbqa.getUrl();
-            String kbid = kbqa.getKbid();
-            String updateTime = kbqs.getUpdateTime();
-            String createTime = kbqs.getCreateTime();
 
-            KBIndex kbindex = new KBIndex();
-            kbindex.setId(id);
-            kbindex.setTitle(qs);
-            kbindex.setDescript(a);
-            kbindex.setQuestion(qs);
-            kbindex.setAnser(a);
-            kbindex.setUrl(url);
-            kbindex.setQid(qid);
-            kbindex.setKbid(kbid);
-            kbindex.setUpdateTime(updateTime);
-            kbindex.setCreateTime(createTime);
+    public void addQASimilarDoc(KBQA kbqa, KBQS kbqs) throws SolrServerException, IOException {
+        String qid = kbqa.getId();
+        String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+        // String q = kbqa.getQuestion();
+        String a = kbqa.getAnswer();
+        String qs = kbqs.getQuestion();
+        String url = kbqa.getUrl();
+        String kbid = kbqa.getKbid();
+        String updateTime = kbqs.getUpdateTime();
+        String createTime = kbqs.getCreateTime();
 
-            this.addDoc(kbindex);
+        KBIndex kbindex = new KBIndex();
+        kbindex.setId(id);
+        kbindex.setTitle(qs);
+        kbindex.setDescript(a);
+        kbindex.setQuestion(qs);
+        kbindex.setAnser(a);
+        kbindex.setUrl(url);
+        kbindex.setQid(qid);
+        kbindex.setKbid(kbid);
+        kbindex.setUpdateTime(updateTime);
+        kbindex.setCreateTime(createTime);
+
+        this.addDoc(kbindex);
 
     }
-    
+
     public void updateQASimilarDoc(KBQA kbqa) throws SolrServerException, IOException {
         // String[] qs = kbqa.getQuestions();
         ArrayList<KBQS> kbqsList = kbqa.getQS();
-        
+
         for (int i = 0, len = kbqsList.size(); i < len; i++) {
             KBQS kbqs = kbqsList.get(i);
             if (kbqs == null)
                 continue;
-            if(kbqs.getStatus()==null){
-            	continue;
+            if (kbqs.getStatus() == null) {
+                continue;
             }
             String qid = kbqa.getId();
             String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
@@ -393,51 +391,51 @@ public class SolrManager {
         }
 
     }
-    
-    public void updateQASimilarDoc(KBQA kbqa,KBQS kbqs) throws SolrServerException, IOException {
+
+    public void updateQASimilarDoc(KBQA kbqa, KBQS kbqs) throws SolrServerException, IOException {
         // String[] qs = kbqa.getQuestions();
-            String qid = kbqa.getId();
-            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
-            // String q = kbqa.getQuestion();
-            String a = kbqa.getAnswer();
-            String qs = kbqs.getQuestion();
-            String url = kbqa.getUrl();
-            String kbid = kbqa.getKbid();
-            String updateTime = kbqs.getUpdateTime();
-            String createTime = kbqs.getCreateTime();
+        String qid = kbqa.getId();
+        String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+        // String q = kbqa.getQuestion();
+        String a = kbqa.getAnswer();
+        String qs = kbqs.getQuestion();
+        String url = kbqa.getUrl();
+        String kbid = kbqa.getKbid();
+        String updateTime = kbqs.getUpdateTime();
+        String createTime = kbqs.getCreateTime();
 
-            KBIndex kbindex = new KBIndex();
-            kbindex.setId(id);
-            kbindex.setTitle(qs);
-            kbindex.setDescript(a);
-            kbindex.setQuestion(qs);
-            kbindex.setAnser(a);
-            kbindex.setUrl(url);
-            kbindex.setQid(qid);
-            kbindex.setKbid(kbid);
-            kbindex.setUpdateTime(updateTime);
-            kbindex.setCreateTime(createTime);
+        KBIndex kbindex = new KBIndex();
+        kbindex.setId(id);
+        kbindex.setTitle(qs);
+        kbindex.setDescript(a);
+        kbindex.setQuestion(qs);
+        kbindex.setAnser(a);
+        kbindex.setUrl(url);
+        kbindex.setQid(qid);
+        kbindex.setKbid(kbid);
+        kbindex.setUpdateTime(updateTime);
+        kbindex.setCreateTime(createTime);
 
-            this.updateDoc(kbindex);
-
-    }
-    
-    public void delQASimilarDoc(KBQA kbqa,KBQS kbqs) throws SolrServerException, IOException {
-            String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
-            this.delDocById(id);
+        this.updateDoc(kbindex);
 
     }
-    
+
+    public void delQASimilarDoc(KBQA kbqa, KBQS kbqs) throws SolrServerException, IOException {
+        String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
+        this.delDocById(id);
+
+    }
+
     public void delQASimilarDoc(KBQA kbqa) throws SolrServerException, IOException {
         // String[] qs = kbqa.getQuestions();
         ArrayList<KBQS> kbqsList = kbqa.getQS();
-        
+
         for (int i = 0, len = kbqsList.size(); i < len; i++) {
             KBQS kbqs = kbqsList.get(i);
             if (kbqs == null)
                 continue;
-            if(kbqs.getStatus()==null){
-            	continue;
+            if (kbqs.getStatus() == null) {
+                continue;
             }
             String id = kbqs.getId();// 必须和数据库种对id相同，以便删除
             this.delDocById(id);
@@ -493,44 +491,18 @@ public class SolrManager {
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
-        String qf = requestParam.getString("qf");
-        query.set("defType", "edismax");
-        if (qf == null || qf.equals("")) {
-            // keywords^100 product^1 subproduct^1 title^2
-            String t_qf = tenant.getSolr_qf();
-            if (t_qf == null || t_qf.equals("")) {
-                qf = "product^1 subproduct^1 keywords^100 question^1 answer^0.1 title^1 descript^0.1 text^0.01";
-            } else {
-                qf = t_qf;
-            }
-        }
-        query.set("qf", qf);
-        //query.set("op", "AND");
 
-        String t_sort = tenant.getSolr_sort();
-        if (t_sort != null && !t_sort.equals("")) {
-            String[] sorts = t_sort.split(",");
-            for (int i = 0, len = sorts.length; i < len; i++) {
-                String[] sortItems = sorts[i].split(" ");
-                if (sortItems.length != 2 || sortItems[0] == null || sortItems[0].equals("") || sortItems[1] == null
-                        || sortItems[1].equals("")) {
-                    continue;
-                } else {
-                    if (sortItems[1].equalsIgnoreCase("desc")) {
-                        query.addSort(sortItems[0], ORDER.desc);
-                    } else if (sortItems[1].equalsIgnoreCase("asc")) {
-                        query.addSort(sortItems[0], ORDER.asc);
-                    } else {
-                        // nothing to do
-                    }
-                }
-            }
-            // query.addSort("s_top", ORDER.desc);
-            // query.addSort("s_kbsrc", ORDER.desc);
-            // query.addSort("s_kbsrc", ORDER.desc);
-        } else {
-            // 未设定排序
-        }
+        query.set("defType", "edismax");
+
+        // query.set("op", "AND");
+
+        solrQueryRules rules = new solrQueryRules();
+
+        String qf = requestParam.getString("qf");
+        rules.setFQ(query, q, qf, tenant);
+
+        rules.addFilterQuery(query, q, tenant);
+        rules.addSort(query, q, tenant);
 
         // 参数fq, 给query增加过滤查询条件
         // query.addFilterQuery("id:[0 TO 9]");//id为0-4
@@ -873,27 +845,27 @@ public class SolrManager {
 
         return num;
     }
-    
+
     public JSONArray selectSimilarQByQid(Tenant tenant, String id) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
 
-        query.setQuery("qid:"+id);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
+        query.setQuery("qid:" + id);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来
+                                    // ，这个作用适用于联想查询
         QueryResponse response = solrServer.query(query);
 
         SolrDocumentList solrDocumentList = response.getResults();
         // System.out.println("通过文档集合获取查询的结果");
 
-        
         JSONArray array = new JSONArray();
         // 遍历列表
         for (SolrDocument doc : solrDocumentList) {
-        	JSONObject json = new JSONObject();
-        	json.put("id", doc.get("id"));
-        	json.put("question", doc.get("question"));
-        	json.put("qid", doc.get("qid"));
-        	array.add(json);
+            JSONObject json = new JSONObject();
+            json.put("id", doc.get("id"));
+            json.put("question", doc.get("question"));
+            json.put("qid", doc.get("qid"));
+            array.add(json);
         }
         return array;
         /*
@@ -905,13 +877,14 @@ public class SolrManager {
          */
 
     }
-    
+
     public JSONObject selectQAById(Tenant tenant, String id) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
 
-        query.setQuery("id:"+id);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
+        query.setQuery("id:" + id);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来
+                                   // ，这个作用适用于联想查询
         QueryResponse response = solrServer.query(query);
 
         SolrDocumentList solrDocumentList = response.getResults();
@@ -921,9 +894,9 @@ public class SolrManager {
 
         // 遍历列表
         for (SolrDocument doc : solrDocumentList) {
-        	json.put("id", doc.get("id"));
-        	json.put("question", doc.get("question"));
-        	json.put("answer", doc.get("answer"));
+            json.put("id", doc.get("id"));
+            json.put("question", doc.get("question"));
+            json.put("answer", doc.get("answer"));
         }
         return json;
         /*
@@ -935,7 +908,7 @@ public class SolrManager {
          */
 
     }
-    
+
     public JSONObject queryAllAndByContent(JSONObject requestParam, Tenant tenant) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
@@ -977,13 +950,12 @@ public class SolrManager {
         }
 
         if (q == null) {
-        	q = "*:*";
+            q = "*:*";
         } else if (q.equals("")) {
-        	q = "*:*";
+            q = "*:*";
         }
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
-        
         // 2、处理权重
         String qf = requestParam.getString("qf");
         query.set("defType", "edismax");
@@ -997,7 +969,7 @@ public class SolrManager {
             }
         }
         query.set("qf", qf);
-        //query.set("op", "AND");
+        // query.set("op", "AND");
 
         String t_sort = tenant.getSolr_sort();
         if (t_sort != null && !t_sort.equals("")) {
@@ -1123,16 +1095,17 @@ public class SolrManager {
      * 根据id从索引库删除文档
      */
     public static void deleteDocumentById() throws Exception {
-//        // 选择具体的某一个solr core
-//        HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/solr/" + "mycore");
-//        // 删除文档
-//        server.deleteById("222");
-//        // 删除所有的索引
-//        // solr.deleteByQuery("*:*");
-//        // 提交修改
-//        server.commit();
-//        server.close();
-        
+        // // 选择具体的某一个solr core
+        // HttpSolrClient server = new
+        // HttpSolrClient("http://127.0.0.1:8080/solr/" + "mycore");
+        // // 删除文档
+        // server.deleteById("222");
+        // // 删除所有的索引
+        // // solr.deleteByQuery("*:*");
+        // // 提交修改
+        // server.commit();
+        // server.close();
+
         try {
             HttpSolrClient client = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
             client.deleteByQuery("qid:" + "715eea41-b712-4592-af0c-bcb34b6c1d69");
@@ -1143,40 +1116,40 @@ public class SolrManager {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * 根据id从索引库查询文档
      */
     public static void queryDocumentById() throws Exception {
         // 选择具体的某一个solr core
-        HttpSolrClient  server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
+        HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrQuery query = new SolrQuery();
-//        query.set("q", "*:*");
+        // query.set("q", "*:*");
         query.setQuery("question:pjf OR answer:嘟嘟");
-        QueryResponse response =  server.query(query);
+        QueryResponse response = server.query(query);
         SolrDocumentList solrDocumentList = response.getResults();
     }
-    
+
     /**
      * 根据id从索引库更新文档
      */
     public static void updateDocumentById() throws Exception {
         // 选择具体的某一个solr core
-        HttpSolrClient  server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
+        HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrInputDocument doc = new SolrInputDocument();
         doc.addField("id", "715eea41-b712-4592-af0c-bcb34b6c1d69");
-        doc.addField("question","pjf5");
-        doc.addField("title","pjf4");
-        doc.addField("answer","pjf4");
-        doc.addField("descript","pjf4");
-        doc.addField("_version_",1);
+        doc.addField("question", "pjf5");
+        doc.addField("title", "pjf4");
+        doc.addField("answer", "pjf4");
+        doc.addField("descript", "pjf4");
+        doc.addField("_version_", 1);
         server.add(doc);
         server.commit();
     }
 
     public static void main(String[] args) {
         try {
-        	updateDocumentById();
+            updateDocumentById();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
