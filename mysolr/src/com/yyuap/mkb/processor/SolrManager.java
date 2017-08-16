@@ -954,47 +954,16 @@ public class SolrManager {
         } else if (q.equals("")) {
             q = "*:*";
         }
+        q = q + " AND -qid:* ";//*  在solr当中  应该代表 有值  -取反
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
-        String qf = requestParam.getString("qf");
+        String qf = "question^1 answer^0.1";
         query.set("defType", "edismax");
-        if (qf == null || qf.equals("")) {
-            // keywords^100 product^1 subproduct^1 title^2
-            String t_qf = tenant.getSolr_qf();
-            if (t_qf == null || t_qf.equals("")) {
-                qf = "product^1 subproduct^1 keywords^100 question^1 answer^0.1 title^1 descript^0.1 text^0.01";
-            } else {
-                qf = t_qf;
-            }
-        }
         query.set("qf", qf);
         // query.set("op", "AND");
 
-        String t_sort = tenant.getSolr_sort();
-        if (t_sort != null && !t_sort.equals("")) {
-            String[] sorts = t_sort.split(",");
-            for (int i = 0, len = sorts.length; i < len; i++) {
-                String[] sortItems = sorts[i].split(" ");
-                if (sortItems.length != 2 || sortItems[0] == null || sortItems[0].equals("") || sortItems[1] == null
-                        || sortItems[1].equals("")) {
-                    continue;
-                } else {
-                    if (sortItems[1].equalsIgnoreCase("desc")) {
-                        query.addSort(sortItems[0], ORDER.desc);
-                    } else if (sortItems[1].equalsIgnoreCase("asc")) {
-                        query.addSort(sortItems[0], ORDER.asc);
-                    } else {
-                        // nothing to do
-                    }
-                }
-            }
-            // query.addSort("s_top", ORDER.desc);
-            // query.addSort("s_kbsrc", ORDER.desc);
-            // query.addSort("s_kbsrc", ORDER.desc);
-        } else {
-            // 未设定排序
-        }
+        query.addSort("updateTime", ORDER.desc);
 
         // 参数fq, 给query增加过滤查询条件
         // query.addFilterQuery("id:[0 TO 9]");//id为0-4
@@ -1124,8 +1093,8 @@ public class SolrManager {
         // 选择具体的某一个solr core
         HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrQuery query = new SolrQuery();
-        // query.set("q", "*:*");
-        query.setQuery("question:pjf OR answer:嘟嘟");
+        query.set("q", "*:* AND qid:\"\"");
+        //query.setQuery("question:pjf OR answer:嘟嘟");
         QueryResponse response = server.query(query);
         SolrDocumentList solrDocumentList = response.getResults();
     }
@@ -1149,7 +1118,7 @@ public class SolrManager {
 
     public static void main(String[] args) {
         try {
-            updateDocumentById();
+        	queryDocumentById();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
