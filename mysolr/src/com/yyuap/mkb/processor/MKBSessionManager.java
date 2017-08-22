@@ -38,19 +38,25 @@ public class MKBSessionManager {
         return list;
     }
 
-    public String findKeywordFromSynonym(String word, HttpServletRequest request, Tenant tenant) {
+    public String findKeywordFromSynonym(String q, HttpServletRequest request, Tenant tenant) {
         try {
             ArrayList<KBSynonym> list = this.getSynonym(request, tenant);
 
-            boolean has = false;
-            for (KBSynonym kbs : list) {
-                String xxx = kbs.getSynonym();
-                if (xxx.contains(word.trim())) {
-                    String ret = kbs.getKeyword().trim();
-                    return ret;
+            String[] q_array = q.trim().split(" ");
+
+            for (int i = 0, len = q_array.length; i < len; i++) {
+                String word = q_array[i];
+
+                boolean has = false;
+                for (KBSynonym kbs : list) {
+                    String xxx = kbs.getSynonym();
+                    if (xxx.contains(word.trim())) {
+                        String ret = kbs.getKeyword().trim();
+                        q_array[i] = ret;
+                        break;
+                    }
                 }
             }
-
         } catch (Exception e) {
             System.out.println("getSynonym failed! tname=" + tenant.gettname() + ", apiKey=" + tenant.gettAPIKey());
         }

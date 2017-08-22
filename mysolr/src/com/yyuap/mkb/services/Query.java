@@ -76,7 +76,7 @@ public class Query extends HttpServlet {
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
 
-        // 1、获取租户信息
+        // 一、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
         try {
@@ -103,7 +103,7 @@ public class Query extends HttpServlet {
         if (tenant != null) {
             JSONObject uniqueQA = null;
 
-            // 0\预测
+            // 0、预测
             try {
                 JSONObject botConfig = tenant.getBotSkillConfigJSON();
                 if (botConfig != null) {

@@ -483,13 +483,6 @@ public class SolrManager {
             q = this.process(_keywords);
         }
 
-        if (q == null) {
-            q = "*:*";
-        } else if (q.equals("")) {
-            q = "*:*";
-        }
-        query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
-
         // 2、处理权重
 
         query.set("defType", "edismax");
@@ -499,9 +492,20 @@ public class SolrManager {
         solrQueryRules rules = new solrQueryRules();
 
         String qf = requestParam.getString("qf");
-        rules.setFQ(query, q, qf, tenant);
+        rules.setQF(query, q, qf, tenant);
 
-        rules.addFilterQuery(query, q, tenant);
+        String new_q = rules.addFilterQuery(query, q, tenant);
+
+        // if (q == null || q.equals("")) {
+        // q = "*:*";
+        // }
+        // query.set("q", q);
+
+        if (new_q == null || new_q.trim().equals("")) {
+            new_q = "*:*";
+        }
+        query.set("q", new_q);
+
         rules.addSort(query, q, tenant);
 
         // 参数fq, 给query增加过滤查询条件
