@@ -172,7 +172,8 @@ public class Query extends HttpServlet {
         if (_url != null && !_url.equals("")) {
             ro.setBotResponseKV("code", "200000");// 链接类
             String _q = uniqueQA.getString("kb_q");
-            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
+//            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
+            ro.setBotResponseKV("text", _a);
             ro.setBotResponseKV("url", _url);
         } else {
             ro.setBotResponseKV("code", "100000");// 文本类
