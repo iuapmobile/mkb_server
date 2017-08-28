@@ -25,7 +25,7 @@ public class MKBSessionManager {
         ArrayList<KBSynonym> list = null;
         try {
             Object obj = request.getSession().getAttribute(MKBSessionManager.MKB_SYN);
-
+            obj = null;
             if (obj == null) {
                 list = this.setSynonym2Session(request, tenant);
             } else {
@@ -41,25 +41,76 @@ public class MKBSessionManager {
     public String findKeywordFromSynonym(String q, HttpServletRequest request, Tenant tenant) {
         try {
             ArrayList<KBSynonym> list = this.getSynonym(request, tenant);
+            ArrayList<String> retKW = new ArrayList<String>();
+            JSONObject replaces = new JSONObject();
+            // 分两步走
+            // 1、对q对整体处理，例如iuap design iuap mobile MA MDM ==> 前端技术平台 移动平台 MA MDM
+            for (KBSynonym kbs : list) {
+                String[] synwords = kbs.getSynonym().split(",");
+                for (String synword : synwords) {
+                    if (q.contains(synword)) {
+                        retKW.add(kbs.getKeyword());
+                        String word = replaces.getString(synword);
+                        if (word == null) {
+                            word = kbs.getKeyword();
+                        } else {
+                            word += " " + kbs.getKeyword();
+                        }
+                        replaces.put(synword, word);
+                        break;
+                        // q = q.replace(synword, kbs.getKeyword());
+                    } else {
 
+                    }
+                }
+            }
+
+            for (String key : replaces.keySet()) {
+                q = q.replace(key, replaces.getString(key));
+            }
+
+            // 2、以空格分离后的同义词处理
+            // iuap design iuap mobile MA MDM ==> 前端技术平台 移动平台 MA MDM
+            // ==>前端技术平台 移动平台 移动支撑平台 移动设备管理 主数据管理(MDM)
+            ArrayList<String> ret = new ArrayList<String>();
             String[] q_array = q.trim().split(" ");
 
             for (int i = 0, len = q_array.length; i < len; i++) {
                 String word = q_array[i];
-
+                if (word == null || word.equals("")) {
+                    continue;
+                }
                 boolean has = false;
                 for (KBSynonym kbs : list) {
                     String xxx = kbs.getSynonym();
-                    if (xxx.contains(word.trim())) {
-                        String ret = kbs.getKeyword().trim();
-                        q_array[i] = ret;
-                        break;
+                    if (xxx.toLowerCase().contains(word.trim().toLowerCase())) {
+                        String kwd = kbs.getKeyword().trim();
+                        ret.add(kwd);
+                        has = true;
                     }
                 }
+                if (!has) {
+                    ret.add(word);
+                }
             }
+
+            // 重新形成同义词后的q
+            String new_q = "";
+            // for (int i = 0, len = ret.size(); i < len; i++) {
+            // String str = ret.get(i);
+            // if (i == 0) {
+            // new_q = str;
+            // } else {
+            // new_q += " " + str;
+            // }
+            // }
+            new_q = String.join(" ", ret.toArray(new String[ret.size()]));
+            return new_q;
+
         } catch (Exception e) {
             System.out.println("getSynonym failed! tname=" + tenant.gettname() + ", apiKey=" + tenant.gettAPIKey());
         }
+
         return null;
     }
 }

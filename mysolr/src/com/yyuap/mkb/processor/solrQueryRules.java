@@ -46,47 +46,17 @@ public class solrQueryRules {
             // 处理product
             ArrayList<String> productFQ = new ArrayList<String>();
             new_q = getProductSorlFilterQueriesAndNewQ(q, productFQ);
-            if (productFQ.size() == 1) {
+            if (productFQ.size() > 0) {
                 addFQ(query, "product", productFQ);
             }
-            // if (productFQ != null && productFQ.size() > 0) {
-            // // query.setFilterQueries("product:" + productFQ);
-            // for (String pro : productFQ) {
-            // String fq = "product:" + pro;
-            // query.addFilterQuery(fq);// q中含有product，则fq限定范围
-            // ret.add(fq);
-            // }
-            // }
-            //
+
             // 处理subproduct
             ArrayList<String> subProductFQ = getSubProductSorlFilterQueries(q);
-            addFQ(query, "subproduct", subProductFQ);
-            // if (subProductFQ != null && subProductFQ.size() > 0) {
-            // for (String subP : subProductFQ) {
-            // String fq = "subproduct:" + subP;
-            // query.addFilterQuery(fq);// q中含有subproduct，则fq限定范围
-            // ret.add(fq);
-            // }
-            // }
-            //
-            // if(subProductFQ.size()==1){
-            // addFQ(query, "subproduct", subProductFQ.get(0));
-            // }else{
-            // String val = "";
-            // for(int i=0,len=subProductFQ.size();i<len;i++){
-            // String sub = subProductFQ.get(i);
-            // if(i==0){
-            // val = sub;
-            // }else{
-            // val += " OR " + sub ;
-            //
-            // }}
-            // }
-            //
-            //
-            // addFQ(query, "subproduct", val);
+            if (subProductFQ.size() > 0) {
+                addFQ(query, "subproduct", subProductFQ);
+            }
 
-        }else{
+        } else {
             new_q = q;
         }
         return new_q;
@@ -98,14 +68,15 @@ public class solrQueryRules {
 
         if (filterValues.size() > 0) {
             String fq = "";
-            for (String subP : filterValues) {
+            for (String filterValue : filterValues) {
                 if (fq.length() > 0) {
-                    fq = " OR " + filterName + ":" + subP;
+                    fq += " OR " + filterName + ":" + filterValue;
                 } else {
-                    fq = filterName + ":" + subP;
+                    fq += filterName + ":" + filterValue;
                 }
 
             }
+
             query.addFilterQuery(fq);// q中含有subproduct，则fq限定范围
         }
     }
@@ -278,7 +249,7 @@ public class solrQueryRules {
 
         JSONObject devPlatform = new JSONObject();
         devPlatform.put("开发工具", "开发工具");
-        devPlatform.put("iuapdesign", "iuapdesign");
+        devPlatform.put("前端技术平台", "前端技术平台");
         devPlatform.put("技术组件", "技术组件");
         devPlatform.put("应用支撑组件", "应用支撑组件");
 
