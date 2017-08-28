@@ -22,60 +22,54 @@ import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.turbot.MKBHttpClient;
 
 public class BaiAdapter {
-    public BaiAdapter(){
-        
+    public BaiAdapter() {
+
     }
-    public  float simnet(String text_1,String text_2)  {
-        float score =0;
-        MKBHttpClient httpclient = new MKBHttpClient();
-        Map<String, String> createMap = new HashMap<String, String>();
-        createMap.put("grant_type", "client_credentials");
-        createMap.put("client_id", "ah7yAv2YGjEyYNZEUdsrVNfG");
-        createMap.put("client_secret", "ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj");
-        String charset = "gbk";
-        String tokenURL = "https://aip.baidubce.com/oauth/2.0/token";
 
-        String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
-        JSONObject obj = JSONObject.parseObject(botRes);
-        String access_token = obj.getString("access_token");
-        System.out.println("access_token: " + access_token);
-
-       
-        String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token="+ access_token;
-       
-        
+    public float simnet(String text_1, String text_2) {
+        float score = 0;
         try {
-           
-            
-                org.apache.commons.httpclient.methods.PostMethod post = new PostMethod(url);
-                RequestEntity re;
-                
-                JSONObject json = new JSONObject();
-                json.put("text_1", text_1);
-                json.put("text_2", text_2);
-                
-                String str = json.toString();
-                re = new StringRequestEntity(str, "application/json", "gbk");
+            MKBHttpClient httpclient = new MKBHttpClient();
+            Map<String, String> createMap = new HashMap<String, String>();
+            createMap.put("grant_type", "client_credentials");
+            createMap.put("client_id", "ah7yAv2YGjEyYNZEUdsrVNfG");
+            createMap.put("client_secret", "ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj");
+            String charset = "gbk";
+            String tokenURL = "https://aip.baidubce.com/oauth/2.0/token";
 
-                post.setRequestEntity(re);
+            String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
+            JSONObject obj = JSONObject.parseObject(botRes);
+            String access_token = obj.getString("access_token");
+            System.out.println("access_token: " + access_token);
 
-                HttpClient client = new HttpClient();
-                client.getHttpConnectionManager().getParams().setConnectionTimeout(10000);
-                client.getHttpConnectionManager().getParams().setSoTimeout(10000);
-                client.executeMethod(post);
+            String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token=" + access_token;
 
-                String dataStr = getRespMsgByBodyStream(post.getResponseBodyAsStream());
-                
-                JSONObject jsonRet = JSONObject.parseObject(dataStr);
-               score =  jsonRet.getFloatValue("score");
-             
-                System.out.println(dataStr);
-                
-                return score;
-                
-                
-                
-            
+            org.apache.commons.httpclient.methods.PostMethod post = new PostMethod(url);
+            RequestEntity re;
+
+            JSONObject json = new JSONObject();
+            json.put("text_1", text_1);
+            json.put("text_2", text_2);
+
+            String str = json.toString();
+            re = new StringRequestEntity(str, "application/json", "gbk");
+
+            post.setRequestEntity(re);
+
+            HttpClient client = new HttpClient();
+            client.getHttpConnectionManager().getParams().setConnectionTimeout(10000);
+            client.getHttpConnectionManager().getParams().setSoTimeout(10000);
+            client.executeMethod(post);
+
+            String dataStr = getRespMsgByBodyStream(post.getResponseBodyAsStream());
+
+            JSONObject jsonRet = JSONObject.parseObject(dataStr);
+            score = jsonRet.getFloatValue("score");
+
+            System.out.println(dataStr);
+
+            return score;
+
         } catch (UnsupportedEncodingException e) {
             // TODO 自动生成的 catch 块
             e.printStackTrace();
@@ -85,6 +79,8 @@ public class BaiAdapter {
         } catch (IOException e) {
             // TODO 自动生成的 catch 块
             e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("BaiAdapter simnet Exception:" + e.toString());
         }
 
         return score;
