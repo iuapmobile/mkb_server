@@ -63,13 +63,13 @@ public class UpdateQAQS extends HttpServlet {
         } else {
             requestParam = this.readJSON4Form_urlencoded(request);
         }
-
         String id = requestParam.getString("id");
         String q = requestParam.getString("question");
         String a = requestParam.getString("answer");
         String strqs = requestParam.getString("qs");
         JSONArray qs = JSONArray.parseArray(strqs);
         String apiKey = requestParam.getString("apiKey");
+        String url = requestParam.getString("url");
 
         if (apiKey == null || "".equals(apiKey)) {
             ResultObjectFactory rof = new ResultObjectFactory();
@@ -112,7 +112,7 @@ public class UpdateQAQS extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            String editId = qam.updateQAQS(id, q, a, qs, tenant);
+            String editId = qam.updateQAQS(id, q, a, qs,url, tenant);
             if (editId != null && editId.equals("")) {
                 ro.setStatus(0);
                 ro.setResponseKV("id", editId);
@@ -181,6 +181,9 @@ public class UpdateQAQS extends HttpServlet {
 
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
+        
+        String url = request.getParameter("url");
+        param.put("url", url);
 
         return param;
     }

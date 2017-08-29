@@ -220,23 +220,26 @@ public class QAManager {
         return success;
     }
 
-    public String updateQAQS(String id, String q, String a, JSONArray qs, Tenant tenant) throws SQLException {
+    public String updateQAQS(String id, String q, String a, JSONArray qs,String url, Tenant tenant) throws SQLException {
         // 根据数据构建Entity
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
         kbqa.setQuestion(q);
         kbqa.setAnswer(a);
+        kbqa.setUrl(url);
         // kbqa.setQtype(t);
-
-        for (int i = 0, len = qs.size(); i < len; i++) {
-            JSONObject json = qs.getJSONObject(i);
-            KBQS kbqs = new KBQS();
-            kbqs.setId(json.getString("id"));
-            kbqs.setQuestion(json.getString("question"));
-            kbqs.setQid(kbqa.getId());
-            kbqs.setStatus(json.getString("status"));
-            kbqa.getQS().add(kbqs);
+        if(qs!=null){
+        	for (int i = 0, len = qs.size(); i < len; i++) {
+                JSONObject json = qs.getJSONObject(i);
+                KBQS kbqs = new KBQS();
+                kbqs.setId(json.getString("id"));
+                kbqs.setQuestion(json.getString("question"));
+                kbqs.setQid(kbqa.getId());
+                kbqs.setStatus(json.getString("status"));
+                kbqa.getQS().add(kbqs);
+            }
         }
+        
 
         DBManager dbmgr = new DBManager();
 

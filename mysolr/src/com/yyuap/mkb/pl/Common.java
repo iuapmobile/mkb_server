@@ -66,7 +66,7 @@ public class Common {
     public static final String DELETE_QA_SQL = "delete from qa where `id` = ?";
     public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";
 
-    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=? where `id` = ?";
+    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=?,url=? where `id` = ?";
 
     public static final String UPDATE_QAISTOP_SQL = "update qa set istop = ?,settoptime=? where `id` = ?";
 

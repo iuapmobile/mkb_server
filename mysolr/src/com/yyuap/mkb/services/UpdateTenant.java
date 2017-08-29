@@ -63,7 +63,7 @@ public class UpdateTenant extends HttpServlet {
         String solr_qf = request.getParameter("solr_qf");
         String solr_sort = request.getParameter("solr_sort");
         String useSynonym = request.getParameter("useSynonym");
-        String solr_useFilterQuerties = request.getParameter("solr_useFilterQuerties");
+        String solr_useFilterQuerties = request.getParameter("sorl_useFilterQueries");
         tenant.setId(id);
         tenant.setTname(tname);
         tenant.setTdescript(tdescript);

@@ -889,7 +889,8 @@ public class DbUtil {
             } else {
                 ps.setString(4, datetime);
             }
-            ps.setString(5, qa.getId());
+            ps.setString(5, qa.getUrl());
+            ps.setString(6, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {
@@ -1418,7 +1419,7 @@ public class DbUtil {
     		if(!"0".equals(day)&&!"-1".equals(day)){
     			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') sj, ");
     		}else{
-    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d %H'), ");
+    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d %H') sj, ");
     		}
     		sbf.append(" count(*) c from qa_tj where");
     		if(!"0".equals(day)&&!"-1".equals(day)){

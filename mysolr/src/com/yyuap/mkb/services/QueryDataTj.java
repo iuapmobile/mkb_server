@@ -106,7 +106,7 @@ public class QueryDataTj extends HttpServlet {
     				if(!map.containsKey(arr[i])){
     	    			dataArr[i] = "0";
     	    		}else{
-    	    			dataArr[i] = new BigDecimal(map.get(arr[i])).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+    	    			dataArr[i] = new BigDecimal(map.get(arr[i])).setScale(0, BigDecimal.ROUND_HALF_UP).toString();
     	    		}
     			}
     			String dataArrStr = JSON.toJSONString(dataArr);
