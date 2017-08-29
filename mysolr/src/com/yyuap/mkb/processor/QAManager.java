@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.solr.client.solrj.SolrServerException;
@@ -326,6 +327,21 @@ public class QAManager {
         boolean flag = dbmgr.setIsTop(qaid, istop, tenant);
 
         return flag;
+    }
+    
+    
+    public Map<String,String> queryDataTj(String day, Tenant tenant) throws Exception {
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.queryDataTj(day, tenant);
+    }
+    
+    public String queryBotServicesTj(Tenant tenant) throws Exception {
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.queryBotServicesTj(tenant);
     }
 
 }

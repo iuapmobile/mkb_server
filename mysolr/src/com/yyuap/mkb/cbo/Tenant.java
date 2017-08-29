@@ -7,6 +7,7 @@ public class Tenant {
 
     private String tid = "";
     private String tusername = "";
+    private String tpassword = "";
     private String apiKey = "";
 
     private String dbip = "";
@@ -19,6 +20,7 @@ public class Tenant {
     private String botKey;
     private String tkbcore;
     private String tname;
+    private String tdescript;
     private String tqakbcore;
     private float _simscore = 0.618f;
     private boolean _recommended = true;
@@ -48,16 +50,33 @@ public class Tenant {
     public void settname(String tname) {
         this.tname = tname;
     }
+    
+    public String getTdescript() {
+		return tdescript;
+	}
 
-    public String gettusername() {
+	public void setTdescript(String tdescript) {
+		this.tdescript = tdescript;
+	}
+
+	public String gettusername() {
         return this.tusername;
     }
 
     public void settusername(String tusername) {
         this.tusername = tusername;
     }
+    
 
-    public String gettAPIKey() {
+    public String getTpassword() {
+		return tpassword;
+	}
+
+	public void setTpassword(String tpassword) {
+		this.tpassword = tpassword;
+	}
+
+	public String gettAPIKey() {
         return this.apiKey;
     }
 
