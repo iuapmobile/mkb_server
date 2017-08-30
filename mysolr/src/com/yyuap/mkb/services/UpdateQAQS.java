@@ -86,12 +86,21 @@ public class UpdateQAQS extends HttpServlet {
             return;
         }
 
-        if (q != null && !q.equals("") && a != null && !a.equals("")) {
+        if(null == url || "".equals(url)){
+       	 if (q != null && !q.equals("") && a != null && !a.equals("")) {
 
-        } else {
-            response.getWriter().append("Served at: ").append(request.getContextPath());
-            return;
-        }
+            } else {
+                response.getWriter().append("Served at: ").append(request.getContextPath());
+                return;
+            }
+       }else{
+       	 if (q != null && !q.equals("") && url != null && !url.equals("")) {
+
+            } else {
+                response.getWriter().append("Served at: ").append(request.getContextPath());
+                return;
+            }
+       }
 
         // 1、获取租户信息
         Tenant tenant = null;

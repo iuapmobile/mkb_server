@@ -72,13 +72,22 @@ public class AddQA extends HttpServlet {
         }
         String libraryPk = request.getParameter("libraryPk");
         String[] qs = request.getParameterValues("qs");
+        if(null == url || "".equals(url)){
+        	 if (q != null && !q.equals("") && a != null && !a.equals("")) {
 
-        if (q != null && !q.equals("") && a != null && !a.equals("")) {
+             } else {
+                 response.getWriter().append("Served at: ").append(request.getContextPath());
+                 return;
+             }
+        }else{
+        	 if (q != null && !q.equals("") && url != null && !url.equals("")) {
 
-        } else {
-            response.getWriter().append("Served at: ").append(request.getContextPath());
-            return;
+             } else {
+                 response.getWriter().append("Served at: ").append(request.getContextPath());
+                 return;
+             }
         }
+       
 
         String apiKey = request.getParameter("apiKey");
 
