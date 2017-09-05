@@ -65,6 +65,7 @@ public class AddQA extends HttpServlet {
         String q = request.getParameter("q");
         String a = request.getParameter("a");
         String url = request.getParameter("url");
+        String qtype = request.getParameter("qtype");
         String kbid = request.getParameter("kbid");// 改问答属于那一个知识库，一个用户可以有多个知识库
         String istop = request.getParameter("istop");// 是否置顶
         if (null == istop || "".equals(istop)) {
@@ -118,6 +119,7 @@ public class AddQA extends HttpServlet {
             json.put("a", a);
             json.put("qs", qs);
             json.put("url", url);
+            json.put("qtype", qtype);
             json.put("kbid", kbid);
             json.put("istop", istop);
             json.put("libraryPk", libraryPk);

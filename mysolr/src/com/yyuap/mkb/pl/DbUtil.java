@@ -99,17 +99,20 @@ public class DbUtil {
 
             ps.setString(1, kbqa.getQuestion());
             ps.setString(2, kbqa.getAnswer());
+            ps.setString(2, kbqa.getQtype());
 
             rs = ps.executeQuery();
             while (rs.next()) {
                 String q = rs.getString("question");
                 String a = rs.getString("answer");
+                String qtype = rs.getString("qtype");
                 String id = rs.getString("id");
                 if (!q.equals("") && !a.equals("")) {
                     KBQA qa = new KBQA();
                     qa.setQuestion(q);
                     qa.setAnswer(a);
                     qa.setId(id);
+                    qa.setQtype(qtype);
                     list.add(qa);
                 } else {
                     // nothing to do
@@ -253,6 +256,8 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
+                qa.setCreateTime(datetime);
+                qa.setUpdateTime(datetime);
                 System.out.println("insert a row into QA table success!: question=" + qa.getQuestion() + ", answer="
                         + qa.getAnswer() + ", url=" + qa.getUrl());
 
@@ -890,7 +895,8 @@ public class DbUtil {
                 ps.setString(4, datetime);
             }
             ps.setString(5, qa.getUrl());
-            ps.setString(6, qa.getId());
+            ps.setString(6, qa.getQtype());
+            ps.setString(7, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {

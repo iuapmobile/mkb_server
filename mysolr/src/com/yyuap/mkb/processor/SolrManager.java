@@ -178,6 +178,7 @@ public class SolrManager {
         String text = kbindex.getText();
         String qid = kbindex.getQid();
         String kbid = kbindex.getKbid();
+        String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
         // 1.创建链接
@@ -199,6 +200,7 @@ public class SolrManager {
         document.addField("text", text);
         document.addField("qid", qid);
         document.addField("kbid", kbid);
+        document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
 
@@ -231,6 +233,7 @@ public class SolrManager {
         String text = kbindex.getText();
         String qid = kbindex.getQid();
         String kbid = kbindex.getKbid();
+        String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
         // 1.创建链接
@@ -252,7 +255,7 @@ public class SolrManager {
         document.addField("text", text);
         document.addField("qid", qid);
         document.addField("kbid", kbid);
-
+        document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
 
@@ -286,6 +289,7 @@ public class SolrManager {
         kbindex.setKbid(kbqa.getKbid());
         kbindex.setCreateTime(kbqa.getCreateTime());
         kbindex.setUpdateTime(kbqa.getUpdateTime());
+        kbindex.setQtype(kbqa.getQtype());
 
         this.addDoc(kbindex);
     }
@@ -372,6 +376,7 @@ public class SolrManager {
             String qs = kbqs.getQuestion();
             String url = kbqa.getUrl();
             String kbid = kbqa.getKbid();
+            String qtype = kbqa.getQtype();
             String updateTime = kbqs.getUpdateTime();
             String createTime = kbqs.getCreateTime();
 
@@ -384,6 +389,7 @@ public class SolrManager {
             kbindex.setUrl(url);
             kbindex.setQid(qid);
             kbindex.setKbid(kbid);
+            kbindex.setQtype(qtype);
             kbindex.setUpdateTime(updateTime);
             kbindex.setCreateTime(createTime);
 
@@ -401,6 +407,7 @@ public class SolrManager {
         String qs = kbqs.getQuestion();
         String url = kbqa.getUrl();
         String kbid = kbqa.getKbid();
+        String qtype = kbqa.getQtype();
         String updateTime = kbqs.getUpdateTime();
         String createTime = kbqs.getCreateTime();
 
@@ -413,6 +420,7 @@ public class SolrManager {
         kbindex.setUrl(url);
         kbindex.setQid(qid);
         kbindex.setKbid(kbid);
+        kbindex.setQtype(qtype);
         kbindex.setUpdateTime(updateTime);
         kbindex.setCreateTime(createTime);
 
@@ -902,6 +910,7 @@ public class SolrManager {
             json.put("question", doc.get("question"));
             json.put("answer", doc.get("answer"));
             json.put("url", doc.get("url"));
+            json.put("qtype", doc.get("qtype"));
         }
         return json;
         /*
@@ -1047,6 +1056,7 @@ public class SolrManager {
             obj.put("updateTime", doc.get("updateTime"));
             obj.put("createTime", doc.get("createTime"));
             obj.put("url", doc.get("url"));
+            obj.put("url", doc.get("qtype"));
 
             docs.add(obj);
 

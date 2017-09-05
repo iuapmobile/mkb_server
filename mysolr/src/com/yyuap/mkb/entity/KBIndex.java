@@ -36,6 +36,8 @@ public class KBIndex extends KBEntity {
     private String answer = "";
     private String kbid = "";
     private String qid = "";
+    
+    private String qtype = "";
 
     public String getId() {
         return id;
@@ -190,4 +192,13 @@ public class KBIndex extends KBEntity {
     public String getQid() {
         return this.qid;
     }
+
+	public String getQtype() {
+		return qtype;
+	}
+
+	public void setQtype(String qtype) {
+		this.qtype = qtype;
+	}
+    
 }

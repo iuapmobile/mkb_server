@@ -97,6 +97,7 @@ public class QAManager {
         qa.setIstop(json.getString("istop"));// 是否置顶
         qa.setUrl(json.getString("url"));// 是否置顶
         qa.setKbid(json.getString("kbid"));// 是否置顶
+        qa.setQtype(json.getString("qtype"));
 
         String[] questions = (String[]) json.get("qs");
         if (questions != null && questions.length > 0) {
@@ -220,13 +221,14 @@ public class QAManager {
         return success;
     }
 
-    public String updateQAQS(String id, String q, String a, JSONArray qs,String url, Tenant tenant) throws SQLException {
+    public String updateQAQS(String id, String q, String a, JSONArray qs,String url,String qtype, Tenant tenant) throws SQLException {
         // 根据数据构建Entity
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
         kbqa.setQuestion(q);
         kbqa.setAnswer(a);
         kbqa.setUrl(url);
+        kbqa.setQtype(qtype);
         // kbqa.setQtype(t);
         if(qs!=null){
         	for (int i = 0, len = qs.size(); i < len; i++) {
