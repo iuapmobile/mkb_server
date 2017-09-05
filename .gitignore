@@ -1,6 +1,10 @@
 .settings__
 .class
+<<<<<<< HEAD
+.DS_Store
+=======
 .DS_Store
 .settings
 .project
 .classpath
+>>>>>>> develop
