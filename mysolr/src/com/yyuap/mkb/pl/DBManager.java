@@ -618,5 +618,35 @@ public class DBManager {
 
         return ret;
     }
+    
+    public Map<String,String> queryDataTj(String day, Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+        	map = DbUtil.queryDataTj(day, dbconf);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return map;
+    }
+    
+    public String queryBotServicesTj(Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        String count="";
+        try {
+        	count = DbUtil.queryBotServicesTj(dbconf);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return count;
+    }
 
 }
