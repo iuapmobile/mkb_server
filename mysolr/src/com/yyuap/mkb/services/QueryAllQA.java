@@ -12,6 +12,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.processor.QAManager;
+import com.yyuap.mkb.processor.SolrManager;
+import com.yyuap.mkb.services.util.MKBRequestProcessor;
 
 /**
  * Servlet implementation class mkbQuery
@@ -45,6 +47,16 @@ public class QueryAllQA extends HttpServlet {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
+        
+        String content_type = request.getContentType();
+        JSONObject requestParam = new JSONObject();
+
+        MKBRequestProcessor rp = new MKBRequestProcessor();
+        if (content_type != null && content_type.toLowerCase().indexOf("application/json") >= 0) {
+            requestParam = rp.readJSON4JSON(request);
+        } else {
+            requestParam = rp.readJSON4Form_urlencoded(request);
+        }
 
         String content = request.getParameter("content");
         String bot = request.getParameter("bot");
@@ -64,13 +76,26 @@ public class QueryAllQA extends HttpServlet {
         }
 
         JSONObject ret = new JSONObject();
+        
+        ResultObjectFactory rof = new ResultObjectFactory();
+        ResultObject ro = rof.create(0);
         if (tenant != null) {
-
+        	// 1、是否推荐，启用搜索引擎进行推荐
+            boolean recommended = tenant.getRecommended();
             // 2、查询答案
-            QAManager qamgr = new QAManager();
-            ret = qamgr.query(tenant,content);
+//            QAManager qamgr = new QAManager();
+//            ret = qamgr.query(tenant,content);
+            if (recommended) {
+                try {
+                    String corename = tenant.gettkbcore();
+                    SolrManager solrmng = new SolrManager(corename);
+                    JSONObject _ret = solrmng.queryAllAndByContent(requestParam, tenant);// 获取查询结果,，一个新的对象
+                    ro.set(_ret);// 导致botResponse需要重新赋值
+                } catch (Exception e) {
+                }
+            }
         }
-        response.getWriter().write(ret.toString());
+        response.getWriter().write(ro.toString());
     }
 
     /**

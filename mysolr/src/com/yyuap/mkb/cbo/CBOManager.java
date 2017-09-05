@@ -48,6 +48,14 @@ public class CBOManager {
                 tenant.setbotKey(rs.getString("botKey"));
                 tenant.setSimscore(rs.getFloat("simscore"));
                 tenant.setRecommended(rs.getBoolean("recommended"));
+
+                tenant.setSolr_qf(rs.getString("solr_qf"));
+                tenant.setSolr_sort(rs.getString("solr_sort"));
+
+                tenant.setUseSynonym(rs.getBoolean("useSynonym"));
+                tenant.setSorl_useFilterQueries(rs.getBoolean("solr_useFilterQueries"));
+                tenant.setBotSkillConfig(rs.getString("botSkillConfig"));
+
             }
 
         } catch (Exception e) {
