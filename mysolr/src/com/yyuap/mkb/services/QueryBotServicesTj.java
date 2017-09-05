@@ -1,9 +1,11 @@
 package com.yyuap.mkb.services;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,31 +13,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.entity.KBIndex;
-import com.yyuap.mkb.entity.KBQA;
-import com.yyuap.mkb.pl.DBConfig;
-import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.processor.SolrManager;
 
 /**
- * Servlet implementation class addQA
+ * Servlet implementation class mkbQuery
  */
-@WebServlet("/AddQA")
-public class AddQA extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@WebServlet("/QueryBotServicesTj")
+public class QueryBotServicesTj extends HttpServlet {
 
-    /**
+	 /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddQA() {
+    public QueryBotServicesTj() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -62,33 +56,6 @@ public class AddQA extends HttpServlet {
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
 
-        String q = request.getParameter("q");
-        String a = request.getParameter("a");
-        String url = request.getParameter("url");
-        String kbid = request.getParameter("kbid");// 改问答属于那一个知识库，一个用户可以有多个知识库
-        String istop = request.getParameter("istop");// 是否置顶
-        if (null == istop || "".equals(istop)) {
-            istop = "0";
-        }
-        String libraryPk = request.getParameter("libraryPk");
-        String[] qs = request.getParameterValues("qs");
-        if(null == url || "".equals(url)){
-        	 if (q != null && !q.equals("") && a != null && !a.equals("")) {
-
-             } else {
-                 response.getWriter().append("Served at: ").append(request.getContextPath());
-                 return;
-             }
-        }else{
-        	 if (q != null && !q.equals("") && url != null && !url.equals("")) {
-
-             } else {
-                 response.getWriter().append("Served at: ").append(request.getContextPath());
-                 return;
-             }
-        }
-       
-
         String apiKey = request.getParameter("apiKey");
 
         ResultObjectFactory rof = new ResultObjectFactory();
@@ -111,25 +78,13 @@ public class AddQA extends HttpServlet {
         }
 
         try {
-
-            // 2、插入数据库
-            JSONObject json = new JSONObject();
-            json.put("q", q);
-            json.put("a", a);
-            json.put("qs", qs);
-            json.put("url", url);
-            json.put("kbid", kbid);
-            json.put("istop", istop);
-            json.put("libraryPk", libraryPk);
             QAManager qam = new QAManager();
-            String id = qam.addQA(json, tenant);
-            ro.setResponseKV("id", id);
+            String count = qam.queryBotServicesTj(tenant);
+            ro.setResponseKV("count", count);//
         } catch (Exception e) {
             if (e instanceof KBDuplicateSQLException) {
 
                 KBDuplicateSQLException ex = (KBDuplicateSQLException) e;
-
-                ro.setResponseKV("id", ex.getId());
 
                 ro.setReason(ex.getMessage());
                 ro.setStatus(ex.getKBExceptionCode());
@@ -147,5 +102,5 @@ public class AddQA extends HttpServlet {
         response.getWriter().write(ro.toString());
 
     }
-
+    
 }

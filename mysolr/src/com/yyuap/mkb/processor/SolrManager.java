@@ -901,6 +901,7 @@ public class SolrManager {
             json.put("id", doc.get("id"));
             json.put("question", doc.get("question"));
             json.put("answer", doc.get("answer"));
+            json.put("url", doc.get("url"));
         }
         return json;
         /*
@@ -952,13 +953,13 @@ public class SolrManager {
             String _keywords = sap.getKeywords(conf);
             q = this.process(_keywords);
         }
-
+        //(question:嘟嘟  AND  qid:"") OR (question:嘟嘟  AND  -qid:*)
         if (q == null) {
-            q = "*:*";
+            q = "*:* ";
         } else if (q.equals("")) {
-            q = "*:*";
+        	q = "*:* ";
         }
-        q = q + " AND -qid:* ";//*  在solr当中  应该代表 有值  -取反
+        q = q + " AND -qid:[\"\" TO *] ";//*  在solr当中  应该代表 有值  -取反
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
@@ -1045,6 +1046,7 @@ public class SolrManager {
             obj.put("answer", doc.get("answer"));
             obj.put("updateTime", doc.get("updateTime"));
             obj.put("createTime", doc.get("createTime"));
+            obj.put("url", doc.get("url"));
 
             docs.add(obj);
 
@@ -1097,7 +1099,7 @@ public class SolrManager {
         // 选择具体的某一个solr core
         HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrQuery query = new SolrQuery();
-        query.set("q", "*:* AND qid:\"\"");
+        query.set("q", "(*:*  AND  qid:\"\") OR (*:*  AND  -qid:*)");// AND -qid:* 
         //query.setQuery("question:pjf OR answer:嘟嘟");
         QueryResponse response = server.query(query);
         SolrDocumentList solrDocumentList = response.getResults();
