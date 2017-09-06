@@ -592,6 +592,7 @@ public class SolrManager {
             obj.put("descript", doc.get("descript"));
             obj.put("descriptImg", doc.get("descriptImg"));
             obj.put("url", doc.get("url"));
+            obj.put("qtype", doc.get("qtype"));
             obj.put("updateTime", doc.get("updateTime"));
             obj.put("createTime", doc.get("createTime"));
             obj.put("author", doc.get("author"));
@@ -691,6 +692,7 @@ public class SolrManager {
             obj.put("question", doc.get("question"));
             obj.put("answer", doc.get("answer"));
             obj.put("url", doc.get("url"));
+            obj.put("qtype", doc.get("qtype"));
             docs.add(obj);
         }
         response.put("docs", docs);

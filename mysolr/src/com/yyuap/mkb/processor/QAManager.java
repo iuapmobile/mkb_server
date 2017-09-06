@@ -48,6 +48,7 @@ public class QAManager {
                 String _q = array.getJSONObject(i).getString("question");
                 String _a = array.getJSONObject(i).getString("answer");
                 String _url = array.getJSONObject(i).getString("url");
+                String _qtype = array.getJSONObject(i).getString("qtype");
 
                 float simscoreDef = 0f;
                 try {
@@ -76,6 +77,7 @@ public class QAManager {
                         botRes.put("url", _url);
                         botRes.put("simscore", score);
                         botRes.put(q, _a);
+                        botRes.put("qtype", _qtype);
                         ret = botRes;
                     }
                 } else {

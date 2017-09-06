@@ -81,7 +81,7 @@ public class UpdateQAQS extends HttpServlet {
             return;
 
         }
-
+        
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
@@ -194,6 +194,9 @@ public class UpdateQAQS extends HttpServlet {
         
         String url = request.getParameter("url");
         param.put("url", url);
+        
+        String qtype = request.getParameter("qtype");
+        param.put("qtype", qtype);
 
         return param;
     }

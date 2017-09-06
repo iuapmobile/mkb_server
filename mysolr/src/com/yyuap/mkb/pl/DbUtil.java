@@ -295,10 +295,12 @@ public class DbUtil {
                 JSONObject obj = new JSONObject();
                 String ques = rs.getString("question");
                 String ans = rs.getString("answer");
+                String qtype = rs.getString("qtype");
                 obj.put(q, ans);// 不能写成ques，sql比较不区分大小写
                 obj.put("request_q", q);
                 obj.put("kb_q", ques);
                 obj.put("a", ans);
+                obj.put("qtype", qtype);
                 list.add(obj);
             }
         } catch (Exception e) {
@@ -348,6 +350,7 @@ public class DbUtil {
                     obj.put("kb_q", rs.getString("question"));
                     obj.put("a", rs.getString("answer"));
                     obj.put(q, ans);// 把 key的 ques 换成 q 要不 前面取值 报错
+                    obj.put("qtype", rs.getString("qtype"));
                     list.add(obj);
                 }
             }
