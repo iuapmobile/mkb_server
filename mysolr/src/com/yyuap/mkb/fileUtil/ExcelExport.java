@@ -63,11 +63,14 @@ public class ExcelExport {
 	        		cell0.setCellValue(question);
 	        		SXSSFCell cell1=(SXSSFCell) rown.createCell(1);
 	        		cell1.setCellValue(answer);
-	        		String[] qArr = q.split(",");
-	        		for(int j = 0;j < qArr.length;j++){
-	        			SXSSFCell celln=(SXSSFCell) rown.createCell(j+2);
-	        			celln.setCellValue(qArr[j]);
+	        		if(q!=null){
+	        			String[] qArr = q.split(",");
+		        		for(int j = 0;j < qArr.length;j++){
+		        			SXSSFCell celln=(SXSSFCell) rown.createCell(j+2);
+		        			celln.setCellValue(qArr[j]);
+		        		}
 	        		}
+	        		
 	        	}
 	        }
 	        wb.write(outXlsx);
@@ -111,8 +114,8 @@ public class ExcelExport {
 	}
 	
 	public static void main(String[] args) {
-		String s = "";
-		System.out.println(s.split(","));
+		String s = null;
+		System.out.println(s.split(",")[0]);
 	}
 	
 }

@@ -883,17 +883,19 @@ public class DbUtil {
             ps.setString(1, qa.getQuestion());
             ps.setString(2, qa.getAnswer());
             ps.setString(3, qa.getIstop());
+            String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
             if (!"1".equals(qa.getIstop())) {
                 ps.setString(4, null);
             } else {
-                String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
                 ps.setString(4, datetime);
             }
-            ps.setString(5, qa.getId());
+            ps.setString(5, qa.getUrl());
+            ps.setString(6, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {
                 ret = true;
+                qa.setUpdateTime(datetime);
                 System.out.println("import data : question = " + qa.getQuestion() + " succeed!");
             }
         } catch (Exception e) {
@@ -1401,5 +1403,97 @@ public class DbUtil {
         }
 
         return list;
+    }
+    
+    public static Map<String,String> queryDataTj(String day, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+           
+            StringBuffer sbf = new StringBuffer();
+    		sbf.append(" select  ");
+    		if(!"0".equals(day)&&!"-1".equals(day)){
+    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') sj, ");
+    		}else{
+    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d %H') sj, ");
+    		}
+    		sbf.append(" count(*) c from qa_tj where");
+    		if(!"0".equals(day)&&!"-1".equals(day)){
+    			sbf.append(" TIMESTAMPDIFF(day,createTime,now()) <=ABS("+day+") ");
+    			sbf.append(" group by DATE_FORMAT(createTime,'%Y-%m-%d')  ");
+    		}else{
+    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') = DATE_FORMAT(CURDATE()+"+day+",'%Y-%m-%d')  ");
+    			sbf.append(" group by DATE_FORMAT(createTime,'%Y-%m-%d %H') ");
+    		}
+            
+            ps = conn.prepareStatement(sbf.toString());
+
+            
+//            if(!"0".equals(day)&&!"-1".equals(day)){
+//            	ps.setString(1, "");
+//    		}else{
+//    			 ps.setString(1, "DATE_FORMAT(CURDATE()+"+day+",'%Y-%m-%d')");
+//    		}
+           
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String sj = rs.getString("sj");
+                String c = rs.getString("c");
+                map.put(sj, c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return map;
+    }
+    
+    public static String queryBotServicesTj(DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String c="";
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+           
+            StringBuffer sbf = new StringBuffer();
+    		sbf.append(" select count(*) c from qa_tj ");
+    		
+            
+            ps = conn.prepareStatement(sbf.toString());
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                c = rs.getString("c");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return c;
     }
 }
