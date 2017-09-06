@@ -172,21 +172,22 @@ public class Query extends HttpServlet {
         } else {
             // 没有租户信息
             ro.setResponseHeaderKV("q", q);
-            ro.setStatus(0);
+            ro.setStatus(-1);
             ro.setReason("not found the tenant info!");
             ro.setNumFound(0);
             ro.setStart(0);
         }
 
         // 5、添加q的统计
-        QAManager qamgr = new QAManager();
-        String a = ro.getBotResponse().getString("text");
-        String q_tj_id = qamgr.addTongji(q_old, a, tenant);
-        JSONObject resH = ro.getResponseHeader();
-        JSONObject _resH = ro.getResponseHeader();
-        JSONObject param = resH.getJSONObject("param");
-        param.put("qid", q_tj_id);
-
+        if (tenant != null) {
+            QAManager qamgr = new QAManager();
+            String a = ro.getBotResponse().getString("text");
+            String q_tj_id = qamgr.addTongji(q_old, a, tenant);
+            JSONObject resH = ro.getResponseHeader();
+            JSONObject _resH = ro.getResponseHeader();
+            JSONObject param = resH.getJSONObject("param");
+            param.put("qid", q_tj_id);
+        }
         String result = ro.getResult().toString();
 
         PrintWriter out = response.getWriter();
@@ -216,7 +217,7 @@ public class Query extends HttpServlet {
         if (_url != null && !_url.equals("")) {
             ro.setBotResponseKV("code", "200000");// 链接类
             String _q = uniqueQA.getString("kb_q");
-//            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
+            // ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
             ro.setBotResponseKV("text", _a);
             ro.setBotResponseKV("url", _url);
         } else {
