@@ -504,6 +504,8 @@ public class SolrManager {
         if (new_q == null || new_q.trim().equals("")) {
             new_q = "*:*";
         }
+
+        new_q += " AND -qid:*";
         query.set("q", new_q);
 
         rules.addSort(query, q, tenant);
@@ -958,7 +960,7 @@ public class SolrManager {
         } else if (q.equals("")) {
             q = "*:*";
         }
-        q = q + " AND -qid:* ";//*  在solr当中  应该代表 有值  -取反
+        q = q + " AND -qid:* ";// * 在solr当中 应该代表 有值 -取反
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
@@ -1098,7 +1100,7 @@ public class SolrManager {
         HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrQuery query = new SolrQuery();
         query.set("q", "*:* AND qid:\"\"");
-        //query.setQuery("question:pjf OR answer:嘟嘟");
+        // query.setQuery("question:pjf OR answer:嘟嘟");
         QueryResponse response = server.query(query);
         SolrDocumentList solrDocumentList = response.getResults();
     }
@@ -1122,7 +1124,7 @@ public class SolrManager {
 
     public static void main(String[] args) {
         try {
-        	queryDocumentById();
+            queryDocumentById();
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

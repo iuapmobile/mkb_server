@@ -112,12 +112,20 @@ public class Query extends HttpServlet {
                     boolean prediction = skills.getBooleanValue("prediction");
                     if (prediction) {
                         IntentPredictionManager intentMgr = new IntentPredictionManager();
-                        JSONObject obj = intentMgr.predictIntent(q);
+                        // JSONObject obj = intentMgr.predictIntent(q);
+                        JSONObject obj = intentMgr.predictIntent(requestParam);
+
                         if (obj != null) {
                             ro.setBotResponse(obj);
                             response.getWriter().write(ro.getResutlString());
                             return;
                         }
+                    }
+
+                    boolean intent = skills.getBooleanValue("intent");
+                    if (intent) {
+                        // 调用意图处理接口
+
                     }
                 }
             } catch (Exception e) {
@@ -216,7 +224,7 @@ public class Query extends HttpServlet {
         if (_url != null && !_url.equals("")) {
             ro.setBotResponseKV("code", "200000");// 链接类
             String _q = uniqueQA.getString("kb_q");
-//            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
+            // ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
             ro.setBotResponseKV("text", _a);
             ro.setBotResponseKV("url", _url);
         } else {

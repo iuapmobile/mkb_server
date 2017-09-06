@@ -7,9 +7,11 @@ import com.alibaba.fastjson.JSONObject;
 
 public class IntentPredictionManager {
 
-    public JSONObject predictIntent(String text) {
+    public JSONObject predictIntent(JSONObject param) {
         JSONObject ret = null;
-
+        if (param == null)
+            return null;
+        String text = param.getString("q");
         boolean ok = false;
         if ((text.contains("呼") && !text.endsWith("呼")) || (text.contains("呼叫") && !text.endsWith("呼叫"))) {
             ok = true;
@@ -30,7 +32,25 @@ public class IntentPredictionManager {
 
         if (ok) {
             ret = predictPhone(text);
+        } else {
+            // 调用罗鹏场景会话服务
+            ret = predictIntentSession(text);
         }
+        return ret;
+    }
+
+    private JSONObject predictIntentSession(String text) {
+        JSONObject ret = null;
+        // 调用服务获取返回值
+
+        // ret = new JSONObject();
+        // ret.put("name", name);
+        // // ret.put("action", "callphone");
+        // ret.put("sessionid", "xxxxxxxx");
+        // ret.put("key", "xxxxxxx");
+        // ret.put("text", "正在给" + name + "打电话");
+        // ret.put("code", 9001);
+
         return ret;
     }
 
