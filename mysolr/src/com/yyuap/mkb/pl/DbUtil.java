@@ -898,12 +898,9 @@ public class DbUtil {
                 ps.setString(4, datetime);
             }
             ps.setString(5, qa.getUrl());
-<<<<<<< HEAD
-            ps.setString(6, qa.getId());
-=======
+
             ps.setString(6, qa.getQtype());
             ps.setString(7, qa.getId());
->>>>>>> develop
 
             boolean flag = ps.execute();
             if (!flag) {

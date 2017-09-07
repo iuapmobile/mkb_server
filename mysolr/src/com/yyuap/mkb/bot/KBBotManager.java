@@ -1,6 +1,8 @@
 package com.yyuap.mkb.bot;
 
 
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
