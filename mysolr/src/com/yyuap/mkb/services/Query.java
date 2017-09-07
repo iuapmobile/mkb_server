@@ -75,6 +75,7 @@ public class Query extends HttpServlet {
         String bot = requestParam.getString("bot");
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
+//        String dailog = requestParam.getString("dailog");
 
         // 一、获取租户信息
         Tenant tenant = null;
@@ -212,6 +213,7 @@ public class Query extends HttpServlet {
     private void processBotResponse(ResultObject ro, JSONObject uniqueQA) {
         String _url = uniqueQA.getString("url");
         String _a = uniqueQA.getString("a");
+        String _qtype = uniqueQA.getString("qtype");
         ro.setBotResponse(new JSONObject());
         if (_url != null && !_url.equals("")) {
             ro.setBotResponseKV("code", "200000");// 链接类
@@ -219,9 +221,13 @@ public class Query extends HttpServlet {
 //            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
             ro.setBotResponseKV("text", _a);
             ro.setBotResponseKV("url", _url);
+            ro.setBotResponseKV("qtype", _qtype);
+            ro.setBotResponseKV("kbid", "1");
         } else {
             ro.setBotResponseKV("code", "100000");// 文本类
             ro.setBotResponseKV("text", _a);
+            ro.setBotResponseKV("qtype", _qtype);
+            ro.setBotResponseKV("kbid", "1");
         }
         ro.setBotResponseKV("simscore", uniqueQA.getString("simscore"));
     }
@@ -245,6 +251,7 @@ public class Query extends HttpServlet {
             String text = obj.getString("text");
             // text = "您是要问我知识库以外的问题？好吧，我想说的是" + text;
             obj.put("text", text);
+            obj.put("kbid", "0");
             return obj;
         } catch (Exception e) {
             throw e;
