@@ -54,7 +54,7 @@ public class Common {
     public static final String SELECT_KBINDEXINFO_SQL = "select * from kbIndexInfo where title = ? and descript = ? and url = ?";
     public static final String UPDATE_KBINDEXINFO_SQL = "UPDATE kbIndexInfo SET `title`=?, `descript`=?, `descriptImg`=?, `text`=?, `url`=?, `keywords`=?, `domain`=?, `tag`=?  WHERE `id`=?";
 
-    public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ?";
+    public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ? and qtype = ?";
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
     public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
@@ -66,7 +66,9 @@ public class Common {
     public static final String DELETE_QA_SQL = "delete from qa where `id` = ?";
     public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";
 
-    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=?,url=? where `id` = ?";
+
+    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=?,url=?,qtype=? where `id` = ?";
+
 
     public static final String UPDATE_QAISTOP_SQL = "update qa set istop = ?,settoptime=? where `id` = ?";
 

@@ -71,6 +71,9 @@ public class UpdateQAQS extends HttpServlet {
         String apiKey = requestParam.getString("apiKey");
         String url = requestParam.getString("url");
 
+        String qtype = requestParam.getString("qtype");
+
+
         if (apiKey == null || "".equals(apiKey)) {
             ResultObjectFactory rof = new ResultObjectFactory();
             ResultObject ro = rof.create(0);
@@ -80,7 +83,7 @@ public class UpdateQAQS extends HttpServlet {
             return;
 
         }
-
+        
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
@@ -121,7 +124,9 @@ public class UpdateQAQS extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            String editId = qam.updateQAQS(id, q, a, qs,url, tenant);
+
+            String editId = qam.updateQAQS(id, q, a, qs,url,qtype, tenant);
+
             if (editId != null && editId.equals("")) {
                 ro.setStatus(0);
                 ro.setResponseKV("id", editId);
@@ -193,6 +198,11 @@ public class UpdateQAQS extends HttpServlet {
         
         String url = request.getParameter("url");
         param.put("url", url);
+
+        
+        String qtype = request.getParameter("qtype");
+        param.put("qtype", qtype);
+
 
         return param;
     }

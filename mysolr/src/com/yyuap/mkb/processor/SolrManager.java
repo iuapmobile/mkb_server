@@ -178,6 +178,7 @@ public class SolrManager {
         String text = kbindex.getText();
         String qid = kbindex.getQid();
         String kbid = kbindex.getKbid();
+        String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
         // 1.创建链接
@@ -199,6 +200,7 @@ public class SolrManager {
         document.addField("text", text);
         document.addField("qid", qid);
         document.addField("kbid", kbid);
+        document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
 
@@ -231,6 +233,7 @@ public class SolrManager {
         String text = kbindex.getText();
         String qid = kbindex.getQid();
         String kbid = kbindex.getKbid();
+        String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
         // 1.创建链接
@@ -252,7 +255,7 @@ public class SolrManager {
         document.addField("text", text);
         document.addField("qid", qid);
         document.addField("kbid", kbid);
-
+        document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
 
@@ -286,6 +289,7 @@ public class SolrManager {
         kbindex.setKbid(kbqa.getKbid());
         kbindex.setCreateTime(kbqa.getCreateTime());
         kbindex.setUpdateTime(kbqa.getUpdateTime());
+        kbindex.setQtype(kbqa.getQtype());
 
         this.addDoc(kbindex);
     }
@@ -372,6 +376,7 @@ public class SolrManager {
             String qs = kbqs.getQuestion();
             String url = kbqa.getUrl();
             String kbid = kbqa.getKbid();
+            String qtype = kbqa.getQtype();
             String updateTime = kbqs.getUpdateTime();
             String createTime = kbqs.getCreateTime();
 
@@ -384,6 +389,7 @@ public class SolrManager {
             kbindex.setUrl(url);
             kbindex.setQid(qid);
             kbindex.setKbid(kbid);
+            kbindex.setQtype(qtype);
             kbindex.setUpdateTime(updateTime);
             kbindex.setCreateTime(createTime);
 
@@ -401,6 +407,7 @@ public class SolrManager {
         String qs = kbqs.getQuestion();
         String url = kbqa.getUrl();
         String kbid = kbqa.getKbid();
+        String qtype = kbqa.getQtype();
         String updateTime = kbqs.getUpdateTime();
         String createTime = kbqs.getCreateTime();
 
@@ -413,6 +420,7 @@ public class SolrManager {
         kbindex.setUrl(url);
         kbindex.setQid(qid);
         kbindex.setKbid(kbid);
+        kbindex.setQtype(qtype);
         kbindex.setUpdateTime(updateTime);
         kbindex.setCreateTime(createTime);
 
@@ -586,6 +594,7 @@ public class SolrManager {
             obj.put("descript", doc.get("descript"));
             obj.put("descriptImg", doc.get("descriptImg"));
             obj.put("url", doc.get("url"));
+            obj.put("qtype", doc.get("qtype"));
             obj.put("updateTime", doc.get("updateTime"));
             obj.put("createTime", doc.get("createTime"));
             obj.put("author", doc.get("author"));
@@ -685,6 +694,7 @@ public class SolrManager {
             obj.put("question", doc.get("question"));
             obj.put("answer", doc.get("answer"));
             obj.put("url", doc.get("url"));
+            obj.put("qtype", doc.get("qtype"));
             docs.add(obj);
         }
         response.put("docs", docs);
@@ -904,6 +914,9 @@ public class SolrManager {
             json.put("question", doc.get("question"));
             json.put("answer", doc.get("answer"));
             json.put("url", doc.get("url"));
+
+            json.put("qtype", doc.get("qtype"));
+
         }
         return json;
         /*
@@ -955,13 +968,13 @@ public class SolrManager {
             String _keywords = sap.getKeywords(conf);
             q = this.process(_keywords);
         }
-        // (question:嘟嘟 AND qid:"") OR (question:嘟嘟 AND -qid:*)
+        //(question:嘟嘟  AND  qid:"") OR (question:嘟嘟  AND  -qid:*)
         if (q == null) {
             q = "*:* ";
         } else if (q.equals("")) {
-            q = "*:* ";
+        	q = "*:* ";
         }
-        q = q + " AND -qid:[\"\" TO *] ";// * 在solr当中 应该代表 有值 -取反
+        q = q + " AND -qid:[\"\" TO *] ";//*  在solr当中  应该代表 有值  -取反
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
@@ -1049,6 +1062,7 @@ public class SolrManager {
             obj.put("updateTime", doc.get("updateTime"));
             obj.put("createTime", doc.get("createTime"));
             obj.put("url", doc.get("url"));
+            obj.put("qtype", doc.get("qtype"));
 
             docs.add(obj);
 

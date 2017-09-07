@@ -99,17 +99,20 @@ public class DbUtil {
 
             ps.setString(1, kbqa.getQuestion());
             ps.setString(2, kbqa.getAnswer());
+            ps.setString(2, kbqa.getQtype());
 
             rs = ps.executeQuery();
             while (rs.next()) {
                 String q = rs.getString("question");
                 String a = rs.getString("answer");
+                String qtype = rs.getString("qtype");
                 String id = rs.getString("id");
                 if (!q.equals("") && !a.equals("")) {
                     KBQA qa = new KBQA();
                     qa.setQuestion(q);
                     qa.setAnswer(a);
                     qa.setId(id);
+                    qa.setQtype(qtype);
                     list.add(qa);
                 } else {
                     // nothing to do
@@ -253,6 +256,8 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
+                qa.setCreateTime(datetime);
+                qa.setUpdateTime(datetime);
                 System.out.println("insert a row into QA table success!: question=" + qa.getQuestion() + ", answer="
                         + qa.getAnswer() + ", url=" + qa.getUrl());
 
@@ -290,10 +295,12 @@ public class DbUtil {
                 JSONObject obj = new JSONObject();
                 String ques = rs.getString("question");
                 String ans = rs.getString("answer");
+                String qtype = rs.getString("qtype");
                 obj.put(q, ans);// 不能写成ques，sql比较不区分大小写
                 obj.put("request_q", q);
                 obj.put("kb_q", ques);
                 obj.put("a", ans);
+                obj.put("qtype", qtype);
                 list.add(obj);
             }
         } catch (Exception e) {
@@ -343,6 +350,7 @@ public class DbUtil {
                     obj.put("kb_q", rs.getString("question"));
                     obj.put("a", rs.getString("answer"));
                     obj.put(q, ans);// 把 key的 ques 换成 q 要不 前面取值 报错
+                    obj.put("qtype", rs.getString("qtype"));
                     list.add(obj);
                 }
             }
@@ -890,7 +898,12 @@ public class DbUtil {
                 ps.setString(4, datetime);
             }
             ps.setString(5, qa.getUrl());
+<<<<<<< HEAD
             ps.setString(6, qa.getId());
+=======
+            ps.setString(6, qa.getQtype());
+            ps.setString(7, qa.getId());
+>>>>>>> develop
 
             boolean flag = ps.execute();
             if (!flag) {
