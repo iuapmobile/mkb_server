@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,11 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.client.solrj.SolrServerException;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.nlp.BaiAdapter;
 import com.yyuap.mkb.processor.IntentPredictionManager;
 import com.yyuap.mkb.processor.MKBSessionManager;
 import com.yyuap.mkb.processor.QAManager;
@@ -75,7 +72,7 @@ public class Query extends HttpServlet {
         String bot = requestParam.getString("bot");
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
-//        String dailog = requestParam.getString("dailog");
+        String dailog = requestParam.getString("dailog");
 
         // 一、获取租户信息
         Tenant tenant = null;
@@ -113,11 +110,25 @@ public class Query extends HttpServlet {
                     boolean prediction = skills.getBooleanValue("prediction");
                     if (prediction) {
                         IntentPredictionManager intentMgr = new IntentPredictionManager();
-                        JSONObject obj = intentMgr.predictIntent(q);
+                        JSONObject obj = intentMgr.predictIntent(q,dailog);
                         if (obj != null) {
-                            ro.setBotResponse(obj);
-                            response.getWriter().write(ro.getResutlString());
-                            return;
+                        	if("2".equals(obj.get("status").toString())){
+                        		String scenename = obj.get("scenename").toString();
+                        		String dataStr = "";
+                        		JSONObject jsonObject = obj.getJSONObject("data");
+                        		//遍历 ai系统返回参数中data  data中 有我们需要的值  拼成 value1 value2 value3 中间空格 隔开
+                        		for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+                        			System.out.println(entry.getKey() + ":" + entry.getValue());
+                        			dataStr = dataStr + " " + entry.getValue();
+                        	    }
+                        		dataStr = scenename + dataStr;
+                        		q = dataStr;
+                        	}else{
+                        		ro.setBotResponse(obj);
+                                response.getWriter().write(ro.getResutlString());
+                                return;
+                        	}
+                            
                         }
                     }
                 }
@@ -151,7 +162,17 @@ public class Query extends HttpServlet {
                 ro.setReason(e1.getMessage());
                 response.getWriter().write(ro.getResutlString());
                 return;
-            }
+            } catch (Exception e) {
+            	 ro.setStatus(21000);
+                 ro.setReason(e.getMessage());
+                 response.getWriter().write(ro.getResutlString());
+                 return;
+            }catch (Throwable a) {
+	           	 ro.setStatus(21000);
+	             ro.setReason(a.getMessage());
+	             response.getWriter().write(ro.getResutlString());
+	             return;
+           }
 
             // 3、没有唯一答案时，外接bot处理
             try {
@@ -173,22 +194,21 @@ public class Query extends HttpServlet {
         } else {
             // 没有租户信息
             ro.setResponseHeaderKV("q", q);
-            ro.setStatus(-1);
+            ro.setStatus(0);
             ro.setReason("not found the tenant info!");
             ro.setNumFound(0);
             ro.setStart(0);
         }
 
         // 5、添加q的统计
-        if (tenant != null) {
-            QAManager qamgr = new QAManager();
-            String a = ro.getBotResponse().getString("text");
-            String q_tj_id = qamgr.addTongji(q_old, a, tenant);
-            JSONObject resH = ro.getResponseHeader();
-            JSONObject _resH = ro.getResponseHeader();
-            JSONObject param = resH.getJSONObject("param");
-            param.put("qid", q_tj_id);
-        }
+        QAManager qamgr = new QAManager();
+        String a = ro.getBotResponse().getString("text");
+        String q_tj_id = qamgr.addTongji(q_old, a, tenant);
+        JSONObject resH = ro.getResponseHeader();
+        JSONObject _resH = ro.getResponseHeader();
+        JSONObject param = resH.getJSONObject("param");
+        param.put("qid", q_tj_id);
+
         String result = ro.getResult().toString();
 
         PrintWriter out = response.getWriter();
@@ -219,7 +239,7 @@ public class Query extends HttpServlet {
         if (_url != null && !_url.equals("")) {
             ro.setBotResponseKV("code", "200000");// 链接类
             String _q = uniqueQA.getString("kb_q");
-            // ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
+//            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
             ro.setBotResponseKV("text", _a);
             ro.setBotResponseKV("url", _url);
             ro.setBotResponseKV("qtype", _qtype);

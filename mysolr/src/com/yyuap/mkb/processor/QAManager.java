@@ -2,7 +2,6 @@ package com.yyuap.mkb.processor;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +17,6 @@ import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.nlp.BaiAdapter;
 import com.yyuap.mkb.pl.DBManager;
-import com.yyuap.mkb.pl.KBDuplicateSQLException;
 
 public class QAManager {
     public QAManager() {
@@ -350,5 +348,5 @@ public class QAManager {
 
         return dbmgr.queryBotServicesTj(tenant);
     }
-
+    
 }
