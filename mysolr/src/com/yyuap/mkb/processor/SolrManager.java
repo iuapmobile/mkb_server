@@ -503,7 +503,7 @@ public class SolrManager {
         rules.setQF(query, q, qf, tenant);
 
         String new_q = rules.addFilterQuery(query, q, tenant);
-
+        query.addFilterQuery("-qid:[\"\" TO *]");// q中含有subproduct，则fq限定范围
         // if (q == null || q.equals("")) {
         // q = "*:*";
         // }
@@ -512,6 +512,7 @@ public class SolrManager {
         if (new_q == null || new_q.trim().equals("")) {
             new_q = "*:*";
         }
+        new_q = new_q + " AND -qid:[\"\" TO *] ";//*  在solr当中  应该代表 有值  -取反
         query.set("q", new_q);
 
         rules.addSort(query, q, tenant);
@@ -529,6 +530,7 @@ public class SolrManager {
 
         // 设置分页参数
         query.setStart(start);
+
         query.setRows(rows);// 每一页多少值
 
         /*
