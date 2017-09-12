@@ -74,6 +74,12 @@ public class MKBRequestProcessor {
 
         String start = request.getParameter("start");
         param.put("start", start);
+        
+        String dailog = request.getParameter("dailog");
+        param.put("dailog", dailog);
+        
+        String dailogid = request.getParameter("dailogid");
+        param.put("dailogid", dailogid);
 
         return param;
     }

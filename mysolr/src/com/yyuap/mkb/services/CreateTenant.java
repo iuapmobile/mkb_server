@@ -167,7 +167,7 @@ public class CreateTenant extends HttpServlet {
 		        ps.setString(12, dbname);
 		        ps.setString(13, "root");
 		        ps.setString(14, PropertiesUtil.getJdbcString("password"));//1qazZAQ!
-		        ps.setString(15, botKey);
+		        ps.setString(15, "ad2c9f8b0ec544e2a4354ffd2f2f30f1");
 		        ps.setString(16, null);
 		        ps.setString(17, datetime);
 		        ps.setString(18, datetime);

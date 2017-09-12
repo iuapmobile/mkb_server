@@ -1,17 +1,19 @@
 package com.yyuap.mkb.processor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.turbot.MKBHttpClient;
 
 public class IntentPredictionManager {
+	private static final String URL = "https://ia.yonyoucloud.com/api/luis/v1/analysis/";
+    private static final String DEVELOP_KEY = "d49f0e51f69741c78efe840eb2535cce";// 雪儿
 
-    public JSONObject predictIntent(JSONObject param) {
+    public JSONObject predictIntent(String text,String dailog) {
         JSONObject ret = null;
-        if (param == null)
-            return null;
-        String text = param.getString("q");
         boolean ok = false;
         if ((text.contains("呼") && !text.endsWith("呼")) || (text.contains("呼叫") && !text.endsWith("呼叫"))) {
             ok = true;
@@ -32,9 +34,8 @@ public class IntentPredictionManager {
 
         if (ok) {
             ret = predictPhone(text);
-        } else {
-            // 调用罗鹏场景会话服务
-            ret = predictIntentSession(text);
+        } else{
+        	ret = predictSceneDailog(text,dailog);
         }
         return ret;
     }
@@ -107,9 +108,51 @@ public class IntentPredictionManager {
         }
         return ret;
     }
+    
+    private JSONObject predictSceneDailog(String text,String dailog) {
+    	JSONObject ret = null;
+    	String content="";
+    	MKBHttpClient httpclient = new MKBHttpClient();
+    	Map<String, String> createMap = new HashMap<String, String>();
+    	createMap.put("s", text);
+    	createMap.put("dilog", dailog);
+    	String charset = "utf-8";
+    	String ContentType = "application/x-www-form-urlencoded";
+        String result = httpclient.doHttpPost(URL, createMap, charset,ContentType,DEVELOP_KEY);
+        JSONObject json = (JSONObject) JSONObject.parse(result);
+        String status = json.get("status")==null?"0":json.get("status").toString();
+        String msg = json.get("msg")==null?"":json.get("msg").toString();
+        if("1".equals(status)){
+//        	if(sceneLocal.get()!=null&&!"".equals(sceneLocal.get())){
+//        		 ret = new JSONObject();
+//                 ret.put("name", msg);
+//                 ret.put("text", msg);
+//                 ret.put("status", status);
+//                 ret.put("code", 9002);
+//            }else{
+//            	 sceneLocal.set(json.get("status")==null?"0":json.get("status").toString());
+            	 ret = new JSONObject();
+                 ret.put("name", msg);
+                 ret.put("text", msg);
+                 ret.put("status", status);
+                 ret.put("dilog", json.get("dilog")==null?"":json.get("dilog").toString());
+                 ret.put("code", 9002);
+//            }
+        }else if("2".equals(status)){
+        	ret = json;
+        }else{
+        	ret = null;
+        }
+        
+    	return ret;
+    }
 
     private static String characterFormat(String s) {
         String str = s.replaceAll("[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……& amp;*（）——+|{}【】‘；：”“’。，、？|-]", "");
         return str;
     }
+    public static void main(String[] args) {
+    	IntentPredictionManager a = new IntentPredictionManager();
+    	a.predictSceneDailog("案例","f254fa82f9e248309de21794627318e1");
+	}
 }

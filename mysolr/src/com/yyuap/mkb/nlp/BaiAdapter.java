@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +13,6 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.wltea.analyzer.core.IKSegmenter;
-import org.wltea.analyzer.core.Lexeme;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.turbot.MKBHttpClient;
@@ -44,7 +40,7 @@ public class BaiAdapter {
 
             String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token=" + access_token;
 
-            org.apache.commons.httpclient.methods.PostMethod post = new PostMethod(url);
+            PostMethod post = new PostMethod(url);
             RequestEntity re;
 
             JSONObject json = new JSONObject();
