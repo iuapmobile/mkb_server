@@ -123,7 +123,7 @@ public class IntentPredictionManager {
                  ret.put("name", msg);
                  ret.put("text", msg);
                  ret.put("status", status);
-                 ret.put("dailog", json.get("dilog")==null?"":json.get("dilog").toString());
+                 ret.put("dilog", json.get("dilog")==null?"":json.get("dilog").toString());
                  ret.put("code", 9002);
 //            }
         }else if("2".equals(status)){

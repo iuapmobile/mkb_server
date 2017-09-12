@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +23,10 @@ import com.yyuap.mkb.processor.MKBSessionManager;
 import com.yyuap.mkb.processor.QAManager;
 import com.yyuap.mkb.processor.SolrManager;
 import com.yyuap.mkb.services.util.MKBRequestProcessor;
+import com.yyuap.mkb.services.util.RedisUtil;
 import com.yyuap.mkb.turbot.MKBHttpClient;
+
+import redis.clients.jedis.Jedis;
 
 /**
  * Servlet implementation class mkbQuery
@@ -73,6 +77,12 @@ public class Query extends HttpServlet {
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
         String dailog = requestParam.getString("dailog");
+        String dailogid = requestParam.getString("dailogid");
+        if(dailogid != null && !"".equals(dailogid)){
+        	dailog = RedisUtil.getString(dailogid);
+        }else{
+			dailogid = UUID.randomUUID().toString();
+        }
 
         // 一、获取租户信息
         Tenant tenant = null;
@@ -110,8 +120,11 @@ public class Query extends HttpServlet {
                     boolean prediction = skills.getBooleanValue("prediction");
                     if (prediction) {
                         IntentPredictionManager intentMgr = new IntentPredictionManager();
+                       
                         JSONObject obj = intentMgr.predictIntent(q,dailog);
                         if (obj != null) {
+//                        	obj.put("dailogid", dailogid);
+                        	RedisUtil.setString(dailogid, obj.get("dilog").toString());
                         	if("2".equals(obj.get("status").toString())){
                         		String scenename = obj.get("scenename").toString();
                         		String dataStr = "";
@@ -123,7 +136,9 @@ public class Query extends HttpServlet {
                         	    }
                         		dataStr = scenename + dataStr;
                         		q = dataStr;
+                        		
                         	}else{
+                        		obj.put("dailogid", dailogid);
                         		ro.setBotResponse(obj);
                                 response.getWriter().write(ro.getResutlString());
                                 return;
@@ -134,7 +149,12 @@ public class Query extends HttpServlet {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }catch (Throwable a) {
+	           	 ro.setStatus(21000);
+	             ro.setReason(a.getMessage());
+	             response.getWriter().write(ro.getResutlString());
+	             return;
+          }
 
             // 1、是否推荐，启用搜索引擎进行推荐
             boolean recommended = tenant.getRecommended();
@@ -155,7 +175,8 @@ public class Query extends HttpServlet {
             try {
                 uniqueQA = qamgr.getUniqueAnswer(q, tenant);
                 if (uniqueQA != null && (!uniqueQA.getString(q).equals("") || !uniqueQA.getString("url").equals(""))) {
-                    processBotResponse(ro, uniqueQA);
+                    ro.setBotResponseKV("dailogid", dailogid);
+                	processBotResponse(ro, uniqueQA,dailogid);
                 }
             } catch (SolrServerException e1) {
                 ro.setStatus(21000);
@@ -179,6 +200,7 @@ public class Query extends HttpServlet {
                 if (uniqueQA == null || (uniqueQA.getString("a").equals("") && uniqueQA.getString("url").equals(""))) {
                     if (bot == null || !bot.equalsIgnoreCase("false")) {
                         JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
+                        jsonTu.put("dailogid", dailogid);
                         ro.setBotResponse(jsonTu);
                     }
                 }
@@ -188,7 +210,7 @@ public class Query extends HttpServlet {
 
                 botRes.put("a", "我还不太明白您的意思");
 
-                processBotResponse(ro, botRes);
+                processBotResponse(ro, botRes,dailogid);
             }
 
         } else {
@@ -231,7 +253,7 @@ public class Query extends HttpServlet {
         doGet(request, response);
     }
 
-    private void processBotResponse(ResultObject ro, JSONObject uniqueQA) {
+    private void processBotResponse(ResultObject ro, JSONObject uniqueQA,String dailogid) {
         String _url = uniqueQA.getString("url");
         String _a = uniqueQA.getString("a");
         String _qtype = uniqueQA.getString("qtype");
@@ -251,6 +273,7 @@ public class Query extends HttpServlet {
             ro.setBotResponseKV("kbid", "1");
         }
         ro.setBotResponseKV("simscore", uniqueQA.getString("simscore"));
+        ro.setBotResponseKV("dailogid", dailogid);
     }
 
     private JSONObject tubot(String botKey, String q, String botuserid) {

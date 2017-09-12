@@ -308,6 +308,47 @@ public class CBOManager {
     }
     
     /**
+     * 更新
+     * @return
+     * @throws SQLException
+     */
+    public boolean updateTenantInfo(String sql,TenantInfo tenant) throws SQLException {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean flag = false;
+        try {
+            Class.forName(CommonSQL.DRIVER);
+            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            ps = conn.prepareStatement(sql);
+
+ 
+            ps.setFloat(1, tenant.getSimscore());
+            ps.setBoolean(2, tenant.getRecommended());
+            ps.setString(3, tenant.getSolr_qf());
+            ps.setString(4, tenant.getSolr_sort());
+            ps.setBoolean(5, tenant.getUseSynonym());
+            ps.setBoolean(6, tenant.getSorl_useFilterQueries());
+            ps.setString(7, tenant.getId());
+            
+            flag = ps.execute();
+
+
+        } catch (Exception e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return flag;
+    }
+    
+    /**
      * 删除
      * @return
      * @throws SQLException
