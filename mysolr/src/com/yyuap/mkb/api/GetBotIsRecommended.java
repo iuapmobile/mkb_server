@@ -1,4 +1,4 @@
-package com.yyuap.mkb.services;
+package com.yyuap.mkb.api;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,21 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.cbo.TenantInfo;
+import com.yyuap.mkb.services.ResultObject;
+import com.yyuap.mkb.services.ResultObjectFactory;
 
 /**
  * Servlet implementation class AddStore
  */
-@WebServlet("/QueryTenantInfo")
-public class QueryTenantInfo extends HttpServlet {
+@WebServlet("/GetIsRecommended")
+public class GetBotIsRecommended extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QueryTenantInfo() {
+    public GetBotIsRecommended() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,36 +52,44 @@ public class QueryTenantInfo extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 这句话的意�?�，是让浏览器用utf8来解析返回的数据
+        // 让浏览器用utf8来解析返回的数据
         response.setHeader("Content-type", "application/json;charset=UTF-8");
-        // 这句话的意�?�，是告诉servlet用UTF-8转码，�?�不是用默认的ISO8859
+        // 设置servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
 
-
         String apiKey = request.getParameter("apiKey");
-        // 1、获取租户信�?
-        if(null == apiKey || "".equals(apiKey)){
-        	 ResultObjectFactory rof = new ResultObjectFactory();
-             ResultObject ro = rof.create(-1);
-             ro.setReason("apiKey不能为空！");
-             response.getWriter().write(ro.toString());
-             return;
+
+        // 1、获取租户信息
+        if (null == apiKey || "".equals(apiKey)) {
+            ResultObjectFactory rof = new ResultObjectFactory();
+            ResultObject ro = rof.create(-1);
+            ro.setReason("没有必要的参数apiKey！");
+            response.getWriter().write(ro.toString());
+            return;
         }
-    	CBOManager api = new CBOManager();
-    	TenantInfo tenant = null;
+        CBOManager api = new CBOManager();
+        TenantInfo tenant = null;
         try {
-        	tenant = api.getTenant(apiKey);
+            tenant = api.getTenant(apiKey);
         } catch (SQLException e1) {
-            // TODO Auto-generated catch block
+
+            ResultObjectFactory rof = new ResultObjectFactory();
+            ResultObject ro = rof.create(-1);
+            ro.setReason("未能正确获取apiKey[" + apiKey + "]的租户信息！");
+            response.getWriter().write(ro.toString());
             e1.printStackTrace();
+            return;
         }
 
-        
-        
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);
-        ro.setResponseKV("isRecommended", tenant.getRecommended());
-        ro.setResponseKV("id", tenant.getId());
+        JSONObject obj = new JSONObject();
+
+        obj.put("isRecommended", tenant.getRecommended());
+        obj.put("id", tenant.getId());
+        obj.put("apiKey", tenant.getId());
+
+        ro.setResponseData(obj);
         response.getWriter().write(ro.toString());
 
     }
