@@ -35,12 +35,12 @@ public class PropertiesUtil {
 //	        {
 //	        }
 //	    }
-	 
 	 public static void loadProperties(ServletContextEvent arg0){
 		 try
 	        {
 	            try
 	            {
+	            	System.out.println("加载properties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties")));
 	                ise = new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties"));
 	                
 	                jdbcProp.load(ise);
@@ -80,4 +80,5 @@ public class PropertiesUtil {
 				e.printStackTrace();
 			}
 	    }
+
 }

@@ -71,6 +71,10 @@ public class AddQA extends HttpServlet {
         if (null == istop || "".equals(istop)) {
             istop = "0";
         }
+        String ext_scope = request.getParameter("ext_scope");//tag: "personinside" //内部为personinside 其余为空
+        if(null!=ext_scope && !"personinside".equals(ext_scope)){
+        	ext_scope = null;
+        }
         String libraryPk = request.getParameter("libraryPk");
         String[] qs = request.getParameterValues("qs");
         if(null == url || "".equals(url)){
@@ -123,6 +127,7 @@ public class AddQA extends HttpServlet {
             json.put("kbid", kbid);
             json.put("istop", istop);
             json.put("libraryPk", libraryPk);
+            json.put("ext_scope", ext_scope);
             QAManager qam = new QAManager();
             String id = qam.addQA(json, tenant);
             ro.setResponseKV("id", id);

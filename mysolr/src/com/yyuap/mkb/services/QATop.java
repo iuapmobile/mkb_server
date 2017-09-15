@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.processor.QAManager;
+import com.yyuap.mkb.services.util.PropertiesUtil;
 
 /**
  * Servlet implementation class QATop
@@ -23,7 +26,7 @@ import com.yyuap.mkb.processor.QAManager;
 @WebServlet("/QATop")
 public class QATop extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -71,6 +74,10 @@ public class QATop extends HttpServlet {
         apiKey = requestParam.getString("apiKey");
 
         String top = request.getParameter("top");
+        //tag: "personinside" //内部为personinside 其余为空
+        String tag = request.getParameter("tag");
+        
+        
         top = requestParam.getString("top");
         int topn = 5;
         try {
@@ -87,9 +94,9 @@ public class QATop extends HttpServlet {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-
+        System.out.println(System.getProperty("user.dir"));
         QAManager qamgr = new QAManager();
-        JSONArray array = qamgr.topN(topn, tenant);
+        JSONArray array = qamgr.topN(topn, tenant,tag);
 
         ResultObject ro = (new ResultObjectFactory()).create(0);
         //JSONObject res = ro.getResponse();
@@ -146,5 +153,18 @@ public class QATop extends HttpServlet {
 
         return param;
     }
+    
+    public static void main(String[] args) {
+    	// 1、获取租户信息
+        Tenant tenant = null;
+        CBOManager api = new CBOManager();
+        try {
+            tenant = api.getTenantInfo("bc2b9ac6ea134eeb940bb1ec43ff3a5a");
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+    	System.out.println(PropertiesUtil.class.getClassLoader().getResource("jdbc.properties").getPath());
+	}
 
 }

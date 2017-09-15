@@ -31,6 +31,8 @@ public class KBQA extends KBEntity {
     private float simscore = -1;
     private String url = "";// answer可能是一个url
     private String kbid = "";// 改问答属于那一个知识库（id）
+    
+    private String ext_scope = null;// 可见范围
 
     public String getId() {
         return id;
@@ -147,6 +149,14 @@ public class KBQA extends KBEntity {
     public void setKbid(String kbid) {
         this.kbid = kbid;
     }
+
+	public String getExt_scope() {
+		return ext_scope;
+	}
+
+	public void setExt_scope(String ext_scope) {
+		this.ext_scope = ext_scope;
+	}
 
     
 

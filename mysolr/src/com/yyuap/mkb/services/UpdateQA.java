@@ -70,6 +70,10 @@ public class UpdateQA extends HttpServlet {
         String istop = requestParam.getString("istop");//是否置顶
         String[] qs = (String[]) requestParam.get("qs");
         
+        String ext_scope = requestParam.getString("ext_scope");//可见范围
+        if(null!=ext_scope && !"personinside".equals(ext_scope)){
+        	ext_scope = null;
+        }
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
@@ -103,7 +107,7 @@ public class UpdateQA extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            boolean success = qam.updateQA(id, q, a, qs, tenant,istop);
+            boolean success = qam.updateQA(id, q, a, qs, tenant,istop,ext_scope);
             if (success) {
                 ro.setStatus(0);
             }
@@ -169,6 +173,9 @@ public class UpdateQA extends HttpServlet {
         
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
+        
+        String tag = request.getParameter("tag");
+        param.put("tag", tag);
 
      
         

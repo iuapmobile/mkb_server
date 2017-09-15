@@ -38,6 +38,8 @@ public class KBIndex extends KBEntity {
     private String qid = "";
     
     private String qtype = "";
+    
+    private String ext_scope = null;
 
     public String getId() {
         return id;
@@ -200,5 +202,15 @@ public class KBIndex extends KBEntity {
 	public void setQtype(String qtype) {
 		this.qtype = qtype;
 	}
+
+	public String getExt_scope() {
+		return ext_scope;
+	}
+
+	public void setExt_scope(String ext_scope) {
+		this.ext_scope = ext_scope;
+	}
+	
+	
     
 }

@@ -181,6 +181,7 @@ public class SolrManager {
         String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
+        String ext_scope = kbindex.getExt_scope();//可见范围
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -203,6 +204,10 @@ public class SolrManager {
         document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
+        if(null != ext_scope){
+        	document.addField("ext_scope", ext_scope);
+        }
+        
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long times = System.currentTimeMillis();
@@ -236,6 +241,7 @@ public class SolrManager {
         String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
+        String ext_scope = kbindex.getExt_scope();//可见范围
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -258,6 +264,9 @@ public class SolrManager {
         document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
+        if(null != ext_scope){
+        	document.addField("ext_scope", ext_scope);
+        }
 
         document.addField("_version_", 1);
 
@@ -290,6 +299,7 @@ public class SolrManager {
         kbindex.setCreateTime(kbqa.getCreateTime());
         kbindex.setUpdateTime(kbqa.getUpdateTime());
         kbindex.setQtype(kbqa.getQtype());
+        kbindex.setExt_scope(kbqa.getExt_scope());//可见范围
 
         this.addDoc(kbindex);
     }
@@ -451,12 +461,15 @@ public class SolrManager {
 
     }
 
-    public JSONObject query(JSONObject requestParam, Tenant tenant) throws Exception {
+    public JSONObject query(JSONObject requestParam, Tenant tenant,String id) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
         // 1、设置solr查询参数
         String _q = requestParam.getString("q");
+        
+        // 可见范围
+        String[] tag = (String[])requestParam.get("tag");
 
         int rows = 10;
         int start = 0;
@@ -503,7 +516,30 @@ public class SolrManager {
         rules.setQF(query, q, qf, tenant);
 
         String new_q = rules.addFilterQuery(query, q, tenant);
-        query.addFilterQuery("-qid:[\"\" TO *]");// q中含有subproduct，则fq限定范围
+        
+       
+        if(null == tag){
+        	if(null !=id){
+        		query.addFilterQuery(" -id:\""+id+"\" AND -qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
+        	}else{
+        		query.addFilterQuery("-qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围		
+        	}
+        	 
+        }else if("personinside".equals(tag[0])){//如果 为personinside 内部员工，查询全部
+        	if(null !=id){
+        		query.addFilterQuery(" -id:\""+id+"\" AND -qid:[\"\" TO *]");  // q中含有subproduct，则fq限定范围	
+        	}else{
+        		query.addFilterQuery("-qid:[\"\" TO *]");  // q中含有subproduct，则fq限定范围	
+        	}
+        	 
+        }else{
+        	if(null !=id){
+        		query.addFilterQuery(" -id:\""+id+"\" AND -qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
+        	}else{
+        		query.addFilterQuery("-qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
+        	}
+        	 
+        }
         // if (q == null || q.equals("")) {
         // q = "*:*";
         // }
@@ -512,7 +548,29 @@ public class SolrManager {
         if (new_q == null || new_q.trim().equals("")) {
             new_q = "*:*";
         }
-        new_q = new_q + " AND -qid:[\"\" TO *] ";//*  在solr当中  应该代表 有值  -取反
+        if(null == tag){
+        	if(null !=id){
+        		new_q = new_q + " AND -id:\""+id+"\" AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
+        	}else{
+        		new_q = new_q + " AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
+        	}
+        	
+        }else if("personinside".equals(tag[0])){//如果 为personinside 内部员工，查询全部
+        	if(null !=id){
+        		new_q = new_q + "  AND -id:\""+id+"\"  AND -qid:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
+        	}else{
+        		new_q = new_q + " AND -qid:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
+        	}
+        	
+        }else{
+        	if(null !=id){
+        		new_q = new_q + "  AND -id:\""+id+"\"  AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";
+        	}else{
+        		new_q = new_q + " AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";
+        	}
+        	
+        }
+        
         query.set("q", new_q);
 
         rules.addSort(query, q, tenant);
@@ -617,7 +675,7 @@ public class SolrManager {
 
     }
 
-    public JSONObject queryQuestion(JSONObject requestParam) throws SolrServerException, IOException {
+    public JSONObject queryQuestion(JSONObject requestParam,String[] tag) throws SolrServerException, IOException {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
@@ -633,7 +691,12 @@ public class SolrManager {
             String _keywords = sap.getKeywords(conf);
             q = this.process(_keywords);
         }
-
+        if(null == tag){
+       	 	query.addFilterQuery("-ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
+        }else if("personinside".equals(tag[0])){//如果 为personinside 内部员工，查询全部
+        }else{
+       		query.addFilterQuery("-ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
+        }
         // 非空处理
         if (q == null || q.equals("")) {
             q = "*:*";
