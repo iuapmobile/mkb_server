@@ -172,7 +172,7 @@ public class RedisUtil {
 	
 	 public static void main(String[] args) {
 //		 RedisUtil.setString("testpjf", "testpjf");
-		 System.out.println(RedisUtil.getString("testpjf"));
+		 System.out.println(RedisUtil.getString("667eb1cb-8776-445f-bb38-5e57a0ca336c"));
 	}
 	 
 }
