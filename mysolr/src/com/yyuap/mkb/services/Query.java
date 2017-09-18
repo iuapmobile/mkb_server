@@ -129,6 +129,7 @@ public class Query extends HttpServlet {
 //                        	obj.put("dailogid", dailogid);
                         	if(obj.get("dilog")!=null){
                         		RedisUtil.setString(dailogid, obj.get("dilog").toString());
+                        		dailog = obj.get("dilog").toString();
                         	}
                         	if("2".equals(obj.get("status")==null?"":obj.get("status").toString())){
                         		String scenename = obj.get("scenename").toString();
@@ -210,16 +211,21 @@ public class Query extends HttpServlet {
 
             // 3、没有唯一答案时，外接bot处理
             try {
-                if (uniqueQA == null || (uniqueQA.getString("a").equals("") && uniqueQA.getString("url").equals(""))) {
-                    if (bot == null || !bot.equalsIgnoreCase("false")) {
-                        JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
-                        jsonTu.put("dailogid", dailogid);
-                        if(null !=dailog&&!"".equals(dailog)){
-                        	jsonTu.put("text", "您好，我找呀找还是没有找到您想要的内容！");
-                        }
-                        ro.setBotResponse(jsonTu);
-                    }
+            	if(null !=dailog&&!"".equals(dailog)){
+            		JSONObject json = new JSONObject();
+            		json.put("text", "您好，我找呀找还是没有找到您想要的内容！");
+            		json.put("kbid", "1");
+            		ro.setBotResponse(json);
+                }else{
+                	 if (uniqueQA == null || (uniqueQA.getString("a").equals("") && uniqueQA.getString("url").equals(""))) {
+                         if (bot == null || !bot.equalsIgnoreCase("false")) {
+                             JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
+                             jsonTu.put("dailogid", dailogid);
+                             ro.setBotResponse(jsonTu);
+                         }
+                     }
                 }
+               
             } catch (Exception e) {
                 JSONObject botRes = new JSONObject();
                 botRes.put("request_q", q);
