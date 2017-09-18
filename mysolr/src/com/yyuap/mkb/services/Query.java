@@ -214,6 +214,9 @@ public class Query extends HttpServlet {
                     if (bot == null || !bot.equalsIgnoreCase("false")) {
                         JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
                         jsonTu.put("dailogid", dailogid);
+                        if(null !=dailog&&!"".equals(dailog)){
+                        	jsonTu.put("text", "您好，我找呀找还是没有找到您想要的内容！");
+                        }
                         ro.setBotResponse(jsonTu);
                     }
                 }
