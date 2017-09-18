@@ -77,10 +77,10 @@ public class CBOManager {
 
         return tenant;
     }
-    
+
     public TenantInfo getTenant(String apiKey) throws SQLException {
 
-    	TenantInfo tenant = null;
+        TenantInfo tenant = null;
 
         String sql = CommonSQL.SELECT_TENANT_BY_APIKEY_SQL;
         Connection conn = null;
@@ -147,15 +147,16 @@ public class CBOManager {
 
         return tenant;
     }
-    
+
     /**
-     * 查询 全部  租户
+     * 查询 全部 租户
+     * 
      * @return
      * @throws SQLException
      */
     public List<TenantInfo> getTenantInfo() throws SQLException {
 
-    	TenantInfo tenant = null;
+        TenantInfo tenant = null;
 
         String sql = "select * from mkb.u_tenant";
         Connection conn = null;
@@ -170,33 +171,33 @@ public class CBOManager {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-            	tenant = new TenantInfo();
-            	tenant.setId(rs.getString("id"));
-            	tenant.setTname(rs.getString("tname"));
-            	tenant.setTdescript(rs.getString("tdescript"));
-            	tenant.setTusername(rs.getString("tusername"));
-            	tenant.setTpassword(rs.getString("tpassword"));
-            	tenant.setApiKey(rs.getString("apiKey"));
-            	tenant.setDbip(rs.getString("dbip"));
-            	tenant.setDbport(rs.getString("dbport"));
-            	tenant.setDbname(rs.getString("dbname"));
-            	tenant.setDbusername(rs.getString("dbusername"));
-            	tenant.setDbpassword(rs.getString("dbpassword"));
+                tenant = new TenantInfo();
+                tenant.setId(rs.getString("id"));
+                tenant.setTname(rs.getString("tname"));
+                tenant.setTdescript(rs.getString("tdescript"));
+                tenant.setTusername(rs.getString("tusername"));
+                tenant.setTpassword(rs.getString("tpassword"));
+                tenant.setApiKey(rs.getString("apiKey"));
+                tenant.setDbip(rs.getString("dbip"));
+                tenant.setDbport(rs.getString("dbport"));
+                tenant.setDbname(rs.getString("dbname"));
+                tenant.setDbusername(rs.getString("dbusername"));
+                tenant.setDbpassword(rs.getString("dbpassword"));
 
-            	tenant.setTkbcore(rs.getString("tkbcore"));
-            	tenant.setTqakbcore(rs.getString("tqakbcore"));
+                tenant.setTkbcore(rs.getString("tkbcore"));
+                tenant.setTqakbcore(rs.getString("tqakbcore"));
 
-	            tenant.setBotKey(rs.getString("botKey"));
-	            tenant.setSimscore(rs.getFloat("simscore"));
-	            tenant.setRecommended(rs.getBoolean("recommended"));
-	
-	            tenant.setSolr_qf(rs.getString("solr_qf"));
-	            tenant.setSolr_sort(rs.getString("solr_sort"));
-	
-	            tenant.setUseSynonym(rs.getBoolean("useSynonym"));
-	            tenant.setSorl_useFilterQueries(rs.getBoolean("solr_useFilterQueries"));
-	            tenant.setBotSkillConfig(rs.getString("botSkillConfig"));
-                
+                tenant.setBotKey(rs.getString("botKey"));
+                tenant.setSimscore(rs.getFloat("simscore"));
+                tenant.setRecommended(rs.getBoolean("recommended"));
+
+                tenant.setSolr_qf(rs.getString("solr_qf"));
+                tenant.setSolr_sort(rs.getString("solr_sort"));
+
+                tenant.setUseSynonym(rs.getBoolean("useSynonym"));
+                tenant.setSorl_useFilterQueries(rs.getBoolean("solr_useFilterQueries"));
+                tenant.setBotSkillConfig(rs.getString("botSkillConfig"));
+
                 list.add(tenant);
 
             }
@@ -217,14 +218,14 @@ public class CBOManager {
 
         return list;
     }
-    
+
     /**
      * 更新
+     * 
      * @return
      * @throws SQLException
      */
     public boolean updateTenantInfo(TenantInfo tenant) throws SQLException {
-
 
         String sql = "update mkb.u_tenant set tname=?,tdescript=?,tusername=?,tpassword=?,simscore=?,recommended=?,solr_qf=?,solr_sort=?,useSynonym=?,solr_useFilterQueries=? where id=?";
         Connection conn = null;
@@ -246,9 +247,8 @@ public class CBOManager {
             ps.setBoolean(9, tenant.getUseSynonym());
             ps.setBoolean(10, tenant.getSorl_useFilterQueries());
             ps.setString(11, tenant.getId());
-            
-            flag = ps.execute();
 
+            flag = ps.execute();
 
         } catch (Exception e) {
             throw new SQLException(e.getMessage());
@@ -263,14 +263,14 @@ public class CBOManager {
 
         return flag;
     }
-    
+
     /**
      * 更新
+     * 
      * @return
      * @throws SQLException
      */
     public boolean updateBotInfo(TenantInfo tenant) throws SQLException {
-
 
         String sql = "update mkb.u_tenant set simscore=?,recommended=?,solr_qf=?,solr_sort=?,useSynonym=?,solr_useFilterQueries=? where id=?";
         Connection conn = null;
@@ -281,7 +281,6 @@ public class CBOManager {
             conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
- 
             ps.setFloat(1, tenant.getSimscore());
             ps.setBoolean(2, tenant.getRecommended());
             ps.setString(3, tenant.getSolr_qf());
@@ -289,9 +288,8 @@ public class CBOManager {
             ps.setBoolean(5, tenant.getUseSynonym());
             ps.setBoolean(6, tenant.getSorl_useFilterQueries());
             ps.setString(7, tenant.getId());
-            
-            flag = ps.execute();
 
+            flag = ps.execute();
 
         } catch (Exception e) {
             throw new SQLException(e.getMessage());
@@ -306,13 +304,14 @@ public class CBOManager {
 
         return flag;
     }
-    
+
     /**
      * 更新
+     * 
      * @return
      * @throws SQLException
      */
-    public boolean updateTenantInfo(String sql,TenantInfo tenant) throws SQLException {
+    public boolean updateBotSettings(String apiKey, String key, boolean value) throws SQLException {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -320,19 +319,15 @@ public class CBOManager {
         try {
             Class.forName(CommonSQL.DRIVER);
             conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+
+            String sql = "update mkb.u_tenant set ?=? where apiKey=?";
             ps = conn.prepareStatement(sql);
 
- 
-            ps.setFloat(1, tenant.getSimscore());
-            ps.setBoolean(2, tenant.getRecommended());
-            ps.setString(3, tenant.getSolr_qf());
-            ps.setString(4, tenant.getSolr_sort());
-            ps.setBoolean(5, tenant.getUseSynonym());
-            ps.setBoolean(6, tenant.getSorl_useFilterQueries());
-            ps.setString(7, tenant.getId());
-            
-            flag = ps.execute();
+            ps.setString(1, key);
+            ps.setBoolean(2, value);
+            ps.setString(3, apiKey);
 
+            flag = ps.execute();
 
         } catch (Exception e) {
             throw new SQLException(e.getMessage());
@@ -347,58 +342,59 @@ public class CBOManager {
 
         return flag;
     }
-    
+
     /**
      * 删除
+     * 
      * @return
      * @throws SQLException
      */
     public boolean delTenantInfo(String id) throws SQLException {
 
-    	 Tenant tenant = null;
+        Tenant tenant = null;
 
-         String sql = "select * from mkb.u_tenant where id = ?";
-         Connection conn = null;
-         PreparedStatement ps = null;
-         ResultSet rs = null;
-         boolean success1=false;
-         boolean success2=false;
-         try {
-             Class.forName(CommonSQL.DRIVER);
-             conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
-             ps = conn.prepareStatement(sql);
+        String sql = "select * from mkb.u_tenant where id = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        boolean success1 = false;
+        boolean success2 = false;
+        try {
+            Class.forName(CommonSQL.DRIVER);
+            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            ps = conn.prepareStatement(sql);
 
-             ps.setString(1, id);
+            ps.setString(1, id);
 
-             rs = ps.executeQuery();
+            rs = ps.executeQuery();
 
-             int num = 0;
-             String dbname="";
-             while (rs.next()) {
-            	 dbname = rs.getString("dbname");
-             }
-             String delsql = "delete from u_tenant where id='"+id+"'";
-             ps = conn.prepareStatement(delsql);
-             success1 = ps.execute();
-//             String dropsql = "drop database "+dbname+"";
-//             ps = conn.prepareStatement(dropsql);
-//             success2 = ps.execute();
+            int num = 0;
+            String dbname = "";
+            while (rs.next()) {
+                dbname = rs.getString("dbname");
+            }
+            String delsql = "delete from u_tenant where id='" + id + "'";
+            ps = conn.prepareStatement(delsql);
+            success1 = ps.execute();
+            // String dropsql = "drop database "+dbname+"";
+            // ps = conn.prepareStatement(dropsql);
+            // success2 = ps.execute();
 
-         } catch (Exception e) {
-             throw new SQLException(e.getMessage());
-         } finally {
-             if (rs != null) {
-                 rs.close();
-             }
-             if (ps != null) {
-                 ps.close();
-             }
-             if (conn != null) {
-                 conn.close();
-             }
-         }
+        } catch (Exception e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
 
-         return success1;
+        return success1;
     }
 
     public TenantInfo getTenantInfoForLogin(String username, String password) throws SQLException {

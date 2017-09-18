@@ -253,6 +253,7 @@ public class DbUtil {
             }
             ps.setString(12, qa.getUrl());// url
             ps.setString(13, qa.getKbid());// kbid
+            ps.setString(14, qa.getExt_scope());// 可见范围
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
@@ -288,7 +289,8 @@ public class DbUtil {
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(sql);
 
-            ps.setString(1, q);
+            
+        	ps.setString(1, q);
 
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -319,7 +321,7 @@ public class DbUtil {
         return list;
     }
 
-    public static ArrayList<JSONObject> selectAnswerSimilar(String sql, String q, DBConfig dbconf) throws SQLException {
+    public static ArrayList<JSONObject> selectAnswerSimilar(String sql, String q, DBConfig dbconf,String[] tag) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -328,7 +330,6 @@ public class DbUtil {
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-
             ps = conn.prepareStatement("select distinct qid from qa_similar where trim(question) = ?");
             ps.setString(1, q);
             rs = ps.executeQuery();
@@ -731,7 +732,7 @@ public class DbUtil {
 
     }
 
-    public static JSONArray selectQA_topn(String qaTop5SQL, int topn, DBConfig dbconf) throws SQLException {
+    public static JSONArray selectQA_topn(String qaTop5SQL, int topn, DBConfig dbconf,String tag) throws SQLException {
         // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
@@ -747,8 +748,16 @@ public class DbUtil {
 
             // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
             // Common.PASSWORD);
-
-            ps = conn.prepareStatement(" select * from qa where istop=1 order by settoptime desc limit ? ");
+            String sql1 = "";
+            if(null == tag){
+            	sql1 = " select * from qa where istop=1 order by settoptime desc limit ? ";
+            }else if("personinside".equals(tag)){
+            	sql1 = " select * from qa where istop=1 order by settoptime desc limit ? ";
+            }else{
+            	sql1 = " select * from qa where istop=1 and ext_scope is null order by settoptime desc limit ? ";
+            }
+            	
+            ps = conn.prepareStatement(sql1);
             ps.setInt(1, topn);
             rs = ps.executeQuery();
             int rownum = 0;
@@ -900,7 +909,10 @@ public class DbUtil {
             ps.setString(5, qa.getUrl());
 
             ps.setString(6, qa.getQtype());
-            ps.setString(7, qa.getId());
+
+            ps.setString(7, qa.getExt_scope());
+            ps.setString(8, qa.getId());
+
 
             boolean flag = ps.execute();
             if (!flag) {

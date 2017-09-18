@@ -23,12 +23,12 @@ public class QAManager {
 
     }
 
-    public JSONObject getUniqueAnswer(String q, Tenant tenant) throws SolrServerException, IOException {
+    public JSONObject getUniqueAnswer(String q, Tenant tenant,String[] tag) throws SolrServerException, IOException {
         // TODO Auto-generated method stub
         JSONObject ret = null;
 
         DBManager dbmgr = new DBManager();
-        ret = dbmgr.selectUniqueAnswer(q, tenant);
+        ret = dbmgr.selectUniqueAnswer(q, tenant,tag);
         if (ret == null || ret.equals("")) {
             // 1、通过solr查询出前x条，进行相似度处理
 
@@ -38,7 +38,7 @@ public class QAManager {
             JSONObject requestParam = new JSONObject();
             requestParam.put("q", q);
             requestParam.put("num", 3);
-            JSONObject topQ = solr.queryQuestion(requestParam);
+            JSONObject topQ = solr.queryQuestion(requestParam,tag);
             JSONArray array = topQ.getJSONObject("response").getJSONArray("docs");
 
             Float scoreMax = 0f;
@@ -47,6 +47,7 @@ public class QAManager {
                 String _a = array.getJSONObject(i).getString("answer");
                 String _url = array.getJSONObject(i).getString("url");
                 String _qtype = array.getJSONObject(i).getString("qtype");
+                String id = array.getJSONObject(i).getString("id");
 
                 float simscoreDef = 0f;
                 try {
@@ -76,6 +77,7 @@ public class QAManager {
                         botRes.put("simscore", score);
                         botRes.put(q, _a);
                         botRes.put("qtype", _qtype);
+                        botRes.put("id", id);
                         ret = botRes;
                     }
                 } else {
@@ -98,6 +100,7 @@ public class QAManager {
         qa.setUrl(json.getString("url"));// 是否置顶
         qa.setKbid(json.getString("kbid"));// 是否置顶
         qa.setQtype(json.getString("qtype"));
+        qa.setExt_scope(json.getString("ext_scope"));//可见范围
 
         String[] questions = (String[]) json.get("qs");
         if (questions != null && questions.length > 0) {
@@ -158,7 +161,7 @@ public class QAManager {
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop)
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop,String ext_scope)
             throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
@@ -167,6 +170,7 @@ public class QAManager {
         kbqa.setAnswer(a);
         kbqa.setIstop(istop);// 是否置顶
         // kbqa.setQtype(t);
+        kbqa.setExt_scope(ext_scope);
 
         kbqa.setQuestions(qs);
 
@@ -197,12 +201,12 @@ public class QAManager {
         return id;
     }
 
-    public JSONArray topN(int topn, Tenant tenant) {
+    public JSONArray topN(int topn, Tenant tenant,String tag) {
         // TODO Auto-generated method stub
         JSONArray array = new JSONArray();
 
         DBManager dbmgr = new DBManager();
-        array = dbmgr.query_tj(topn, tenant);
+        array = dbmgr.query_tj(topn, tenant,tag);
         return array;
     }
 

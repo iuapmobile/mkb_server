@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.client.solrj.SolrServerException;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
@@ -83,7 +84,9 @@ public class Query extends HttpServlet {
         }else{
 			dailogid = UUID.randomUUID().toString();
         }
-
+        
+        String[] tag = request.getParameterValues("tag");//tag: "personinside" //内部为personinside 其余为空
+        requestParam.put("tag", tag);
         // 一、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
@@ -123,8 +126,10 @@ public class Query extends HttpServlet {
                         JSONObject obj = intentMgr.predictIntent(q,dailog);
                         if (obj != null) {
 //                        	obj.put("dailogid", dailogid);
-                        	RedisUtil.setString(dailogid, obj.get("dilog").toString());
-                        	if("2".equals(obj.get("status").toString())){
+                        	if(obj.get("dilog")!=null){
+                        		RedisUtil.setString(dailogid, obj.get("dilog").toString());
+                        	}
+                        	if("2".equals(obj.get("status")==null?"":obj.get("status").toString())){
                         		String scenename = obj.get("scenename").toString();
                         		String dataStr = "";
                         		JSONObject jsonObject = obj.getJSONObject("data");
@@ -161,27 +166,16 @@ public class Query extends HttpServlet {
 	             return;
           }
 
-            // 1、是否推荐，启用搜索引擎进行推荐
-            boolean recommended = tenant.getRecommended();
-            if (recommended) {
-                try {
-                    String corename = tenant.gettkbcore();
-                    SolrManager solrmng = new SolrManager(corename);
-                    JSONObject _ret = solrmng.query(requestParam, tenant);// 获取查询结果,，一个新的对象
-                    ro.set(_ret);// 导致botResponse需要重新赋值
-                } catch (Exception e) {
-                    System.out.println("==========>推荐出错！q=" + q + " tname=" + tenant.gettname() + " apiKey=" + apiKey
-                            + " " + e.toString());
-                }
-            }
-
-            // 2、查询唯一答案，根据相似性处理得出唯一答案
+            
+            String id = null;
+            // 1、查询唯一答案，根据相似性处理得出唯一答案
             QAManager qamgr = new QAManager();
             try {
-                uniqueQA = qamgr.getUniqueAnswer(q, tenant);
+                uniqueQA = qamgr.getUniqueAnswer(q, tenant,tag);
                 if (uniqueQA != null && (!uniqueQA.getString(q).equals("") || !uniqueQA.getString("url").equals(""))) {
                     ro.setBotResponseKV("dailogid", dailogid);
-                	processBotResponse(ro, uniqueQA,dailogid);
+                    id = uniqueQA.getString("id");
+//                	processBotResponse(ro, uniqueQA,dailogid);
                 }
             } catch (SolrServerException e1) {
                 ro.setStatus(21000);
@@ -199,6 +193,25 @@ public class Query extends HttpServlet {
 	             response.getWriter().write(ro.getResutlString());
 	             return;
            }
+            
+            // 2、是否推荐，启用搜索引擎进行推荐
+           
+            
+            boolean recommended = tenant.getRecommended();
+            if (recommended) {
+                try {
+                    String corename = tenant.gettkbcore();
+                    SolrManager solrmng = new SolrManager(corename);
+                    JSONObject _ret = solrmng.query(requestParam, tenant,id);// 获取查询结果,，一个新的对象
+                    ro.set(_ret);// 导致botResponse需要重新赋值
+                } catch (Exception e) {
+                    System.out.println("==========>推荐出错！q=" + q + " tname=" + tenant.gettname() + " apiKey=" + apiKey
+                            + " " + e.toString());
+                }
+            }
+            if (uniqueQA != null && (!uniqueQA.getString(q).equals("") || !uniqueQA.getString("url").equals(""))) {
+            	processBotResponse(ro, uniqueQA,dailogid);
+            }
 
             // 3、没有唯一答案时，外接bot处理
             try {
@@ -206,6 +219,9 @@ public class Query extends HttpServlet {
                     if (bot == null || !bot.equalsIgnoreCase("false")) {
                         JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
                         jsonTu.put("dailogid", dailogid);
+                        if(null !=dailog&&!"".equals(dailog)){
+                        	jsonTu.put("text", "您好，我找呀找还是没有找到您想要的内容！");
+                        }
                         ro.setBotResponse(jsonTu);
                     }
                 }
@@ -262,12 +278,24 @@ public class Query extends HttpServlet {
         String _url = uniqueQA.getString("url");
         String _a = uniqueQA.getString("a");
         String _qtype = uniqueQA.getString("qtype");
+//        JSONObject q = (JSONObject)ro.get().get("response");
+//        JSONArray c = (JSONArray)q.get("docs");
+//        if(c!=null && c.size()!=0){
+//        	for(int i=0;i<c.size();i++){
+//        		JSONObject d = (JSONObject)c.get(i);
+//        		String title = (String) d.get("title");
+//        		if(title.equals(uniqueQA.getString("kb_q"))){
+//        			c.remove(i);
+//        		}
+//        	}
+//        }
         ro.setBotResponse(new JSONObject());
+        
         if (_url != null && !_url.equals("")) {
             ro.setBotResponseKV("code", "200000");// 链接类
             String _q = uniqueQA.getString("kb_q");
 //            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
-            ro.setBotResponseKV("text", _a);
+            ro.setBotResponseKV("text", "".equals(_a)?_q:_a);
             ro.setBotResponseKV("url", _url);
             ro.setBotResponseKV("qtype", _qtype);
             ro.setBotResponseKV("kbid", "1");

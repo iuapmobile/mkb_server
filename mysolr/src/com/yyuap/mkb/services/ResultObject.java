@@ -135,9 +135,17 @@ public class ResultObject {
         this._response.put("docs", jsonArray);
 
     }
-    
-    public String toString(){
+
+    public void getResponseData() {
+        this._response.getJSONObject("data");
+    }
+
+    public void setResponseData(JSONObject obj) {
+        this._response.put("data", obj);
+    }
+
+    public String toString() {
         return this._ret.toString();
-        
+
     }
 }

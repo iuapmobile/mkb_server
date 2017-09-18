@@ -170,21 +170,37 @@ public class DBManager {
         }
     }
 
-    public JSONObject selectUniqueAnswer(String q, Tenant tenant) {
+    public JSONObject selectUniqueAnswer(String q, Tenant tenant,String[] tag) {
         // TODO Auto-generated method stub
         JSONObject ret = null;
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
         ArrayList<JSONObject> list = new ArrayList<JSONObject>();
         try {
-            list = DbUtil.selectAnswer(Common.SELECT_ANSWER_BY_Q_SQL, q, dbconf);
+        	String sql = "";
+        	if(null==tag){
+        		sql = "select * from qa where trim(question) = ? and ext_scope is null";
+        	}else if("personinside".equals(tag[0])){
+        		sql = Common.SELECT_ANSWER_BY_Q_SQL;
+        	}else{
+        		sql = "select * from qa where trim(question) = ? and ext_scope is null";
+        	}
+            list = DbUtil.selectAnswer(sql, q, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
         if (list.size() == 0) {
             try {
-                list = DbUtil.selectAnswerSimilar(Common.SELECT_QA_BY_ID_SQL, q, dbconf);
+            	String sql = "";
+            	if(null==tag){
+            		sql = "select * from qa where id = ? and ext_scope is null";
+            	}else if("personinside".equals(tag[0])){
+            		sql = Common.SELECT_QA_BY_ID_SQL;
+            	}else{
+            		sql = "select * from qa where id = ? and ext_scope is null";
+            	}
+                list = DbUtil.selectAnswerSimilar(sql, q, dbconf,tag);
             } catch (SQLException e) {
                 System.out.println("selectUniqueAnswer方法异常，取相似问题时，出现异常");
             }
@@ -297,7 +313,7 @@ public class DBManager {
         return id;
     }
 
-    public JSONArray query_tj(int topn, Tenant tenant) {
+    public JSONArray query_tj(int topn, Tenant tenant,String tag) {
         // TODO Auto-generated method stub
         // 1、根据租户获取DBconfig
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
@@ -305,7 +321,7 @@ public class DBManager {
         // 2、检查是否已经存在相同的q和a
         JSONArray list = null;
         try {
-            list = DbUtil.selectQA_topn(Common.QA_TOPN, topn, dbconf);
+            list = DbUtil.selectQA_topn(Common.QA_TOPN, topn, dbconf,tag);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
