@@ -13,6 +13,9 @@ import sun.print.resources.serviceui;
 public class PropertiesUtil {
 	private static Properties jdbcProp = new Properties();
 	private static InputStream ise = null;
+	
+	private static Properties prop = new Properties();
+	private static InputStream propise = null;
 //	 static
 //	    {
 //	        try
@@ -40,16 +43,26 @@ public class PropertiesUtil {
 	        {
 	            try
 	            {
-	            	System.out.println("加载properties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties")));
+	            	System.out.println("加载jdbcproperties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties")));
 	                ise = new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties"));
 	                
 	                jdbcProp.load(ise);
+	                
+	                System.out.println("加载config.properties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/config.properties")));
+	                propise = new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/config.properties"));
+	                
+	                prop.load(propise);
+	                
 	            }
 	            finally
 	            {
 	                if (ise != null)
 	                {
 	                    ise.close();
+	                }
+	                if (propise != null)
+	                {
+	                	propise.close();
 	                }
 	            }
 	        }
@@ -67,7 +80,14 @@ public class PropertiesUtil {
 	    public static String getJdbcString(String key)
 	    {
 	        return jdbcProp.getProperty(key);
-	    }  
+	    } 
+	    
+	    
+	    public static String getConfigPropString(String key)
+	    {
+	        return prop.getProperty(key);
+	    } 
+	    
 	    public static void main(String[] args) {
 //	    	System.out.println(request.getContextPath());
 			System.out.println(Thread.currentThread().getContextClassLoader().getResourceAsStream("D:/software/apache-tomcat-8.5.15/webapps/kb/WEB-INF/lib/jdbc.properties"));

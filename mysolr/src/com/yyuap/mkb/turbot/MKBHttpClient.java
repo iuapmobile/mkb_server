@@ -1,15 +1,22 @@
 package com.yyuap.mkb.turbot;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -96,5 +103,33 @@ public class MKBHttpClient {
         }
         return result;
     }
+    
+    @SuppressWarnings("finally")
+	public String doHttpGet(String url, Object... get_param) {
+		String result = null;
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		String coururl = MessageFormat.format(url, get_param);
+		HttpGet httpGet = new HttpGet(coururl);
+		CloseableHttpResponse httpResponse = null;
+		try {
+			httpResponse = httpClient.execute(httpGet);
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				HttpEntity entity = httpResponse.getEntity();
+				result = EntityUtils.toString(entity);
+				EntityUtils.consume(entity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (httpResponse != null) {
+					httpResponse.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
+	}   
 
 }
