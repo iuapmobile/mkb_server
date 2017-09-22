@@ -95,13 +95,23 @@ public class DbUtil {
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-            ps = conn.prepareStatement(sql);
+            if(null == kbqa.getQtype()){
+            	ps = conn.prepareStatement("select * from qa where question = ? and answer = ? and qtype is null");
 
-            ps.setString(1, kbqa.getQuestion());
-            ps.setString(2, kbqa.getAnswer());
-            ps.setString(2, kbqa.getQtype());
+                ps.setString(1, kbqa.getQuestion());
+                ps.setString(2, kbqa.getAnswer());
 
-            rs = ps.executeQuery();
+                rs = ps.executeQuery();
+            }else{
+            	 ps = conn.prepareStatement(sql);
+
+                 ps.setString(1, kbqa.getQuestion());
+                 ps.setString(2, kbqa.getAnswer());
+                 ps.setString(3, kbqa.getQtype());
+
+                 rs = ps.executeQuery();
+            }
+           
             while (rs.next()) {
                 String q = rs.getString("question");
                 String a = rs.getString("answer");

@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -14,7 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -23,23 +24,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
 import org.joda.time.DateTime;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.CommonSQL;
 import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.entity.KBIndex;
-import com.yyuap.mkb.entity.KBQA;
+import com.yyuap.mkb.fileUtil.FileCopyUtil;
+import com.yyuap.mkb.fileUtil.XMLParseDataConfig;
 import com.yyuap.mkb.pl.DBConfig;
-import com.yyuap.mkb.pl.DBManager;
-import com.yyuap.mkb.pl.KBDuplicateSQLException;
-import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.pl.KBSQLException;
-import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.processor.SolrManager;
 import com.yyuap.mkb.services.util.PropertiesUtil;
+import com.yyuap.mkb.turbot.MKBHttpClient;
 
 /**
  * Servlet implementation class CreateTenant
@@ -176,7 +173,7 @@ public class CreateTenant extends HttpServlet {
 		        ps.setString(21, null);
 		        ps.setString(22, null);
 		        boolean success = ps.execute();
-		        
+		        tkbcore = "kb_u_"+tusername+"_core";
 		        // 1、获取租户信息
 		        Tenant tenant = null;
 		        CBOManager api = new CBOManager();
@@ -201,6 +198,47 @@ public class CreateTenant extends HttpServlet {
 	            String _url = dbconf.getUlr();
 	            tenantconn = DriverManager.getConnection(_url, _username, _psw);
 	            excuteSql(dir,tenantconn);
+	            
+	            //复制core
+	            FileCopyUtil  fileCopy = new FileCopyUtil();
+	            String sourceCorePath = PropertiesUtil.getConfigPropString("sourceCorePath");
+	            String destCorePath = PropertiesUtil.getConfigPropString("solrhomePath")+tkbcore;
+	            File file = new File(sourceCorePath);
+	            File file2 = new File(destCorePath);
+	            fileCopy.copyFile(file, file2);
+	            XMLParseDataConfig  xmlParse = new XMLParseDataConfig();
+	            String xmlpath = destCorePath+"\\conf\\data-config.xml";
+	            String url="jdbc:mysql://localhost:3306/"+dbname+"?characterEncoding=utf-8&amp;autoReconnect=true";   
+	            //获取document
+	            File xmlFile = xmlParse.getXmlFile(xmlpath);
+	            Document document = xmlParse.getDocument(xmlFile);
+	            //获取 指定元素 dataSource
+	            String dataSourcepath ="//dataSource[@type='JdbcDataSource']";
+	            Element dataSource = xmlParse.getElement(document, dataSourcepath);
+	            xmlParse.editAttribute(dataSource, "name",dbname );
+	            xmlParse.editAttribute(dataSource, "url",url );
+	            //获取 指定元素 kbindexinfo entity
+	            String kbindexpath ="//entity[@name='kbIndexInfo']";
+	            Element kbindexElement = xmlParse.getElement(document, kbindexpath);
+	            xmlParse.editAttribute(kbindexElement, "dataSource",dbname );
+	            //获取 指定元素 qa entity
+	            String qapath ="//entity[@name='qa']";
+	            Element qaElement = xmlParse.getElement(document, qapath);
+	            xmlParse.editAttribute(qaElement, "dataSource",dbname );
+	            
+	            //获取 指定元素 qasimilar entity
+	            String qasimilarpath ="//entity[@name='qa_similar']";
+	            Element qasimilarElement = xmlParse.getElement(document, qasimilarpath);
+	            xmlParse.editAttribute(qasimilarElement, "dataSource",dbname );
+	            //保存
+	            xmlParse.saveDocument(document, xmlFile);
+	            
+	            //通过 HTTP 创建core
+	            String httpUrl = PropertiesUtil.getConfigPropString("solrPath");
+	            // config=solrconfig.xml&schema=schema.xml&dataDir=data  &config={2}&schema={3}&dataDir={4}
+	            httpUrl = httpUrl + "?action=CREATE&name={0}&instanceDir={1}";
+	            MKBHttpClient httpclient = new MKBHttpClient();
+	            String result = httpclient.doHttpGet(httpUrl, tkbcore,tkbcore);
 	            ro.setStatus(0);
 	            ro.setReason("开通成功，请使用吧！用户名："+tusername+"，密码是:"+tusername);
 	            response.getWriter().write(ro.toString());
@@ -368,10 +406,19 @@ public class CreateTenant extends HttpServlet {
     }
     
     public static void main(String[] args) {
-    	 String resource = CreateTenant.class.getResource("/com/yyuap/mkb/resource").getPath();
-    	 File file = new File("/com/yyuap/mkb/resource/jsbc.properties");
-    	 file.listFiles();
-    	 System.out.println();
+    	 //通过 HTTP 创建core
+        String httpUrl = "http://127.0.0.1:8080/kb/admin/cores";
+        // config=solrconfig.xml&schema=schema.xml&dataDir=data  &config={2}&schema={3}&dataDir={4}
+        httpUrl = httpUrl + "?action=CREATE&name={0}&instanceDir={1}";
+        MKBHttpClient httpclient = new MKBHttpClient();
+        String destCorePath = "D:\\software\\apache-tomcat-8.5.15\\webapps\\kb\\solrhome\\kb_u_wanne_core\\";
+        try {
+			httpclient.doHttpGet(httpUrl, "kb_u_wanne_core","kb_u_wanne_core");
+//        	httpclient.doHttpUriGet("http://127.0.0.1:8080/kb/admin/cores?action=STATUS&core=yycloudkbcore");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
