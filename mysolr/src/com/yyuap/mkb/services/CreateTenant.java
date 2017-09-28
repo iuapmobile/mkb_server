@@ -207,7 +207,7 @@ public class CreateTenant extends HttpServlet {
 	            File file2 = new File(destCorePath);
 	            fileCopy.copyFile(file, file2);
 	            XMLParseDataConfig  xmlParse = new XMLParseDataConfig();
-	            String xmlpath = destCorePath+"\\conf\\data-config.xml";
+	            String xmlpath = destCorePath+"/conf/data-config.xml";
 	            String url="jdbc:mysql://localhost:3306/"+dbname+"?characterEncoding=utf-8&amp;autoReconnect=true";   
 	            //获取document
 	            File xmlFile = xmlParse.getXmlFile(xmlpath);
@@ -240,7 +240,12 @@ public class CreateTenant extends HttpServlet {
 	            MKBHttpClient httpclient = new MKBHttpClient();
 	            String result = httpclient.doHttpGet(httpUrl, tkbcore,tkbcore);
 	            ro.setStatus(0);
-	            ro.setReason("开通成功，请使用吧！用户名："+tusername+"，密码是:"+tusername);
+	            if(null == result){
+	            	ro.setReason("创建solr服务引擎失败，请手动创建！");
+	            }else{
+	            	ro.setReason("开通成功，请使用吧！用户名："+tusername+"，密码是:"+tusername);
+	            }
+	           
 	            response.getWriter().write(ro.toString());
 			}
 		} catch (Exception e) {
