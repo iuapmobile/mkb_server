@@ -59,6 +59,7 @@ import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQS;
+import com.yyuap.mkb.fileUtil.KnowlegeType;
 import com.yyuap.mkb.nlp.SAConfig;
 import com.yyuap.mkb.nlp.SemanticAnalysis;
 import com.yyuap.mkb.pl.DBConfig;
@@ -142,6 +143,23 @@ public class SolrManager {
         }
     }
 
+    /**
+     * pengjf
+     * 批量删除solr 根据id
+     * @param ids
+     */
+    public void delBatById(List<String> ids) {
+        try {
+            HttpSolrClient client = this.getHttpSolrClient();
+            client.deleteById(ids);
+            client.commit();
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void delDocById(String id) {
         try {
             HttpSolrClient client = this.getHttpSolrClient();
@@ -182,6 +200,13 @@ public class SolrManager {
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
         String ext_scope = kbindex.getExt_scope();//可见范围
+        String ktype = kbindex.getKtype();//知识类型
+        String domain = kbindex.getDomain();//领域
+        String product = kbindex.getProduct();//产品
+        String subproduct = kbindex.getSubproduct();//子产品
+        String tag = kbindex.getTag();//标签
+        String author = kbindex.getAuthor();//作者
+        
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -204,6 +229,12 @@ public class SolrManager {
         document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
+        document.addField("ktype", ktype);
+        document.addField("domain", domain);
+        document.addField("product", product);
+        document.addField("subproduct", subproduct);
+        document.addField("tag", tag);
+        document.addField("author", author);
         if(null != ext_scope){
         	document.addField("ext_scope", ext_scope);
         }
@@ -242,6 +273,12 @@ public class SolrManager {
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
         String ext_scope = kbindex.getExt_scope();//可见范围
+        String ktype = kbindex.getKtype();//知识类型
+        String domain = kbindex.getDomain();//领域
+        String product = kbindex.getProduct();//产品
+        String subproduct = kbindex.getSubproduct();//子产品
+        String tag = kbindex.getTag();//标签
+        String author = kbindex.getAuthor();//作者
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -267,7 +304,12 @@ public class SolrManager {
         if(null != ext_scope){
         	document.addField("ext_scope", ext_scope);
         }
-
+        document.addField("ktype", ktype);
+        document.addField("domain", domain);
+        document.addField("product", product);
+        document.addField("subproduct", subproduct);
+        document.addField("tag", tag);
+        document.addField("author", author);
         document.addField("_version_", 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -300,6 +342,7 @@ public class SolrManager {
         kbindex.setUpdateTime(kbqa.getUpdateTime());
         kbindex.setQtype(kbqa.getQtype());
         kbindex.setExt_scope(kbqa.getExt_scope());//可见范围
+        kbindex.setKtype(KnowlegeType.QA_KTYPE);//知识类型
 
         this.addDoc(kbindex);
     }
@@ -1143,6 +1186,123 @@ public class SolrManager {
          */
 
     }
+    
+    public JSONObject queryAllKbIndexInfo(JSONObject requestParam, Tenant tenant) throws Exception {
+
+        HttpSolrClient solrServer = this.getHttpSolrClient();
+        SolrQuery query = new SolrQuery();
+        // 1、设置solr查询参数
+        String _q = requestParam.getString("q");
+
+        int rows = 10;
+        int start = 0;
+        String strNum = requestParam.getString("rows");
+        String strStart = requestParam.getString("start");
+        if (strNum == null || strNum.equals("")) {
+            rows = 10;
+        } else {
+            try {
+                rows = Integer.parseInt(strNum);
+            } catch (Exception e) {
+                rows = 10;
+            }
+        }
+        if (strStart == null || strStart.equals("")) {
+            start = 0;
+        } else {
+            try {
+                start = Integer.parseInt(strStart);
+            } catch (Exception e) {
+                start = 0;
+            }
+        }
+        String q = _q;
+        String sa = requestParam.getString("sa"); // semantic analysis => sa
+        if (sa != null && sa.equalsIgnoreCase("true") && !q.equals("")) {
+            // 进行语义分析
+            SemanticAnalysis sap = new SemanticAnalysis();
+            SAConfig conf = new SAConfig();
+            conf.httpArg = ("s=" + _q);
+            String _keywords = sap.getKeywords(conf);
+            q = this.process(_keywords);
+        }
+        //(question:嘟嘟  AND  qid:"") OR (question:嘟嘟  AND  -qid:*)
+        if (q == null) {
+            q = "*:* ";
+        } else if (q.equals("")) {
+        	q = "*:* ";
+        }
+        q = q + " AND ktype:kb ";//类型，kb 文档，qa 问答
+        query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
+
+        // 2、处理权重
+        String qf = "question^1 answer^0.1";
+        query.set("defType", "edismax");
+        query.set("qf", qf);
+
+        query.addSort("updateTime", ORDER.desc);
+
+
+        // 设置分页参数
+        query.setStart(start);
+        query.setRows(rows);// 每一页多少值
+
+        // 获取查询结果
+        QueryResponse response = solrServer.query(query);
+
+        SolrDocumentList solrDocumentList = response.getResults();
+        // System.out.println("通过文档集合获取查询的结果");
+        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
+
+        JSONObject json = new JSONObject();
+
+        JSONObject resHeader = new JSONObject();
+        resHeader.put("status", 0);
+        resHeader.put("QTime", 0);
+        JSONObject param = new JSONObject();
+        param.put("q", q);
+
+        param.put("indent", "on");
+        param.put("wt", "json");
+        resHeader.put("param", param);
+        resHeader.put("status", 0);
+        json.put("responseHeader", resHeader);
+
+        JSONObject res = new JSONObject();
+        res.put("numFound", solrDocumentList.getNumFound());
+        res.put("start", 0);
+
+        JSONArray docs = new JSONArray();
+        // 遍历列表
+        for (SolrDocument doc : solrDocumentList) {
+            JSONObject obj = new JSONObject();
+            obj.put("id", doc.get("id")==null?"":doc.get("id"));
+            obj.put("title", doc.get("title")==null?"":doc.get("title"));
+            obj.put("question", doc.get("question")==null?"":doc.get("question"));
+            obj.put("descript", doc.get("descript")==null?"":doc.get("descript"));
+            obj.put("answer", doc.get("answer")==null?"":doc.get("answer"));
+            obj.put("updateTime", doc.get("updateTime")==null?"":doc.get("updateTime"));
+            obj.put("createTime", doc.get("createTime")==null?"":doc.get("createTime"));
+            obj.put("url", doc.get("url")==null?"":doc.get("url"));
+            obj.put("ext_scope", doc.get("ext_scope")==null?"":doc.get("ext_scope"));
+            obj.put("domain", doc.get("domain")==null?"":doc.get("domain"));
+            obj.put("product", doc.get("product")==null?"":doc.get("product"));
+            obj.put("subproduct", doc.get("subproduct")==null?"":doc.get("subproduct"));
+            obj.put("descriptImg", doc.get("descriptImg")==null?"":doc.get("descriptImg"));
+            obj.put("author", doc.get("author")==null?"":doc.get("author"));
+            obj.put("keywords", doc.get("keywords")==null?"":doc.get("keywords"));
+            obj.put("tag", doc.get("tag")==null?"":doc.get("tag"));
+
+            docs.add(obj);
+
+        }
+        res.put("docs", docs);
+
+        json.put("response", res);
+        return json;
+
+    }
+    
 
     ////// pengjf 下面测试调用solrj 删除文档测试代码 begin
     /**
