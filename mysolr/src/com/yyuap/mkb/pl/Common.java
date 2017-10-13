@@ -50,7 +50,7 @@ public class Common {
     // + "?useUnicode=true&characterEncoding=utf-8";
 
     // sql
-    public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexInfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexInfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain,weight,content,product,subproduct,s_top,s_kbsrc,s_kbcategory,s_hot,kbid,ext_supportsys,ext_resourcetype,ext_scope,createTime,updateTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     public static final String SELECT_KBINDEXINFO_SQL = "select * from kbIndexInfo where title = ? and descript = ? and url = ?";
     public static final String UPDATE_KBINDEXINFO_SQL = "UPDATE kbIndexInfo SET `title`=?, `descript`=?, `descriptImg`=?, `text`=?, `url`=?, `keywords`=?, `domain`=?, `tag`=?  WHERE `id`=?";
 
@@ -94,4 +94,5 @@ public class Common {
 
     // 获取同义词对应的mapping keyword
     public static final String SELECT_SYNONYM_SQL = "select * from mkb.u_synonyms";
+    
 }

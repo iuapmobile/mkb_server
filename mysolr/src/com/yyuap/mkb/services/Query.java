@@ -142,7 +142,7 @@ public class Query extends HttpServlet {
                         	    }
                         		dataStr = scenename + dataStr;
                         		q = dataStr;
-                        		
+                        		requestParam.put("q", q);
                         	}else{
                         		obj.put("dailogid", dailogid);
                         		ro.setBotResponse(obj);

@@ -7,14 +7,17 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.apache.solr.client.solrj.SolrServerException;
+import org.joda.time.DateTime;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.QaCollection;
+import com.yyuap.mkb.fileUtil.KnowlegeType;
 import com.yyuap.mkb.nlp.BaiAdapter;
 import com.yyuap.mkb.pl.DBManager;
 
@@ -351,6 +354,101 @@ public class QAManager {
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryBotServicesTj(tenant);
+    }
+    
+    public String addKbInfo(JSONObject json, Tenant tenant) throws Exception {
+    	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+        KBIndex vo = new KBIndex();
+        vo.setId(UUID.randomUUID().toString());
+        vo.setTitle(json.getString("title"));
+        vo.setDescript(json.getString("descript"));
+        vo.setDescriptImg(json.getString("descriptImg"));
+        vo.setText(json.getString("text"));
+        vo.setUrl(json.getString("url"));
+        vo.setAuthor(json.getString("author"));
+        if(null == json.getString("createTime") || "".equals(json.getString("createTime"))){
+        	 vo.setCreateTime(datetime);
+        }else{
+        	 vo.setCreateTime(json.getString("createTime"));
+        }
+        if(null == json.getString("updateTime") || "".equals(json.getString("updateTime"))){
+        	vo.setUpdateTime(datetime);
+        }else{
+        	vo.setUpdateTime(json.getString("updateTime"));
+        }
+        vo.setWeight(json.getString("weight"));
+        vo.setKeywords(json.getString("keywords"));
+        vo.setTag(json.getString("label"));
+        vo.setContent(json.getString("content"));
+        vo.setCategory(json.getString("category"));
+        vo.setGrade(json.getString("grade"));
+        vo.setDomain(json.getString("domain"));
+        vo.setProduct(json.getString("product"));
+        vo.setSubproduct(json.getString("subproduct"));
+        vo.setS_top(json.getString("s_top"));
+        vo.setS_kbsrc(json.getString("s_kbsrc"));
+        vo.setS_kbcategory(json.getString("s_kbcategory"));
+        vo.setS_hot(json.getString("s_hot"));
+        vo.setKbid(json.getString("kbid"));
+        vo.setExt_supportsys(json.getString("ext_supportsys"));
+        vo.setExt_resourcetype(json.getString("ext_resourcetype"));
+        vo.setExt_scope(json.getString("ext_scope"));
+        //下面两个 实在添加solr时用到
+        vo.setQuestion(json.getString("title"));
+        vo.setAnser(json.getString("descript"));
+        vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.insertKbInfo(vo, tenant);
+    }
+    
+    public boolean updateKbInfo(JSONObject json, Tenant tenant)
+            throws Exception {
+    	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+    	KBIndex vo = new KBIndex();
+        vo.setId(json.getString("id"));
+        vo.setTitle(json.getString("title"));
+        vo.setDescript(json.getString("descript"));
+        vo.setDescriptImg(json.getString("descriptImg"));
+        vo.setText(json.getString("text"));
+        vo.setUrl(json.getString("url"));
+        vo.setAuthor(json.getString("author"));
+        vo.setCreateTime(json.getString("createTime"));
+    	vo.setUpdateTime(datetime);
+        vo.setWeight(json.getString("weight"));
+        vo.setKeywords(json.getString("keywords"));
+        vo.setTag(json.getString("label"));
+        vo.setContent(json.getString("content"));
+        vo.setCategory(json.getString("category"));
+        vo.setGrade(json.getString("grade"));
+        vo.setDomain(json.getString("domain"));
+        vo.setProduct(json.getString("product"));
+        vo.setSubproduct(json.getString("subproduct"));
+        vo.setS_top(json.getString("s_top"));
+        vo.setS_kbsrc(json.getString("s_kbsrc"));
+        vo.setS_kbcategory(json.getString("s_kbcategory"));
+        vo.setS_hot(json.getString("s_hot"));
+        vo.setKbid(json.getString("kbid"));
+        vo.setExt_supportsys(json.getString("ext_supportsys"));
+        vo.setExt_resourcetype(json.getString("ext_resourcetype"));
+        vo.setExt_scope(json.getString("ext_scope"));
+        //下面两个 实在添加solr时用到
+        vo.setQuestion(json.getString("title"));
+        vo.setAnser(json.getString("descript"));
+        vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        DBManager dbmgr = new DBManager();
+
+        boolean success = dbmgr.updateKbInfo(vo, tenant);
+        return success;
+    }
+    
+    public boolean delKbInfoBat(String[] ids, Tenant tenant) throws SQLException {
+        // TODO Auto-generated method stub
+    	DBManager dbmgr = new DBManager();
+        boolean success = dbmgr.delKbInfo(ids, tenant);
+        return success;
     }
     
 }

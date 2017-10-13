@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -68,8 +69,43 @@ public class DbUtil {
 
             ps.setString(11, kbIndex.getGrade());
             ps.setString(12, kbIndex.getDomain());
-            // ps.setString(11, kbIndex.getCreatTime());
-            // ps.setString(12, kbIndex.getUpdateTime());
+            
+            ps.setString(13, kbIndex.getWeight());
+            ps.setString(14, kbIndex.getContent());
+            ps.setString(15, kbIndex.getProduct());
+            ps.setString(16, kbIndex.getSubproduct());
+            if(null == kbIndex.getS_top()){
+            	ps.setNull(17, Types.NULL);
+            }else{
+            	 ps.setInt(17, kbIndex.getS_top()==null?null:Integer.valueOf(kbIndex.getS_top()).intValue());
+            }
+            if(null == kbIndex.getS_kbsrc()){
+            	ps.setNull(18, Types.NULL);
+            }else{
+           	 	ps.setInt(18, kbIndex.getS_kbsrc()==null?null:Integer.valueOf(kbIndex.getS_kbsrc()).intValue());
+            }
+            if(null == kbIndex.getS_kbcategory()){
+            	ps.setNull(19, Types.NULL);
+            }else{
+           	 	ps.setInt(19, kbIndex.getS_kbcategory()==null?null:Integer.valueOf(kbIndex.getS_kbcategory()).intValue());
+            }
+            if(null == kbIndex.getS_hot()){
+            	ps.setNull(20, Types.NULL);
+            }else{
+           	 	ps.setInt(20, kbIndex.getS_hot()==null?null:Integer.valueOf(kbIndex.getS_hot()).intValue());
+            }
+//            ps.setInt(17, kbIndex.getS_top()==null?null:Integer.valueOf(kbIndex.getS_top()).intValue());
+//            ps.setInt(18, kbIndex.getS_kbsrc()==null?null:Integer.valueOf(kbIndex.getS_kbsrc()).intValue());
+//            ps.setInt(19, kbIndex.getS_kbcategory()==null?null:Integer.valueOf(kbIndex.getS_kbcategory()).intValue());
+//            ps.setInt(20, kbIndex.getS_hot()==null?null:Integer.valueOf(kbIndex.getS_hot()).intValue());
+            ps.setString(21, kbIndex.getKbid());
+            ps.setString(22, kbIndex.getExt_supportsys());
+            ps.setString(23, kbIndex.getExt_resourcetype());
+            ps.setString(24, kbIndex.getExt_scope());
+            
+            ps.setString(25, kbIndex.getCreateTime());
+            ps.setString(26, kbIndex.getUpdateTime());
+            
             boolean flag = ps.execute();
             if (!flag) {
                 System.out.println("import data : title = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
@@ -1524,5 +1560,132 @@ public class DbUtil {
             }
         }
         return c;
+    }
+    
+    /**
+     * 增加kbindexinfo 表数据时，判断 是否已经存在，用title判断
+     * @param sql
+     * @param kbIndex
+     * @param dbconf
+     * @return
+     * @throws SQLException
+     */
+    public static List<KBIndex> selectOneIsExists(String sql, KBIndex kbIndex, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<KBIndex> list = new ArrayList<KBIndex>();
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, kbIndex.getTitle());
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+            	String title = rs.getString("title");
+            	String id = rs.getString("id");
+            	KBIndex kb = new KBIndex();
+            	kb.setTitle(title);
+                kb.setId(id);
+                list.add(kb);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return list;
+    }
+    
+    public static boolean updateKbInfo(String sql,List<Object> params, KBIndex kbIndex, DBConfig dbconf) throws SQLException {
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean rflag = false;
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            ps = conn.prepareStatement(sql);
+
+            setParameter(params,ps);
+            
+            boolean flag = ps.execute();
+            if (!flag) {
+                System.out.println("更新文档成功，id===="+kbIndex.getId());
+                rflag = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return rflag;
+    }
+    
+    public static boolean delkbInfo(String deleteQaSql, String[] ids, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        boolean ret = false;
+        try {
+
+            // Class.forName(Common.DRIVER);
+            String _username = dbconf.getUsername();
+            String _psw = dbconf.getPassword();
+            String _url = dbconf.getUlr();
+            conn = DriverManager.getConnection(_url, _username, _psw);
+            conn.setAutoCommit(false);   
+            ps = conn.prepareStatement(deleteQaSql);
+
+            for(int i =0 ;i < ids.length; i++){
+            	ps.setString(1, ids[i]);
+            	ps.addBatch();
+            }
+            ps.executeBatch();
+            conn.commit();
+            
+            ret = true;
+        } catch (Exception e) {
+        	conn.rollback();
+            e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return ret;
+
+    }
+    
+    public static void setParameter(List<Object> params,PreparedStatement preparedStatement) throws SQLException{  
+        for(int i=0;i<params.size();i++){  
+            Object p = params.get(i);  
+            if(p instanceof Integer){  
+                preparedStatement.setInt(i+1, (Integer)p);  
+            }else if(p instanceof String){  
+                preparedStatement.setString(i+1, (String)p);  
+            }else if( p == null) {
+            	preparedStatement.setNull(i+1, Types.NULL);
+			}  
+        }  
     }
 }

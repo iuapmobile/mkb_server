@@ -207,7 +207,7 @@ public class CreateTenant extends HttpServlet {
 	            File file2 = new File(destCorePath);
 	            fileCopy.copyFile(file, file2);
 	            XMLParseDataConfig  xmlParse = new XMLParseDataConfig();
-	            String xmlpath = destCorePath+"\\conf\\data-config.xml";
+	            String xmlpath = destCorePath+File.separator+"conf"+File.separator+"data-config.xml";
 	            String url="jdbc:mysql://localhost:3306/"+dbname+"?characterEncoding=utf-8&amp;autoReconnect=true";   
 	            //获取document
 	            File xmlFile = xmlParse.getXmlFile(xmlpath);

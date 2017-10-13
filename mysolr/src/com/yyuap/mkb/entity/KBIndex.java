@@ -26,9 +26,6 @@ public class KBIndex extends KBEntity {
     private String url = "";
 
     private String author = "";
-    private String createTime = "";
-    private String updateTime = "";
-
     private String text = "";
 
     private String filePath = "";
@@ -40,6 +37,18 @@ public class KBIndex extends KBEntity {
     private String qtype = "";
     
     private String ext_scope = null;
+    
+    private String weight = "";
+    private String content = "";
+    private String product = "";
+    private String subproduct = "";
+    private String s_top = "";
+    private String s_kbsrc = "";
+    private String s_kbcategory = "";
+    private String s_hot = "";
+    private String ext_supportsys = "";
+	private String ext_resourcetype = "";
+    private String ktype = "";//知识类型
 
     public String getId() {
         return id;
@@ -145,22 +154,6 @@ public class KBIndex extends KBEntity {
         this.author = author;
     }
 
-    public String getCreatTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public String getText() {
         return text;
     }
@@ -210,7 +203,94 @@ public class KBIndex extends KBEntity {
 	public void setExt_scope(String ext_scope) {
 		this.ext_scope = ext_scope;
 	}
-	
-	
+
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getProduct() {
+		return product;
+	}
+
+	public void setProduct(String product) {
+		this.product = product;
+	}
+
+	public String getSubproduct() {
+		return subproduct;
+	}
+
+	public void setSubproduct(String subproduct) {
+		this.subproduct = subproduct;
+	}
+
+	public String getS_top() {
+		return s_top;
+	}
+
+	public void setS_top(String s_top) {
+		this.s_top = s_top;
+	}
+
+	public String getS_kbsrc() {
+		return s_kbsrc;
+	}
+
+	public void setS_kbsrc(String s_kbsrc) {
+		this.s_kbsrc = s_kbsrc;
+	}
+
+	public String getS_kbcategory() {
+		return s_kbcategory;
+	}
+
+	public void setS_kbcategory(String s_kbcategory) {
+		this.s_kbcategory = s_kbcategory;
+	}
+
+	public String getS_hot() {
+		return s_hot;
+	}
+
+	public void setS_hot(String s_hot) {
+		this.s_hot = s_hot;
+	}
+
+	public String getExt_supportsys() {
+		return ext_supportsys;
+	}
+
+	public void setExt_supportsys(String ext_supportsys) {
+		this.ext_supportsys = ext_supportsys;
+	}
+
+	public String getExt_resourcetype() {
+		return ext_resourcetype;
+	}
+
+	public void setExt_resourcetype(String ext_resourcetype) {
+		this.ext_resourcetype = ext_resourcetype;
+	}
+
+	public String getKtype() {
+		return ktype;
+	}
+
+	public void setKtype(String ktype) {
+		this.ktype = ktype;
+	}
+
     
 }

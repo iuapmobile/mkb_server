@@ -6,11 +6,14 @@ package com.yyuap.mkb.pl;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.joda.time.DateTime;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -664,5 +667,192 @@ public class DBManager {
 
         return count;
     }
+    
+    public String insertKbInfo(KBIndex vo, Tenant tenant) throws Exception {
+        String ret = null;
+
+        try {
+            if (vo == null) {
+                return null;
+            }
+
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+            // 2、检查是否已经存在
+            List<KBIndex> list = DbUtil.selectOneIsExists("select * from kbIndexInfo where title = ?", vo, dbconf);
+            if (list.size() == 0) {
+                DbUtil.insert(Common.INSERT_KBINDEXINFO_SQL, vo, dbconf);
+                
+                // 成功插入数据库后开始增加solr索引
+                SolrManager solr = new SolrManager(tenant.gettkbcore());
+                solr.addDoc(vo);
+                
+                return vo.getId();
+            } else {
+            	 System.out.println("The Record was Exist : title. = " + vo.getTitle() + ", has been throw away!");
+            	 String id = list.get(0).getId();
+                 KBDuplicateSQLException e = new KBDuplicateSQLException(
+                         "存在重复的记录title[" + vo.getTitle() + "], 未能持久化成功改次操作");
+                 e.getExtData().put("id", id);
+                 throw e;
+            }
+        } catch (Exception e) {
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else if (e instanceof KBInsertSQLException) {
+                throw (KBInsertSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+    }
+    
+    public boolean updateKbInfo(KBIndex kbindex, Tenant tenant) throws Exception {
+    	boolean flag = false;
+    	try {
+	    	List<Object> params = new ArrayList<Object>();  
+	        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+	        StringBuffer sbf = new StringBuffer();
+//	        String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+	        sbf.append(" UPDATE kbIndexInfo SET  updateTime = ? ");
+	        params.add(kbindex.getUpdateTime());
+	        if(StringUtils.isNotBlank(kbindex.getTitle())){  
+	        	sbf.append(" ,title = ? ");  
+	            params.add(kbindex.getTitle());  
+	        } 
+	        if(StringUtils.isNotBlank(kbindex.getDescript())){  
+	        	sbf.append(" ,descript = ? ");  
+	            params.add(kbindex.getDescript());  
+	        }  
+	        if(StringUtils.isNotBlank(kbindex.getDescriptImg())){  
+	        	sbf.append(" ,descriptImg = ? ");  
+	            params.add(kbindex.getDescriptImg());  
+	        }  
+	        if(StringUtils.isNotBlank(kbindex.getText())){  
+	        	sbf.append(" ,text = ? ");  
+	            params.add(kbindex.getText());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getUrl())){  
+	        	sbf.append(" ,url = ? ");  
+	            params.add(kbindex.getText());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getAuthor())){  
+	        	sbf.append(" ,author = ? ");  
+	            params.add(kbindex.getAuthor());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getWeight())){  
+	        	sbf.append(" ,weight = ? ");  
+	            params.add(kbindex.getWeight());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getKeywords())){  
+	        	sbf.append(" ,keywords = ? ");  
+	            params.add(kbindex.getKeywords());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getTag())){  
+	        	sbf.append(" ,tag = ? ");  
+	            params.add(kbindex.getTag());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getContent())){  
+	        	sbf.append(" ,content = ? ");  
+	            params.add(kbindex.getContent());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getCategory())){  
+	        	sbf.append(" ,category = ? ");  
+	            params.add(kbindex.getCategory());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getGrade())){  
+	        	sbf.append(" ,grade = ? ");  
+	            params.add(kbindex.getGrade());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getDomain())){  
+	        	sbf.append(" ,domain = ? ");  
+	            params.add(kbindex.getDomain());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getProduct())){  
+	        	sbf.append(" ,product = ? ");  
+	            params.add(kbindex.getProduct());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getSubproduct())){  
+	        	sbf.append(" ,subproduct = ? ");  
+	            params.add(kbindex.getSubproduct());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getS_top())){  
+	        	sbf.append(" ,s_top = ? ");  
+	            params.add(Integer.valueOf(kbindex.getS_top()));  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getS_kbsrc())){  
+	        	sbf.append(" ,s_kbsrc = ? ");  
+	            params.add(Integer.valueOf(kbindex.getS_kbsrc()));  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getS_kbcategory())){  
+	        	sbf.append(" ,s_kbcategory = ? ");  
+	            params.add(Integer.valueOf(kbindex.getS_kbcategory()));  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getS_hot())){  
+	        	sbf.append(" ,s_hot = ? ");  
+	            params.add(Integer.valueOf(kbindex.getS_hot()));  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getKbid())){  
+	        	sbf.append(" ,kbid = ? ");  
+	            params.add(kbindex.getKbid());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getExt_supportsys())){  
+	        	sbf.append(" ,ext_supportsys = ? ");  
+	            params.add(kbindex.getExt_supportsys());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getExt_resourcetype())){  
+	        	sbf.append(" ,ext_resourcetype = ? ");  
+	            params.add(kbindex.getExt_resourcetype());  
+	        }
+	        if(StringUtils.isNotBlank(kbindex.getExt_scope())){  
+	        	sbf.append(" ,ext_scope = ? ");  
+	            params.add(kbindex.getExt_scope());  
+	        }
+	        sbf.append(" where id = ?");  
+	        params.add(kbindex.getId());  
+	        flag = DbUtil.updateKbInfo(sbf.toString(),params, kbindex, dbconf);
+	        if(flag){
+	        	// 成功插入数据库后开始增加solr索引
+		        SolrManager solr = new SolrManager(tenant.gettkbcore());
+		        solr.updateDoc(kbindex);
+	        }
+	        
+    	} catch (Exception e) {
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else if (e instanceof KBInsertSQLException) {
+                throw (KBInsertSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+        return flag;
+    }
+    
+    public boolean delKbInfo(String[] ids, Tenant tenant) throws SQLException {
+        try {
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+            boolean success = DbUtil.delkbInfo("delete from kbIndexInfo where id = ?", ids, dbconf);
+
+            if (!success) {
+                throw new KBDelSQLException("删除失败，请联系管理员！");
+            }
+            
+            // 成功删除数据库后开始删除solr索引
+            SolrManager solr = new SolrManager(tenant.gettkbcore());
+            solr.delBatById(Arrays.asList(ids));
+
+            return success;
+        } catch (SQLException e) {
+            if (e instanceof KBDelSQLException) {
+                throw (KBDelSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+    }
+    
 
 }
