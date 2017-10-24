@@ -164,7 +164,7 @@ public class QAManager {
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop,String ext_scope)
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop,String ext_scope,String domain,String product,String subproduct)
             throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
@@ -174,7 +174,10 @@ public class QAManager {
         kbqa.setIstop(istop);// 是否置顶
         // kbqa.setQtype(t);
         kbqa.setExt_scope(ext_scope);
-
+        kbqa.setDomain(domain);
+        kbqa.setProduct(product);
+        kbqa.setSubproduct(subproduct);
+        
         kbqa.setQuestions(qs);
 
         DBManager dbmgr = new DBManager();
@@ -228,7 +231,7 @@ public class QAManager {
         return success;
     }
 
-    public String updateQAQS(String id, String q, String a, JSONArray qs,String url,String qtype, Tenant tenant) throws SQLException {
+    public String updateQAQS(String id, String q, String a, JSONArray qs,String url,String qtype, Tenant tenant,String ext_scope,String domain,String product,String subproduct) throws SQLException {
         // 根据数据构建Entity
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
@@ -236,6 +239,10 @@ public class QAManager {
         kbqa.setAnswer(a);
         kbqa.setUrl(url);
         kbqa.setQtype(qtype);
+        kbqa.setExt_scope(ext_scope);
+        kbqa.setDomain(domain);
+        kbqa.setProduct(product);
+        kbqa.setSubproduct(subproduct);
         // kbqa.setQtype(t);
         if(qs!=null){
         	for (int i = 0, len = qs.size(); i < len; i++) {
@@ -449,6 +456,35 @@ public class QAManager {
     	DBManager dbmgr = new DBManager();
         boolean success = dbmgr.delKbInfo(ids, tenant);
         return success;
+    }
+    
+    /**
+     *  根据表名，查询表中字段
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     */
+    public JSONArray queryFieldForTable(String tableName,Tenant tenant) {
+        // TODO Auto-generated method stub
+        JSONObject jsonQA = new JSONObject();
+        DBManager dbmgr = new DBManager();
+        JSONArray json = dbmgr.queryFieldForTable(tenant, tableName);
+        return json;
+    }
+    
+    /**
+     *  根据表名，保存表中字段
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     * @throws Exception 
+     */
+    public boolean saveFieldForTable(JSONArray paramArr,Tenant tenant) throws Exception {
+        // TODO Auto-generated method stub
+        JSONObject jsonQA = new JSONObject();
+        DBManager dbmgr = new DBManager();
+        boolean ret = dbmgr.saveFieldForTable(tenant, paramArr);
+        return ret;
     }
     
 }

@@ -7,13 +7,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.apache.poi.ss.formula.functions.T;
-import org.apache.poi.util.StringUtil;
+import javax.servlet.ServletInputStream;
+
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,7 +20,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
-import com.yyuap.mkb.entity.KBQS;
 
 /**
  * @author gct
@@ -176,13 +173,13 @@ public class ExcelXReader {
         return list;
     }
 
-    public List<KBQA> readXlsx4QA(String path) throws IOException {
+    public List<KBQA> readXlsx4QA(InputStream is) throws IOException {
         // getServletContext().getRealPath("/");
-        if (path == null || path.equals("")) {
-            return new ArrayList<KBQA>();
-        }
+//        if (path == null || path.equals("")) {
+//            return new ArrayList<KBQA>();
+//        }
         // InputStream is = new FileInputStream(Common.EXCEL_PATH);
-        InputStream is = new FileInputStream(path);
+//        InputStream is = new FileInputStream(path);
 
         // HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
         XSSFWorkbook hssfWorkbook = new XSSFWorkbook(is);
@@ -199,7 +196,7 @@ public class ExcelXReader {
                 continue;
             }
             // foreach Row
-            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+            for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
                 XSSFRow hssfRow = hssfSheet.getRow(rowNum);
                 if (hssfRow != null) {
                     kbqa = new KBQA();
@@ -218,6 +215,14 @@ public class ExcelXReader {
                     	}else if(i==1){//在a赋值，然后放到list中
                     		kbqa.setAnswer(getValue(cellValue));
                     		kbqa.setId(kbqauuid);
+                    	}else if(i==2){
+                    		kbqa.setDomain(getValue(cellValue));
+                    	}else if(i==3){
+                    		kbqa.setExtend0(getValue(cellValue));//产品
+                    	}else if(i==4){
+                    		kbqa.setProduct(getValue(cellValue));
+                    	}else if(i==5){
+                    		kbqa.setExtend1(getValue(cellValue));//答案提供人
                     	}else{
                     		qsList.add(getValue(cellValue).replaceAll(regEx, ""));
                     	}

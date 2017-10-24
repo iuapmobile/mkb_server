@@ -71,6 +71,10 @@ public class UpdateQAQS extends HttpServlet {
         String apiKey = requestParam.getString("apiKey");
         String url = requestParam.getString("url");
         String qtype = requestParam.getString("qtype");
+        String ext_scope = requestParam.getString("ext_scope");//可见范围
+        String domain = requestParam.getString("domain");//领域
+        String product = requestParam.getString("product");//产品
+        String subproduct = requestParam.getString("subproduct");//子产品
 
         if (apiKey == null || "".equals(apiKey)) {
             ResultObjectFactory rof = new ResultObjectFactory();
@@ -122,7 +126,7 @@ public class UpdateQAQS extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            String editId = qam.updateQAQS(id, q, a, qs,url,qtype, tenant);
+            String editId = qam.updateQAQS(id, q, a, qs,url,qtype, tenant,ext_scope,domain,product,subproduct);
             if (editId != null && editId.equals("")) {
                 ro.setStatus(0);
                 ro.setResponseKV("id", editId);
@@ -194,9 +198,16 @@ public class UpdateQAQS extends HttpServlet {
         
         String url = request.getParameter("url");
         param.put("url", url);
-        
+        String ext_scope = request.getParameter("ext_scope");//可见范围
+        param.put("ext_scope", ext_scope);
         String qtype = request.getParameter("qtype");
         param.put("qtype", qtype);
+        String domain = request.getParameter("domain");//领域
+        param.put("domain", domain);
+        String product = request.getParameter("product");//产品
+        param.put("product", product);
+        String subproduct = request.getParameter("subproduct");//子产品
+        param.put("subproduct", subproduct);
 
         return param;
     }

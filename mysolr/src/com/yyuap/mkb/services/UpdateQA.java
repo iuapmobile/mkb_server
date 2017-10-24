@@ -70,7 +70,10 @@ public class UpdateQA extends HttpServlet {
         String istop = requestParam.getString("istop");//是否置顶
         String[] qs = (String[]) requestParam.get("qs");
         
-        String ext_scope = requestParam.getString("ext_scope");//可见范围
+        String ext_scope = requestParam.getString("tag");//可见范围
+        String domain = requestParam.getString("domain");//领域
+        String product = requestParam.getString("product");//产品
+        String subproduct = requestParam.getString("subproduct");//子产品
         if(null!=ext_scope && !"personinside".equals(ext_scope)){
         	ext_scope = null;
         }
@@ -107,7 +110,7 @@ public class UpdateQA extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            boolean success = qam.updateQA(id, q, a, qs, tenant,istop,ext_scope);
+            boolean success = qam.updateQA(id, q, a, qs, tenant,istop,ext_scope,domain,product,subproduct);
             if (success) {
                 ro.setStatus(0);
             }
@@ -176,7 +179,13 @@ public class UpdateQA extends HttpServlet {
         
         String tag = request.getParameter("tag");
         param.put("tag", tag);
-
+        
+        String domain = request.getParameter("domain");//领域
+        param.put("domain", domain);
+        String product = request.getParameter("product");//产品
+        param.put("product", product);
+        String subproduct = request.getParameter("subproduct");//子产品
+        param.put("subproduct", subproduct);
      
         
         return param;

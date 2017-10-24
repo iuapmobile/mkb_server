@@ -300,6 +300,121 @@ public class DbUtil {
             ps.setString(12, qa.getUrl());// url
             ps.setString(13, qa.getKbid());// kbid
             ps.setString(14, qa.getExt_scope());// 可见范围
+            if(null == qa.getDomain()){
+            	ps.setNull(15, Types.NULL);
+            }else{
+            	ps.setString(15, qa.getDomain());
+            }
+            if(null == qa.getProduct()){
+            	ps.setNull(16, Types.NULL);
+            }else{
+            	ps.setString(16, qa.getProduct());
+            }
+            if(null == qa.getSubproduct()){
+            	ps.setNull(17, Types.NULL);
+            }else{
+            	ps.setString(17, qa.getSubproduct());
+            }
+            if(null == qa.getExtend0()){
+            	ps.setNull(18, Types.NULL);
+            }else{
+            	ps.setString(18, qa.getExtend0());
+            }
+            if(null == qa.getExtend1()){
+            	ps.setNull(19, Types.NULL);
+            }else{
+            	ps.setString(19, qa.getExtend1());
+            }
+            if(null == qa.getExtend2()){
+            	ps.setNull(20, Types.NULL);
+            }else{
+            	ps.setString(20, qa.getExtend2());
+            }
+            if(null == qa.getExtend3()){
+            	ps.setNull(21, Types.NULL);
+            }else{
+            	ps.setString(21, qa.getExtend3());
+            }
+            if(null == qa.getExtend4()){
+            	ps.setNull(22, Types.NULL);
+            }else{
+            	ps.setString(22, qa.getExtend4());
+            }
+            if(null == qa.getExtend5()){
+            	ps.setNull(23, Types.NULL);
+            }else{
+            	ps.setString(23, qa.getExtend5());
+            }
+            if(null == qa.getExtend6()){
+            	ps.setNull(24, Types.NULL);
+            }else{
+            	ps.setString(24, qa.getExtend6());
+            }
+            if(null == qa.getExtend7()){
+            	ps.setNull(25, Types.NULL);
+            }else{
+            	ps.setString(25, qa.getExtend7());
+            }
+            if(null == qa.getExtend8()){
+            	ps.setNull(26, Types.NULL);
+            }else{
+            	ps.setString(26, qa.getExtend8());
+            }
+            if(null == qa.getExtend9()){
+            	ps.setNull(27, Types.NULL);
+            }else{
+            	ps.setString(27, qa.getExtend9());
+            }
+            if(null == qa.getExtend10()){
+            	ps.setNull(28, Types.NULL);
+            }else{
+            	ps.setString(28, qa.getExtend10());
+            }
+            if(null == qa.getExtend11()){
+            	ps.setNull(29, Types.NULL);
+            }else{
+            	ps.setString(29, qa.getExtend11());
+            }
+            if(null == qa.getExtend12()){
+            	ps.setNull(30, Types.NULL);
+            }else{
+            	ps.setString(30, qa.getExtend12());
+            }
+            if(null == qa.getExtend13()){
+            	ps.setNull(31, Types.NULL);
+            }else{
+            	ps.setString(31, qa.getExtend13());
+            }
+            if(null == qa.getExtend14()){
+            	ps.setNull(32, Types.NULL);
+            }else{
+            	ps.setString(32, qa.getExtend14());
+            }
+            if(null == qa.getExtend15()){
+            	ps.setNull(33, Types.NULL);
+            }else{
+            	ps.setString(33, qa.getExtend15());
+            }
+            if(null == qa.getExtend16()){
+            	ps.setNull(34, Types.NULL);
+            }else{
+            	ps.setString(34, qa.getExtend16());
+            }
+            if(null == qa.getExtend17()){
+            	ps.setNull(35, Types.NULL);
+            }else{
+            	ps.setString(35, qa.getExtend17());
+            }
+            if(null == qa.getExtend18()){
+            	ps.setNull(36, Types.NULL);
+            }else{
+            	ps.setString(36, qa.getExtend18());
+            }
+            if(null == qa.getExtend19()){
+            	ps.setNull(37, Types.NULL);
+            }else{
+            	ps.setString(37, qa.getExtend19());
+            }
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
@@ -955,7 +1070,22 @@ public class DbUtil {
             ps.setString(5, qa.getUrl());
             ps.setString(6, qa.getQtype());
             ps.setString(7, qa.getExt_scope());
-            ps.setString(8, qa.getId());
+            if(null == qa.getDomain()){
+            	ps.setNull(8, Types.NULL);
+            }else{
+            	ps.setString(8, qa.getDomain());
+            }
+            if(null == qa.getProduct()){
+            	ps.setNull(9, Types.NULL);
+            }else{
+            	ps.setString(9, qa.getProduct());
+            }
+            if(null == qa.getSubproduct()){
+            	ps.setNull(10, Types.NULL);
+            }else{
+            	ps.setString(10, qa.getSubproduct());
+            }
+            ps.setString(11, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {
@@ -1675,7 +1805,105 @@ public class DbUtil {
         return ret;
 
     }
-    
+    /**
+     *  根据表名，查询表中字段
+     * @param sql
+     * @param dbconf 
+     * @return
+     */
+    public static JSONArray queryFieldForTable(String sql, DBConfig dbconf) throws SQLException {
+        // TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        JSONArray array = new JSONArray();
+        try {
+            Class.forName(Common.DRIVER);
+
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+
+            	
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                JSONObject json = new JSONObject();
+                json.put("table_name", rs.getString("table_name"));//表名
+                json.put("field_name", rs.getString("field_name"));// 字段名
+                json.put("field_desc", rs.getString("field_desc")==null?"":rs.getString("field_desc"));// 字段描述
+                array.add(json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return array;
+    }
+    /**
+     *  根据表名，保存表中字段
+     * @param sql
+     * @param dbconf 
+     * @return
+     */
+    public static boolean saveFieldForTable(JSONArray paramArr, DBConfig dbconf) throws SQLException {
+        // TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        JSONArray array = new JSONArray();
+        boolean delsuccess = false;
+        boolean insuccess = false;
+        try {
+            Class.forName(Common.DRIVER);
+
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            for(int i=0;i<paramArr.size();i++){
+            	JSONObject obj = paramArr.getJSONObject(i); 
+            	String qsql = "DELETE from tablefield_definition where table_name=? and field_name=?";
+            	ps = conn.prepareStatement(qsql);
+            	ps.setString(1, obj.getString("table_name")==null?"":obj.getString("table_name"));
+            	ps.setString(2, obj.getString("field_name")==null?"":obj.getString("field_name"));
+            	boolean delflag = ps.execute();
+            	if(!delflag){
+            		delsuccess = true;
+            	}
+            	String isql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
+            	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+            	ps = conn.prepareStatement(isql);
+            	ps.setString(1, UUID.randomUUID().toString());
+            	ps.setString(2, obj.getString("table_name")==null?"":obj.getString("table_name"));
+            	ps.setString(3, obj.getString("field_name")==null?"":obj.getString("field_name"));
+            	ps.setString(4, obj.getString("field_desc")==null?"":obj.getString("field_desc"));
+            	ps.setString(5, datetime);
+            	ps.setString(6, datetime);
+            	boolean inflag = ps.execute();
+            	if(!inflag){
+            		insuccess = true;
+            	}
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return delsuccess&&insuccess;
+    }
     public static void setParameter(List<Object> params,PreparedStatement preparedStatement) throws SQLException{  
         for(int i=0;i<params.size();i++){  
             Object p = params.get(i);  
