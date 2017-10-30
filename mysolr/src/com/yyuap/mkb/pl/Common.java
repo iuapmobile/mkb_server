@@ -57,7 +57,7 @@ public class Common {
     public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ? and qtype = ?";
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
-    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid,ext_scope) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
+    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid,ext_scope,domain,product,subproduct,extend0,extend1,extend2,extend3,extend4,extend5,extend6,extend7,extend8,extend9,extend10,extend11,extend12,extend13,extend14,extend15,extend16,extend17,extend18,extend19) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     public static final String INSERT_QA_SIMILAR_SQL = "insert into qa_similar(id, question, qid, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
 
     public static final String SELECT_ANSWER_BY_Q_SQL = "select * from qa where trim(question) = ?";
@@ -67,7 +67,7 @@ public class Common {
     public static final String DELETE_QA_SIMILAR_SQL = "delete from qa_similar where `qid` = ?";
 
 
-    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=?,url=?,qtype=?,ext_scope=? where `id` = ?";
+    public static final String UPDATE_QA_SQL = "update qa set `question` = ?, `answer` = ?,istop = ?,settoptime=?,url=?,qtype=?,ext_scope=?,domain=?,product=?,subproduct=?,extend0=?,extend1=?,extend2=?,extend3=?,extend4=?,extend5=?,extend6=?,extend7=?,extend8=?,extend9=?,extend10=?,extend11=?,extend12=?,extend13=?,extend14=?,extend15=?,extend16=?,extend17=?,extend18=?,extend19=? where `id` = ?";
 
 
     public static final String UPDATE_QAISTOP_SQL = "update qa set istop = ?,settoptime=? where `id` = ?";

@@ -4,6 +4,7 @@
 package com.yyuap.mkb.pl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.joda.time.DateTime;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -94,12 +94,12 @@ public class DBManager {
         return false;
     }
 
-    public int insertQAFromExcel(String path, Tenant tenant) throws Exception {
+    public int insertQAFromExcel(InputStream is, Tenant tenant,String fileName) throws Exception {
         // TODO Auto-generated method stub
         List<KBQA> list = new ArrayList<KBQA>();
-        if (path.endsWith("xlsx")) {
+        if (fileName.endsWith("xlsx")) {
             ExcelXReader xlsxMain = new ExcelXReader();
-            list = xlsxMain.readXlsx4QA(path);
+            list = xlsxMain.readXlsx4QA(is);
         } else {
 
         }
@@ -107,13 +107,9 @@ public class DBManager {
         int numErr = 0;
         for (int i = 0, len = list.size(); i < len; i++) {
             KBQA qa = list.get(i);
-            try {
-                String newid = this.insertQA(qa, tenant);
-                if (newid != null && !newid.equals("")) {
-                    num++;
-                }
-            } catch (SQLException e) {
-                numErr++;
+            String newid = this.insertQA(qa, tenant);
+            if (newid != null && !newid.equals("")) {
+                num++;
             }
         }
         return num;
@@ -852,6 +848,72 @@ public class DBManager {
                 throw e;
             }
         }
+    }
+    /**
+     *  根据表名，查询表中字段
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     */
+    public JSONArray queryFieldForTable(Tenant tenant,String tableName) {
+        // TODO Auto-generated method stub
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、检查是否已经存在相同的q和a
+        JSONArray list = null;
+        try {
+//        	String sql = "select * from information_schema.columns where table_name='"+tableName+"' and table_schema='"+tenant.getdbname()+"'";
+            StringBuffer sbf = new StringBuffer();
+            sbf.append(" select t.table_name,t.column_name field_name,t1.field_desc from information_schema.columns t ");
+            sbf.append(" left join tablefield_definition t1 on t.table_name = t1.table_name");
+            sbf.append(" where  t.column_name like'extend%' and t.table_name='"+tableName+"' and t.table_schema='"+tenant.getdbname()+"'");
+        	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    /**
+     *  根据表名，查询表中字段
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     */
+    public JSONArray queryFieldForTableTenant(Tenant tenant,String tableName) {
+        // TODO Auto-generated method stub
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、检查是否已经存在相同的q和a
+        JSONArray list = null;
+        try {
+//        	String sql = "select * from information_schema.columns where table_name='"+tableName+"' and table_schema='"+tenant.getdbname()+"'";
+            StringBuffer sbf = new StringBuffer();
+            sbf.append(" select table_name,field_name,field_desc from tablefield_definition where table_name='"+tableName+"' ");
+        	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    /**
+     *  根据表名，查询表中字段
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     * @throws Exception 
+     */
+    public boolean saveFieldForTable(Tenant tenant,JSONArray paramArr) throws Exception {
+        // TODO Auto-generated method stub
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+        boolean ret = DbUtil.saveFieldForTable(paramArr,dbconf);
+        return ret;
     }
     
 

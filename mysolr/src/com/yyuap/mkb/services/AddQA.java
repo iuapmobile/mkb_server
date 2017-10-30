@@ -77,6 +77,9 @@ public class AddQA extends HttpServlet {
         if(null!=ext_scope && !"personinside".equals(ext_scope)){
         	ext_scope = null;
         }
+        String domain = request.getParameter("domain");//领域
+        String product = request.getParameter("product");//产品
+        String subproduct = request.getParameter("subproduct");//子产品
         String libraryPk = request.getParameter("libraryPk");
         String[] qs = request.getParameterValues("qs");
         if(null == url || "".equals(url)){
@@ -116,9 +119,9 @@ public class AddQA extends HttpServlet {
             response.getWriter().write(ro.toString());
             return;
         }
-
+       
         try {
-
+        	QAManager qam = new QAManager();
             // 2、插入数据库
             JSONObject json = new JSONObject();
             json.put("q", q);
@@ -130,7 +133,16 @@ public class AddQA extends HttpServlet {
             json.put("istop", istop);
             json.put("libraryPk", libraryPk);
             json.put("ext_scope", ext_scope);
-            QAManager qam = new QAManager();
+            json.put("domain", domain);
+            json.put("product", product);
+            json.put("subproduct", subproduct);
+            JSONArray array = qam.queryFieldForTableTenant("qa",tenant);
+            if(array!=null&&array.size()>0){
+            	for(int i=0;i<array.size();i++){
+            		JSONObject obj = array.getJSONObject(i);
+            		json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
+            	}
+            }
             String id = qam.addQA(json, tenant);
             ro.setResponseKV("id", id);
         } catch (Exception e) {

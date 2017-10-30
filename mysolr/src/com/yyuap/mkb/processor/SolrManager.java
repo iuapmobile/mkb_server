@@ -2,7 +2,6 @@ package com.yyuap.mkb.processor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -11,34 +10,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletInputStream;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.TextField;
-import org.apache.solr.client.*;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.impl.*;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.response.UpdateResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.params.ModifiableSolrParams;
-import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.core.CoreContainer;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
@@ -53,7 +41,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yonyou.um.mkb.solrManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
@@ -62,7 +49,6 @@ import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.fileUtil.KnowlegeType;
 import com.yyuap.mkb.nlp.SAConfig;
 import com.yyuap.mkb.nlp.SemanticAnalysis;
-import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DBManager;
 
 public class SolrManager {
@@ -206,6 +192,26 @@ public class SolrManager {
         String subproduct = kbindex.getSubproduct();//子产品
         String tag = kbindex.getTag();//标签
         String author = kbindex.getAuthor();//作者
+        String extend0 = kbindex.getExtend0();
+        String extend1 = kbindex.getExtend1();
+        String extend2 = kbindex.getExtend2();
+        String extend3 = kbindex.getExtend3();
+        String extend4 = kbindex.getExtend4();
+        String extend5 = kbindex.getExtend5();
+        String extend6 = kbindex.getExtend6();
+        String extend7 = kbindex.getExtend7();
+        String extend8 = kbindex.getExtend8();
+        String extend9 = kbindex.getExtend9();
+        String extend10 = kbindex.getExtend10();
+        String extend11 = kbindex.getExtend11();
+        String extend12 = kbindex.getExtend12();
+        String extend13 = kbindex.getExtend13();
+        String extend14 = kbindex.getExtend14();
+        String extend15 = kbindex.getExtend15();
+        String extend16 = kbindex.getExtend16();
+        String extend17 = kbindex.getExtend17();
+        String extend18 = kbindex.getExtend18();
+        String extend19 = kbindex.getExtend19();
         
         // 1.创建链接
         @SuppressWarnings("deprecation")
@@ -235,6 +241,27 @@ public class SolrManager {
         document.addField("subproduct", subproduct);
         document.addField("tag", tag);
         document.addField("author", author);
+        document.addField("extend0", extend0);
+        document.addField("extend1", extend1);
+        document.addField("extend2", extend2);
+        document.addField("extend3", extend3);
+        document.addField("extend4", extend4);
+        document.addField("extend5", extend5);
+        document.addField("extend6", extend6);
+        document.addField("extend7", extend7);
+        document.addField("extend8", extend8);
+        document.addField("extend9", extend9);
+        document.addField("extend10", extend10);
+        document.addField("extend11", extend11);
+        document.addField("extend12", extend12);
+        document.addField("extend13", extend13);
+        document.addField("extend14", extend14);
+        document.addField("extend15", extend15);
+        document.addField("extend16", extend16);
+        document.addField("extend17", extend17);
+        document.addField("extend18", extend18);
+        document.addField("extend19", extend19);
+        
         if(null != ext_scope){
         	document.addField("ext_scope", ext_scope);
         }
@@ -279,6 +306,26 @@ public class SolrManager {
         String subproduct = kbindex.getSubproduct();//子产品
         String tag = kbindex.getTag();//标签
         String author = kbindex.getAuthor();//作者
+        String extend0 = kbindex.getExtend0();
+        String extend1 = kbindex.getExtend1();
+        String extend2 = kbindex.getExtend2();
+        String extend3 = kbindex.getExtend3();
+        String extend4 = kbindex.getExtend4();
+        String extend5 = kbindex.getExtend5();
+        String extend6 = kbindex.getExtend6();
+        String extend7 = kbindex.getExtend7();
+        String extend8 = kbindex.getExtend8();
+        String extend9 = kbindex.getExtend9();
+        String extend10 = kbindex.getExtend10();
+        String extend11 = kbindex.getExtend11();
+        String extend12 = kbindex.getExtend12();
+        String extend13 = kbindex.getExtend13();
+        String extend14 = kbindex.getExtend14();
+        String extend15 = kbindex.getExtend15();
+        String extend16 = kbindex.getExtend16();
+        String extend17 = kbindex.getExtend17();
+        String extend18 = kbindex.getExtend18();
+        String extend19 = kbindex.getExtend19();
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -310,6 +357,27 @@ public class SolrManager {
         document.addField("subproduct", subproduct);
         document.addField("tag", tag);
         document.addField("author", author);
+        document.addField("extend0", extend0);
+        document.addField("extend1", extend1);
+        document.addField("extend2", extend2);
+        document.addField("extend3", extend3);
+        document.addField("extend4", extend4);
+        document.addField("extend5", extend5);
+        document.addField("extend6", extend6);
+        document.addField("extend7", extend7);
+        document.addField("extend8", extend8);
+        document.addField("extend9", extend9);
+        document.addField("extend10", extend10);
+        document.addField("extend11", extend11);
+        document.addField("extend12", extend12);
+        document.addField("extend13", extend13);
+        document.addField("extend14", extend14);
+        document.addField("extend15", extend15);
+        document.addField("extend16", extend16);
+        document.addField("extend17", extend17);
+        document.addField("extend18", extend18);
+        document.addField("extend19", extend19);
+      
         document.addField("_version_", 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -343,6 +411,30 @@ public class SolrManager {
         kbindex.setQtype(kbqa.getQtype());
         kbindex.setExt_scope(kbqa.getExt_scope());//可见范围
         kbindex.setKtype(KnowlegeType.QA_KTYPE);//知识类型
+        kbindex.setDomain(kbqa.getDomain());//领域
+        kbindex.setProduct(kbqa.getProduct());//产品
+        kbindex.setSubproduct(kbqa.getSubproduct());//子产品
+        kbindex.setExtend0(kbqa.getExtend0());
+        kbindex.setExtend1(kbqa.getExtend1());
+        kbindex.setExtend2(kbqa.getExtend2());
+        kbindex.setExtend3(kbqa.getExtend3());
+        kbindex.setExtend4(kbqa.getExtend4());
+        kbindex.setExtend5(kbqa.getExtend5());
+        kbindex.setExtend6(kbqa.getExtend6());
+        kbindex.setExtend7(kbqa.getExtend7());
+        kbindex.setExtend8(kbqa.getExtend8());
+        kbindex.setExtend9(kbqa.getExtend9());
+        kbindex.setExtend10(kbqa.getExtend10());
+        kbindex.setExtend11(kbqa.getExtend11());
+        kbindex.setExtend12(kbqa.getExtend12());
+        kbindex.setExtend13(kbqa.getExtend13());
+        kbindex.setExtend14(kbqa.getExtend14());
+        kbindex.setExtend15(kbqa.getExtend15());
+        kbindex.setExtend16(kbqa.getExtend16());
+        kbindex.setExtend17(kbqa.getExtend17());
+        kbindex.setExtend18(kbqa.getExtend18());
+        kbindex.setExtend19(kbqa.getExtend19());
+        
 
         this.addDoc(kbindex);
     }
@@ -953,17 +1045,11 @@ public class SolrManager {
         return true;
     }
 
-    public int importQA(String path, Tenant tenant) throws Exception {
+    public int importQA(InputStream is, Tenant tenant,String fileName) throws Exception {
         // TODO Auto-generated method stub
         DBManager dbMgr = new DBManager();
         int num = 0;
-        try {
-            num = dbMgr.insertQAFromExcel(path, tenant);
-        } catch (IOException | SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return 0;
-        }
+        num = dbMgr.insertQAFromExcel(is, tenant,fileName);
 
         return num;
     }
@@ -1170,6 +1256,29 @@ public class SolrManager {
             obj.put("url", doc.get("url"));
             obj.put("qtype", doc.get("qtype"));
 
+
+            obj.put("extend0", doc.get("extend0"));
+            obj.put("extend1", doc.get("extend1"));
+            obj.put("extend2", doc.get("extend2"));
+            obj.put("extend3", doc.get("extend3"));
+            obj.put("extend4", doc.get("extend4"));
+            obj.put("extend5", doc.get("extend5"));
+            obj.put("extend6", doc.get("extend6"));
+            obj.put("extend7", doc.get("extend7"));
+            obj.put("extend8", doc.get("extend8"));
+            obj.put("extend9", doc.get("extend9"));
+            obj.put("extend10", doc.get("extend10"));
+            obj.put("extend11", doc.get("extend11"));
+            obj.put("extend12", doc.get("extend12"));
+            obj.put("extend13", doc.get("extend13"));
+            obj.put("extend14", doc.get("extend14"));
+            obj.put("extend15", doc.get("extend15"));
+            obj.put("extend16", doc.get("extend16"));
+            obj.put("extend17", doc.get("extend17"));
+            obj.put("extend18", doc.get("extend18"));
+            obj.put("extend19", doc.get("extend19"));
+
+
             docs.add(obj);
 
         }
@@ -1292,6 +1401,26 @@ public class SolrManager {
             obj.put("author", doc.get("author")==null?"":doc.get("author"));
             obj.put("keywords", doc.get("keywords")==null?"":doc.get("keywords"));
             obj.put("tag", doc.get("tag")==null?"":doc.get("tag"));
+            obj.put("extend0", doc.get("extend0"));
+            obj.put("extend1", doc.get("extend1"));
+            obj.put("extend2", doc.get("extend2"));
+            obj.put("extend3", doc.get("extend3"));
+            obj.put("extend4", doc.get("extend4"));
+            obj.put("extend5", doc.get("extend5"));
+            obj.put("extend6", doc.get("extend6"));
+            obj.put("extend7", doc.get("extend7"));
+            obj.put("extend8", doc.get("extend8"));
+            obj.put("extend9", doc.get("extend9"));
+            obj.put("extend10", doc.get("extend10"));
+            obj.put("extend11", doc.get("extend11"));
+            obj.put("extend12", doc.get("extend12"));
+            obj.put("extend13", doc.get("extend13"));
+            obj.put("extend14", doc.get("extend14"));
+            obj.put("extend15", doc.get("extend15"));
+            obj.put("extend16", doc.get("extend16"));
+            obj.put("extend17", doc.get("extend17"));
+            obj.put("extend18", doc.get("extend18"));
+            obj.put("extend19", doc.get("extend19"));
 
             docs.add(obj);
 
@@ -1339,7 +1468,13 @@ public class SolrManager {
         HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrQuery query = new SolrQuery();
 
+
         query.set("q", "(*:*  AND  qid:\"\") OR (*:*  AND  -qid:*)");// AND -qid:* 
+
+        query.set("q", "*");// AND -qid:* 
+        query.setFilterQueries("ktype:tj");
+        query.addStatsFieldFacets("question", "answer");
+
         //query.setQuery("question:pjf OR answer:嘟嘟");
 
         QueryResponse response = server.query(query);
