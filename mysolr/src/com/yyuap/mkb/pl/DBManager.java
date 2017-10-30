@@ -867,7 +867,32 @@ public class DBManager {
             StringBuffer sbf = new StringBuffer();
             sbf.append(" select t.table_name,t.column_name field_name,t1.field_desc from information_schema.columns t ");
             sbf.append(" left join tablefield_definition t1 on t.table_name = t1.table_name");
-            sbf.append(" where  t.table_name='"+tableName+"' and t.table_schema='"+tenant.getdbname()+"'");
+            sbf.append(" where  t.column_name like'extend%' and t.table_name='"+tableName+"' and t.table_schema='"+tenant.getdbname()+"'");
+        	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    /**
+     *  根据表名，查询表中字段
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     */
+    public JSONArray queryFieldForTableTenant(Tenant tenant,String tableName) {
+        // TODO Auto-generated method stub
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、检查是否已经存在相同的q和a
+        JSONArray list = null;
+        try {
+//        	String sql = "select * from information_schema.columns where table_name='"+tableName+"' and table_schema='"+tenant.getdbname()+"'";
+            StringBuffer sbf = new StringBuffer();
+            sbf.append(" select table_name,field_name,field_desc from tablefield_definition where table_name='"+tableName+"' ");
         	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
         } catch (SQLException e) {
             // TODO Auto-generated catch block

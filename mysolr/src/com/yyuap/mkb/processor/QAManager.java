@@ -104,7 +104,29 @@ public class QAManager {
         qa.setKbid(json.getString("kbid"));// 是否置顶
         qa.setQtype(json.getString("qtype"));
         qa.setExt_scope(json.getString("ext_scope"));//可见范围
-
+        qa.setDomain(json.getString("domain"));
+        qa.setProduct(json.getString("product"));
+        qa.setSubproduct(json.getString("subproduct"));
+        qa.setExtend0(json.getString("extend0"));
+        qa.setExtend1(json.getString("extend1"));
+        qa.setExtend2(json.getString("extend2"));
+        qa.setExtend3(json.getString("extend3"));
+        qa.setExtend4(json.getString("extend4"));
+        qa.setExtend5(json.getString("extend5"));
+        qa.setExtend6(json.getString("extend6"));
+        qa.setExtend7(json.getString("extend7"));
+        qa.setExtend8(json.getString("extend8"));
+        qa.setExtend9(json.getString("extend9"));
+        qa.setExtend10(json.getString("extend10"));
+        qa.setExtend11(json.getString("extend11"));
+        qa.setExtend12(json.getString("extend12"));
+        qa.setExtend13(json.getString("extend13"));
+        qa.setExtend14(json.getString("extend14"));
+        qa.setExtend15(json.getString("extend15"));
+        qa.setExtend16(json.getString("extend16"));
+        qa.setExtend17(json.getString("extend17"));
+        qa.setExtend17(json.getString("extend18"));
+        qa.setExtend19(json.getString("extend19"));
         String[] questions = (String[]) json.get("qs");
         if (questions != null && questions.length > 0) {
             qa.setQuestions(questions);
@@ -164,7 +186,7 @@ public class QAManager {
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop,String ext_scope,String domain,String product,String subproduct)
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop,String ext_scope,String domain,String product,String subproduct,JSONObject json)
             throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
@@ -177,6 +199,26 @@ public class QAManager {
         kbqa.setDomain(domain);
         kbqa.setProduct(product);
         kbqa.setSubproduct(subproduct);
+        kbqa.setExtend0(json.getString("extend0"));
+        kbqa.setExtend1(json.getString("extend1"));
+        kbqa.setExtend2(json.getString("extend2"));
+        kbqa.setExtend3(json.getString("extend3"));
+        kbqa.setExtend4(json.getString("extend4"));
+        kbqa.setExtend5(json.getString("extend5"));
+        kbqa.setExtend6(json.getString("extend6"));
+        kbqa.setExtend7(json.getString("extend7"));
+        kbqa.setExtend8(json.getString("extend8"));
+        kbqa.setExtend9(json.getString("extend9"));
+        kbqa.setExtend10(json.getString("extend10"));
+        kbqa.setExtend11(json.getString("extend11"));
+        kbqa.setExtend12(json.getString("extend12"));
+        kbqa.setExtend13(json.getString("extend13"));
+        kbqa.setExtend14(json.getString("extend14"));
+        kbqa.setExtend15(json.getString("extend15"));
+        kbqa.setExtend16(json.getString("extend16"));
+        kbqa.setExtend17(json.getString("extend17"));
+        kbqa.setExtend17(json.getString("extend18"));
+        kbqa.setExtend19(json.getString("extend19"));
         
         kbqa.setQuestions(qs);
 
@@ -231,7 +273,7 @@ public class QAManager {
         return success;
     }
 
-    public String updateQAQS(String id, String q, String a, JSONArray qs,String url,String qtype, Tenant tenant,String ext_scope,String domain,String product,String subproduct) throws SQLException {
+    public String updateQAQS(String id, String q, String a, JSONArray qs,String url,String qtype, Tenant tenant,String ext_scope,String domain,String product,String subproduct,JSONObject extendjson) throws SQLException {
         // 根据数据构建Entity
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
@@ -243,6 +285,26 @@ public class QAManager {
         kbqa.setDomain(domain);
         kbqa.setProduct(product);
         kbqa.setSubproduct(subproduct);
+        kbqa.setExtend0(extendjson.getString("extend0"));
+        kbqa.setExtend1(extendjson.getString("extend1"));
+        kbqa.setExtend2(extendjson.getString("extend2"));
+        kbqa.setExtend3(extendjson.getString("extend3"));
+        kbqa.setExtend4(extendjson.getString("extend4"));
+        kbqa.setExtend5(extendjson.getString("extend5"));
+        kbqa.setExtend6(extendjson.getString("extend6"));
+        kbqa.setExtend7(extendjson.getString("extend7"));
+        kbqa.setExtend8(extendjson.getString("extend8"));
+        kbqa.setExtend9(extendjson.getString("extend9"));
+        kbqa.setExtend10(extendjson.getString("extend10"));
+        kbqa.setExtend11(extendjson.getString("extend11"));
+        kbqa.setExtend12(extendjson.getString("extend12"));
+        kbqa.setExtend13(extendjson.getString("extend13"));
+        kbqa.setExtend14(extendjson.getString("extend14"));
+        kbqa.setExtend15(extendjson.getString("extend15"));
+        kbqa.setExtend16(extendjson.getString("extend16"));
+        kbqa.setExtend17(extendjson.getString("extend17"));
+        kbqa.setExtend17(extendjson.getString("extend18"));
+        kbqa.setExtend19(extendjson.getString("extend19"));
         // kbqa.setQtype(t);
         if(qs!=null){
         	for (int i = 0, len = qs.size(); i < len; i++) {
@@ -459,7 +521,7 @@ public class QAManager {
     }
     
     /**
-     *  根据表名，查询表中字段
+     *  根据表名，查询表中字段 全部
      * @param tenant
      * @param tableName 表名
      * @return
@@ -469,6 +531,20 @@ public class QAManager {
         JSONObject jsonQA = new JSONObject();
         DBManager dbmgr = new DBManager();
         JSONArray json = dbmgr.queryFieldForTable(tenant, tableName);
+        return json;
+    }
+    
+    /**
+     *  根据表名，查询表中字段 每个租户已定义的
+     * @param tenant
+     * @param tableName 表名
+     * @return
+     */
+    public JSONArray queryFieldForTableTenant(String tableName,Tenant tenant) {
+        // TODO Auto-generated method stub
+        JSONObject jsonQA = new JSONObject();
+        DBManager dbmgr = new DBManager();
+        JSONArray json = dbmgr.queryFieldForTableTenant(tenant, tableName);
         return json;
     }
     

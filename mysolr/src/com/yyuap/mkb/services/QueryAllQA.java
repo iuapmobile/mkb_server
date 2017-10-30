@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
@@ -90,7 +91,14 @@ public class QueryAllQA extends HttpServlet {
                     String corename = tenant.gettkbcore();
                     SolrManager solrmng = new SolrManager(corename);
                     JSONObject _ret = solrmng.queryAllAndByContent(requestParam, tenant);// 获取查询结果,，一个新的对象
+                   
+                    JSONObject respnse = _ret.getJSONObject("response");
+                    QAManager qam = new QAManager();
+                    JSONArray array = qam.queryFieldForTable("qa", tenant);
+                    respnse.put("extend", array);
+                    
                     ro.set(_ret);// 导致botResponse需要重新赋值
+                    
                 } catch (Exception e) {
                 }
             }

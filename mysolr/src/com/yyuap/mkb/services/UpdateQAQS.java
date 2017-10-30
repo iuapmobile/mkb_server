@@ -126,7 +126,15 @@ public class UpdateQAQS extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            String editId = qam.updateQAQS(id, q, a, qs,url,qtype, tenant,ext_scope,domain,product,subproduct);
+        	 JSONArray array = qam.queryFieldForTableTenant("qa",tenant);
+        	 JSONObject json = new JSONObject();
+             if(array!=null&&array.size()>0){
+             	for(int i=0;i<array.size();i++){
+             		JSONObject obj = array.getJSONObject(i);
+             		json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
+             	}
+             }
+            String editId = qam.updateQAQS(id, q, a, qs,url,qtype, tenant,ext_scope,domain,product,subproduct,json);
             if (editId != null && editId.equals("")) {
                 ro.setStatus(0);
                 ro.setResponseKV("id", editId);

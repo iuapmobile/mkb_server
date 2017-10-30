@@ -1085,7 +1085,107 @@ public class DbUtil {
             }else{
             	ps.setString(10, qa.getSubproduct());
             }
-            ps.setString(11, qa.getId());
+            if(null == qa.getExtend0()){
+            	ps.setNull(11, Types.NULL);
+            }else{
+            	ps.setString(11, qa.getExtend0());
+            }
+            if(null == qa.getExtend1()){
+            	ps.setNull(12, Types.NULL);
+            }else{
+            	ps.setString(12, qa.getExtend1());
+            }
+            if(null == qa.getExtend2()){
+            	ps.setNull(13, Types.NULL);
+            }else{
+            	ps.setString(13, qa.getExtend2());
+            }
+            if(null == qa.getExtend3()){
+            	ps.setNull(14, Types.NULL);
+            }else{
+            	ps.setString(14, qa.getExtend3());
+            }
+            if(null == qa.getExtend4()){
+            	ps.setNull(15, Types.NULL);
+            }else{
+            	ps.setString(15, qa.getExtend4());
+            }
+            if(null == qa.getExtend5()){
+            	ps.setNull(16, Types.NULL);
+            }else{
+            	ps.setString(16, qa.getExtend5());
+            }
+            if(null == qa.getExtend6()){
+            	ps.setNull(17, Types.NULL);
+            }else{
+            	ps.setString(17, qa.getExtend6());
+            }
+            if(null == qa.getExtend7()){
+            	ps.setNull(18, Types.NULL);
+            }else{
+            	ps.setString(18, qa.getExtend7());
+            }
+            if(null == qa.getExtend8()){
+            	ps.setNull(19, Types.NULL);
+            }else{
+            	ps.setString(19, qa.getExtend8());
+            }
+            if(null == qa.getExtend9()){
+            	ps.setNull(20, Types.NULL);
+            }else{
+            	ps.setString(20, qa.getExtend9());
+            }
+            if(null == qa.getExtend10()){
+            	ps.setNull(21, Types.NULL);
+            }else{
+            	ps.setString(21, qa.getExtend10());
+            }
+            if(null == qa.getExtend11()){
+            	ps.setNull(22, Types.NULL);
+            }else{
+            	ps.setString(22, qa.getExtend11());
+            }
+            if(null == qa.getExtend12()){
+            	ps.setNull(23, Types.NULL);
+            }else{
+            	ps.setString(23, qa.getExtend12());
+            }
+            if(null == qa.getExtend13()){
+            	ps.setNull(24, Types.NULL);
+            }else{
+            	ps.setString(24, qa.getExtend13());
+            }
+            if(null == qa.getExtend14()){
+            	ps.setNull(25, Types.NULL);
+            }else{
+            	ps.setString(25, qa.getExtend14());
+            }
+            if(null == qa.getExtend15()){
+            	ps.setNull(26, Types.NULL);
+            }else{
+            	ps.setString(26, qa.getExtend15());
+            }
+            if(null == qa.getExtend16()){
+            	ps.setNull(27, Types.NULL);
+            }else{
+            	ps.setString(27, qa.getExtend16());
+            }
+            if(null == qa.getExtend17()){
+            	ps.setNull(28, Types.NULL);
+            }else{
+            	ps.setString(28, qa.getExtend17());
+            }
+            if(null == qa.getExtend18()){
+            	ps.setNull(29, Types.NULL);
+            }else{
+            	ps.setString(29, qa.getExtend18());
+            }
+            if(null == qa.getExtend19()){
+            	ps.setNull(30, Types.NULL);
+            }else{
+            	ps.setString(30, qa.getExtend19());
+            }
+            ps.setString(31, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {
@@ -1859,35 +1959,63 @@ public class DbUtil {
         PreparedStatement ps = null;
         ResultSet rs = null;
         JSONArray array = new JSONArray();
-        boolean delsuccess = false;
-        boolean insuccess = false;
+        boolean delqasuccess = false;//qa删除表字段定义标志
+        boolean delkbsuccess = false;//kbindexinfo删除表字段定义标志
+        boolean inqasuccess = false;//qa新增表字段定义标志
+        boolean inkbsuccess = false;//kbindexinfo新增表字段定义标志
         try {
             Class.forName(Common.DRIVER);
 
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             for(int i=0;i<paramArr.size();i++){
             	JSONObject obj = paramArr.getJSONObject(i); 
-            	String qsql = "DELETE from tablefield_definition where table_name=? and field_name=?";
-            	ps = conn.prepareStatement(qsql);
+            	String qasql = "DELETE from tablefield_definition where table_name=? and field_name=?";
+            	ps = conn.prepareStatement(qasql);
             	ps.setString(1, obj.getString("table_name")==null?"":obj.getString("table_name"));
             	ps.setString(2, obj.getString("field_name")==null?"":obj.getString("field_name"));
-            	boolean delflag = ps.execute();
-            	if(!delflag){
-            		delsuccess = true;
+            	boolean delqaflag = ps.execute();
+            	String kbsql = "DELETE from tablefield_definition where table_name=? and field_name=?";
+            	ps = conn.prepareStatement(kbsql);
+            	ps.setString(1, obj.getString("table_name")==null?"":obj.getString("table_name"));
+            	ps.setString(2, obj.getString("field_name")==null?"":obj.getString("field_name"));
+            	boolean delkbflag = ps.execute();
+            	if(!delqaflag){
+            		delqasuccess = true;
             	}
-            	String isql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
-            	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-            	ps = conn.prepareStatement(isql);
-            	ps.setString(1, UUID.randomUUID().toString());
-            	ps.setString(2, obj.getString("table_name")==null?"":obj.getString("table_name"));
-            	ps.setString(3, obj.getString("field_name")==null?"":obj.getString("field_name"));
-            	ps.setString(4, obj.getString("field_desc")==null?"":obj.getString("field_desc"));
-            	ps.setString(5, datetime);
-            	ps.setString(6, datetime);
-            	boolean inflag = ps.execute();
-            	if(!inflag){
-            		insuccess = true;
+            	if(!delkbflag){
+            		delkbsuccess = true;
             	}
+            	if(null == obj.getString("field_desc") || "".equals(obj.getString("field_desc"))){
+            		inqasuccess = true;
+            		inkbsuccess = true;
+            	}else{
+            		String isqaql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
+                	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+                	ps = conn.prepareStatement(isqaql);
+                	ps.setString(1, UUID.randomUUID().toString());
+                	ps.setString(2, "qa");
+                	ps.setString(3, obj.getString("field_name")==null?"":obj.getString("field_name"));
+                	ps.setString(4, obj.getString("field_desc")==null?"":obj.getString("field_desc"));
+                	ps.setString(5, datetime);
+                	ps.setString(6, datetime);
+                	boolean inqaflag = ps.execute();
+                	if(!inqaflag){
+                		inqasuccess = true;
+                	}
+                	String iskbql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
+                	ps = conn.prepareStatement(iskbql);
+                	ps.setString(1, UUID.randomUUID().toString());
+                	ps.setString(2, "kbindexinfo");
+                	ps.setString(3, obj.getString("field_name")==null?"":obj.getString("field_name"));
+                	ps.setString(4, obj.getString("field_desc")==null?"":obj.getString("field_desc"));
+                	ps.setString(5, datetime);
+                	ps.setString(6, datetime);
+                	boolean inkbflag = ps.execute();
+                	if(!inkbflag){
+                		inkbsuccess = true;
+                	}
+            	}
+            	
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1902,7 +2030,7 @@ public class DbUtil {
                 conn.close();
             }
         }
-        return delsuccess&&insuccess;
+        return delqasuccess&&delkbsuccess&&inqasuccess&&inkbsuccess;
     }
     public static void setParameter(List<Object> params,PreparedStatement preparedStatement) throws SQLException{  
         for(int i=0;i<params.size();i++){  

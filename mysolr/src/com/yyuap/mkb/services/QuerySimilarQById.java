@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
@@ -62,7 +63,12 @@ public class QuerySimilarQById extends HttpServlet {
             // 2、查询答案
             QAManager qamgr = new QAManager();
             ret = qamgr.queryById(tenant,id);
+            
+            JSONObject respnse = ret.getJSONObject("response");
+            JSONArray array = qamgr.queryFieldForTable("qa", tenant);
+            respnse.put("extend", array);
         }
+       
         response.getWriter().write(ret.toString());
     }
 

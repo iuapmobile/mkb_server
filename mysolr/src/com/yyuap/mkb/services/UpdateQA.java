@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
@@ -110,7 +111,15 @@ public class UpdateQA extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-            boolean success = qam.updateQA(id, q, a, qs, tenant,istop,ext_scope,domain,product,subproduct);
+        	 JSONArray array = qam.queryFieldForTableTenant("qa",tenant);
+        	 JSONObject json = new JSONObject();
+             if(array!=null&&array.size()>0){
+             	for(int i=0;i<array.size();i++){
+             		JSONObject obj = array.getJSONObject(i);
+             		json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
+             	}
+             }
+            boolean success = qam.updateQA(id, q, a, qs, tenant,istop,ext_scope,domain,product,subproduct,json);
             if (success) {
                 ro.setStatus(0);
             }
