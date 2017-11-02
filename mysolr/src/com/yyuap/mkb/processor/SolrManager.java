@@ -1341,7 +1341,7 @@ public class SolrManager {
         } else if (q.equals("")) {
         	q = "*:* ";
         }
-        q = q + " AND ktype:kb ";//类型，kb 文档，qa 问答
+        q = q + " AND (ktype:kb OR ktype:video OR ktype:doc )";//类型，kb 文档，qa 问答
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重

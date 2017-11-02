@@ -470,7 +470,12 @@ public class QAManager {
         //下面两个 实在添加solr时用到
         vo.setQuestion(json.getString("title"));
         vo.setAnser(json.getString("descript"));
-        vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        if(json.getString("reourcetype")==null){
+        	vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        }else{
+        	vo.setKtype(json.getString("reourcetype"));
+        }
+        
 
 
         DBManager dbmgr = new DBManager();
@@ -511,7 +516,11 @@ public class QAManager {
         //下面两个 实在添加solr时用到
         vo.setQuestion(json.getString("title"));
         vo.setAnser(json.getString("descript"));
-        vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        if(json.getString("reourcetype")==null){
+        	vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        }else{
+        	vo.setKtype(json.getString("reourcetype"));
+        }
         DBManager dbmgr = new DBManager();
 
         boolean success = dbmgr.updateKbInfo(vo, tenant);
@@ -566,6 +575,13 @@ public class QAManager {
         DBManager dbmgr = new DBManager();
         boolean ret = dbmgr.saveFieldForTable(tenant, paramArr);
         return ret;
+    }
+    
+    public Map<String,String> queryDimensionTj(String field, Tenant tenant) throws Exception {
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.queryDimensionTj(field, tenant);
     }
     
 }
