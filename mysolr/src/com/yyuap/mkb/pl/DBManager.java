@@ -916,5 +916,20 @@ public class DBManager {
         return ret;
     }
     
+    public Map<String,String> queryDimensionTj(String field, Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+        	map = DbUtil.queryDimensionTj(field, dbconf);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return map;
+    }
+    
 
 }

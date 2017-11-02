@@ -2044,4 +2044,43 @@ public class DbUtil {
 			}  
         }  
     }
+    
+    public static Map<String,String> queryDimensionTj(String field, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+           
+            StringBuffer sbf = new StringBuffer();
+    		sbf.append(" select  ");
+			sbf.append(" "+field+" name, ");
+    		sbf.append(" count(*) c from qa where 1=1");
+			sbf.append(" group by "+field+"  ");
+            
+            ps = conn.prepareStatement(sbf.toString());
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String c = rs.getString("c");
+                map.put(name, c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return map;
+    }
 }
