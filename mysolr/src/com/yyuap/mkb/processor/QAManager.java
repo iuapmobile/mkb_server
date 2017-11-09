@@ -238,12 +238,13 @@ public class QAManager {
         return json;
     }
 
-    public String addTongji(String q, String a, Tenant tenant) {
+    public String addTongji(String q, String a,String qid, Tenant tenant) {
         // TODO Auto-generated method stub
         String id = "";
         KBQA qa = new KBQA();
         qa.setQuestion(q);
         qa.setAnswer(a);
+        qa.setId(qid);
         DBManager dbmgr = new DBManager();
         id = dbmgr.insertQA_tj(qa, tenant);
         return id;
@@ -465,10 +466,10 @@ public class QAManager {
         //下面两个 实在添加solr时用到
         vo.setQuestion(json.getString("title"));
         vo.setAnser(json.getString("descript"));
-        if(json.getString("reourcetype")==null){
+        if(json.getString("resourcetype")==null){
         	vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
         }else{
-        	vo.setKtype(json.getString("reourcetype"));
+        	vo.setKtype(json.getString("resourcetype"));
         }
         
 
@@ -511,10 +512,10 @@ public class QAManager {
         //下面两个 实在添加solr时用到
         vo.setQuestion(json.getString("title"));
         vo.setAnser(json.getString("descript"));
-        if(json.getString("reourcetype")==null){
+        if(json.getString("resourcetype")==null){
         	vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
         }else{
-        	vo.setKtype(json.getString("reourcetype"));
+        	vo.setKtype(json.getString("resourcetype"));
         }
         DBManager dbmgr = new DBManager();
 
@@ -577,6 +578,26 @@ public class QAManager {
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryDimensionTj(field, tenant);
+    }
+    public Map<String,String> queryQaTopTj(int topn,String istop,  Tenant tenant) throws Exception {
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.queryQaTopTj(topn,istop, tenant);
+    }
+    
+    public JSONArray queryDimensionData(String field, Tenant tenant) throws Exception {
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.queryDimensionData(field, tenant);
+    }
+    
+    public Map<String,String> queryQaTopTjForDimension(int topn,String istop,String field,String fieldValue,  Tenant tenant) throws Exception {
+
+        DBManager dbmgr = new DBManager();
+
+        return dbmgr.queryQaTopTjForDimension(topn,istop,field,fieldValue, tenant);
     }
     
 }

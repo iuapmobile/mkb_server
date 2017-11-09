@@ -65,6 +65,10 @@ public class QuerySimilarQById extends HttpServlet {
             ret = qamgr.queryById(tenant,id);
             
             JSONObject respnse = ret.getJSONObject("response");
+            if(null == respnse){
+            	respnse = new JSONObject();
+            	ret.put("respnse", respnse);
+            }
             JSONArray array = qamgr.queryFieldForTable("qa", tenant);
             respnse.put("extend", array);
         }

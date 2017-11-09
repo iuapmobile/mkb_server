@@ -50,11 +50,11 @@ public class Common {
     // + "?useUnicode=true&characterEncoding=utf-8";
 
     // sql
-    public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexInfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain,weight,content,product,subproduct,s_top,s_kbsrc,s_kbcategory,s_hot,kbid,ext_supportsys,ext_resourcetype,ext_scope,createTime,updateTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexInfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain,weight,content,product,subproduct,s_top,s_kbsrc,s_kbcategory,s_hot,kbid,ext_supportsys,ext_resourcetype,ext_scope,createTime,updateTime,ktype) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     public static final String SELECT_KBINDEXINFO_SQL = "select * from kbIndexInfo where title = ? and descript = ? and url = ?";
     public static final String UPDATE_KBINDEXINFO_SQL = "UPDATE kbIndexInfo SET `title`=?, `descript`=?, `descriptImg`=?, `text`=?, `url`=?, `keywords`=?, `domain`=?, `tag`=?  WHERE `id`=?";
 
-    public static final String SELECT_QA_SQL = "select * from qa where question = ? and answer = ? and qtype = ?";
+    public static final String SELECT_QA_SQL = "select * from qa where question = ?  and qtype = ?";//and answer = ?
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
     public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid,ext_scope,domain,product,subproduct,extend0,extend1,extend2,extend3,extend4,extend5,extend6,extend7,extend8,extend9,extend10,extend11,extend12,extend13,extend14,extend15,extend16,extend17,extend18,extend19) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -74,7 +74,7 @@ public class Common {
 
     public static final String SELECT_QA_SIMILAR_BY_ID_SQL = "select * from qa_similar where qid = ?";
 
-    public static final String INSERT_QA_TJ_SQL = "insert into qa_tj(id, question, answer, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_QA_TJ_SQL = "insert into qa_tj(id, question, answer, createTime, updateTime, createBy, updateBy,qid) values(?, ?, ?, ?, ?, ?, ?,?)";
 
     // 统计 top5
     public static final String QA_TOPN = "select * from (select question, count(*) counts from yycloudkb.qa_tj where  question not in ? group by question) t order by counts desc limit ?";
