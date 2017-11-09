@@ -1,17 +1,14 @@
 package com.yyuap.mkb.services;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +19,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.processor.SolrManager;
@@ -115,18 +113,19 @@ public class ImportQA extends HttpServlet {
                 if (tenant != null) {
                     try {
                         SolrManager mgr = new SolrManager(tenant.gettkbcore());
-                        int num =mgr.importQA(is, tenant,fileName);
+                        JSONObject obj =mgr.importQA(is, tenant,fileName);
 
-                        if (num > 0) {
-                            // 手动导入
-                            // mgr.addDocument(kbindex);
-                            ro.setReason("成功导入" + num + "条记录!");
-                            ro.setStatus(0);
-
-                        } else {
-                            ro.setReason("没有导入数据!");
-                            ro.setStatus(-2);
-                        }
+//                        if (obj.getIntValue("successnum") > 0) {
+//                            // 手动导入
+//                            // mgr.addDocument(kbindex);
+//                            ro.setReason("成功导入" + num + "条记录!");
+//                            ro.setStatus(0);
+//
+//                        } else {
+//                            ro.setReason("没有导入数据!");
+//                            ro.setStatus(-2);
+//                        }
+                        ro.setResponseKV("retobj", obj);
 
                     } catch (Exception e) {
                         ro.setReason("导入异常!" + e.toString());

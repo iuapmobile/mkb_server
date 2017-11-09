@@ -1045,13 +1045,12 @@ public class SolrManager {
         return true;
     }
 
-    public int importQA(InputStream is, Tenant tenant,String fileName) throws Exception {
+    public JSONObject importQA(InputStream is, Tenant tenant,String fileName) throws Exception {
         // TODO Auto-generated method stub
         DBManager dbMgr = new DBManager();
-        int num = 0;
-        num = dbMgr.insertQAFromExcel(is, tenant,fileName);
+        JSONObject obj = dbMgr.insertQAFromExcel(is, tenant,fileName);
 
-        return num;
+        return obj;
     }
 
     public JSONArray selectSimilarQByQid(Tenant tenant, String id) throws Exception {

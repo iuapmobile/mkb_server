@@ -252,7 +252,8 @@ public class Query extends HttpServlet {
         // 5、添加q的统计
         QAManager qamgr = new QAManager();
         String a = ro.getBotResponse().getString("text");
-        String q_tj_id = qamgr.addTongji(q_old, a, tenant);
+        String qid = ro.getBotResponse().getString("qid");
+        String q_tj_id = qamgr.addTongji(q_old, a,qid, tenant);
         JSONObject resH = ro.getResponseHeader();
         JSONObject _resH = ro.getResponseHeader();
         JSONObject param = resH.getJSONObject("param");
@@ -305,11 +306,13 @@ public class Query extends HttpServlet {
             ro.setBotResponseKV("url", _url);
             ro.setBotResponseKV("qtype", _qtype);
             ro.setBotResponseKV("kbid", "1");
+            ro.setBotResponseKV("qid", uniqueQA.getString("id"));
         } else {
             ro.setBotResponseKV("code", "100000");// 文本类
             ro.setBotResponseKV("text", _a);
             ro.setBotResponseKV("qtype", _qtype);
             ro.setBotResponseKV("kbid", "1");
+            ro.setBotResponseKV("qid", uniqueQA.getString("id"));
         }
         ro.setBotResponseKV("simscore", uniqueQA.getString("simscore"));
         ro.setBotResponseKV("dailogid", dailogid);

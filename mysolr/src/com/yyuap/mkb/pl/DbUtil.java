@@ -105,6 +105,7 @@ public class DbUtil {
             
             ps.setString(25, kbIndex.getCreateTime());
             ps.setString(26, kbIndex.getUpdateTime());
+            ps.setString(27, kbIndex.getKtype());
             
             boolean flag = ps.execute();
             if (!flag) {
@@ -131,19 +132,19 @@ public class DbUtil {
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-            if(null == kbqa.getQtype()){
-            	ps = conn.prepareStatement("select * from qa where question = ? and answer = ? and qtype is null");
+            if(null == kbqa.getQtype()){//and answer = ?
+            	ps = conn.prepareStatement("select * from qa where question = ?  and qtype is null");
 
                 ps.setString(1, kbqa.getQuestion());
-                ps.setString(2, kbqa.getAnswer());
+               // ps.setString(2, kbqa.getAnswer());
 
                 rs = ps.executeQuery();
             }else{
             	 ps = conn.prepareStatement(sql);
 
                  ps.setString(1, kbqa.getQuestion());
-                 ps.setString(2, kbqa.getAnswer());
-                 ps.setString(3, kbqa.getQtype());
+                 //ps.setString(2, kbqa.getAnswer());
+                 ps.setString(2, kbqa.getQtype());
 
                  rs = ps.executeQuery();
             }
@@ -872,6 +873,12 @@ public class DbUtil {
             ps.setString(5, datetime);
             ps.setString(6, qa.getCreateBy());
             ps.setString(7, qa.getUpdateBy());
+            if(null==qa.getId() || "".equals(qa.getId())){
+            	ps.setNull(8, Types.NULL);
+            }else{
+            	ps.setString(8, qa.getId());
+            }
+            
 
             boolean flag = ps.execute();
 
@@ -940,7 +947,7 @@ public class DbUtil {
                 }
                 buffer.deleteCharAt(buffer.length() - 1);
                 buffer.deleteCharAt(buffer.length() - 1);
-                String sql = "select * from (select question, count(*) counts from yycloudkb.qa_tj " + "where  "
+                String sql = "select * from (select question, count(*) counts from qa_tj " + "where  "
                         + "question not in (" + buffer.toString() + ") "
                         + "group by question) t order by counts desc limit ?";
                 ps = conn.prepareStatement(sql);
@@ -2072,6 +2079,184 @@ public class DbUtil {
                 String c = rs.getString("c");
                 map.put(name, c);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return map;
+    }
+    
+    public static Map<String,String> queryQaTopTj(int topn,String istop, DBConfig dbconf) throws SQLException {
+    	// TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+//        JSONArray array = new JSONArray();
+//        List<String> list = new ArrayList<String>();
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+            Class.forName(Common.DRIVER);
+
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+
+            // 先查询置顶qa
+
+            // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
+            // Common.PASSWORD);
+            String sql = "select * from (select question, count(*) counts from qa_tj " 
+            		+ "group by question) t order by counts desc limit ?";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1, topn);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+//            	JSONObject json = new JSONObject();
+//            	json.put("question", rs.getString("question"));
+//            	json.put("askedNum", rs.getString("counts"));
+//            	array.add(json);
+            	map.put(rs.getString("question"), rs.getString("counts"));
+            }
+//            String sql1 = "";
+//            if(null == istop){
+//            	sql1 = " select * from qa   limit ? ";
+//            }else{
+//            	sql1 = " select *  from qa where istop=?  limit ? ";
+//            }
+//            	
+//            ps = conn.prepareStatement(sql1);
+//            if(null == istop){
+//            	ps.setInt(1, Integer.valueOf(topn));
+//            }else{
+//            	ps.setString(1, istop);
+//            	ps.setInt(2, Integer.valueOf(topn));
+//            }
+//            rs = ps.executeQuery();
+//            int rownum = 0;
+//            while (rs.next()) {
+//                JSONObject json = new JSONObject();
+//                json.put("question", rs.getString("question"));
+//                json.put("askedNum", "-1");// 这应该是-1 因为置顶 就是一个
+//                array.add(json);
+//                rownum++;
+//                list.add(rs.getString("question"));
+//            }
+
+            // 这说明 置顶的不满足需要查询的topn数据
+//            if (topn - rownum > 0) {
+//                // 根据参数列表的大小生成in串
+//                StringBuffer buffer = new StringBuffer();
+//                for (int i = 0; i < list.size(); i++) {
+//                    buffer.append("?, ");
+//                }
+//                buffer.deleteCharAt(buffer.length() - 1);
+//                buffer.deleteCharAt(buffer.length() - 1);
+//                String sql = "select * from (select question, count(*) counts from qa_tj " + "where  "
+//                        + "question not in (" + buffer.toString() + ") "
+//                        + "group by question) t order by counts desc limit ?";
+//                ps = conn.prepareStatement(sql);
+//                // 根据参数列表设置sql参数
+//                for (int i = 0; i < list.size(); i++) {
+//                    ps.setString(i + 1, list.get(i));
+//                }
+//                ps.setInt(list.size() + 1, topn - rownum);
+//                rs = ps.executeQuery();
+//                while (rs.next()) {
+//                    JSONObject json = new JSONObject();
+//                    json.put("question", rs.getString("question"));
+//                    json.put("askedNum", rs.getString("counts"));
+//                    array.add(json);
+//                }
+//            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return map;
+    }
+    
+    public static JSONArray queryDimensionData(String field, DBConfig dbconf) throws SQLException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        JSONArray array = new JSONArray();
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+           
+            StringBuffer sbf = new StringBuffer();
+    		sbf.append(" select  DISTINCT");
+			sbf.append(" "+field+" name");
+    		sbf.append(" from qa where 1=1");
+            
+            ps = conn.prepareStatement(sbf.toString());
+
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                array.add(name);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ps != null) {
+                ps.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return array;
+    }
+    public static Map<String,String> queryQaTopTjForDimension(int topn,String istop,String field,String fieldValue, DBConfig dbconf) throws SQLException {
+    	// TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+//        JSONArray array = new JSONArray();
+//        List<String> list = new ArrayList<String>();
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+            Class.forName(Common.DRIVER);
+
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+
+            // 先查询置顶qa
+
+            // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
+            // Common.PASSWORD);
+             
+            
+            String sql = "select tj.question,count(*) counts from qa_tj tj,qa qa " 
+            		+ "where tj.qid=qa.id and "+field+"=? group by tj.question  order by counts desc limit ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, fieldValue);
+            ps.setInt(2, topn);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+            	map.put(rs.getString("question"), rs.getString("counts"));
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

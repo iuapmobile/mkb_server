@@ -17,6 +17,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.bcel.internal.generic.RET;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
@@ -94,7 +95,7 @@ public class DBManager {
         return false;
     }
 
-    public int insertQAFromExcel(InputStream is, Tenant tenant,String fileName) throws Exception {
+    public JSONObject insertQAFromExcel(InputStream is, Tenant tenant,String fileName) throws Exception {
         // TODO Auto-generated method stub
         List<KBQA> list = new ArrayList<KBQA>();
         if (fileName.endsWith("xlsx")) {
@@ -103,16 +104,23 @@ public class DBManager {
         } else {
 
         }
-        int num = 0;
-        int numErr = 0;
+//        int num = 0;
+//        int numErr = 0;
+        List<String> ret  = new ArrayList<String>();
         for (int i = 0, len = list.size(); i < len; i++) {
             KBQA qa = list.get(i);
-            String newid = this.insertQA(qa, tenant);
-            if (newid != null && !newid.equals("")) {
-                num++;
-            }
+            this.insertQAForExcel(qa, tenant,ret);
+//            if (newid != null && !newid.equals("")) {
+//                num++;
+//            }
         }
-        return num;
+        int successnum = list.size()-ret.size();
+        int falsenum = ret.size();
+        JSONObject obj = new JSONObject();
+        obj.put("successnum", successnum);
+        obj.put("falsenum", falsenum);
+        obj.put("falseqa", ret.toArray(new String[ret.size()]));
+        return obj;
     }
 
     public String insertQA(KBQA qa, Tenant tenant) throws Exception {
@@ -159,6 +167,69 @@ public class DBManager {
                 throw e;
             }
         } catch (Exception e) {
+            if (e instanceof KBDuplicateSQLException) {
+                throw (KBDuplicateSQLException) e;
+            } else if (e instanceof KBInsertSQLException) {
+                throw (KBInsertSQLException) e;
+            } else {
+                throw e;
+            }
+        }
+    }
+    
+    /**
+     * 导入qa时所用新增QA方法
+     * @param qa
+     * @param tenant
+     * @return
+     * @throws Exception
+     */
+    public List<String> insertQAForExcel(KBQA qa, Tenant tenant,List<String> ret) throws Exception {
+//    	List<String> ret = new ArrayList<String>();
+    	ArrayList<KBQA> list = new ArrayList<KBQA>();
+        try {
+            if (qa == null) {
+                return null;
+            }
+
+            // 1、根据租户获取DBconfig
+            DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+            // 2、检查是否已经存在相同的q
+           list = DbUtil.selectOne(Common.SELECT_QA_SQL, qa, dbconf);
+            if (list.size() == 0) {
+                // 2.1 插入问答
+                String id = DbUtil.insertQA(Common.INSERT_QA_SQL, qa, dbconf);
+                qa.setId(id);
+                //ret = id;
+
+                // 成功插入数据库后开始增加solr索引
+                SolrManager solr = new SolrManager(tenant.gettkbcore());
+                solr.addQADoc(qa);
+
+                // 2.2 插入相似问法
+                ArrayList<String> qs_ids = new ArrayList<String>();
+                if (qa.getQuestions() != null) {
+                    qs_ids = DbUtil.insertQA_SIMILAR(Common.INSERT_QA_SIMILAR_SQL, qa, dbconf);
+
+                    // 成功插入数据库后开始增加solr索引
+                    solr.addQASimilarDoc(qa);
+                }
+
+                return ret;
+            } else {
+                System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
+                        + qa.getAnswer() + ", and has been throw away!");
+               // String id = list.get(0).getId();
+                ret.add(list.get(0).getQuestion());
+                return ret;
+//                KBDuplicateSQLException e = new KBDuplicateSQLException(
+//                        "存在重复的记录id[" + id + "]，q=" + qa.getQuestion() + ", a=" + qa.getAnswer() + ", 未能持久化成功改次操作");
+//                e.getExtData().put("id", id);
+//                throw e;
+            }
+        } catch (Exception e) {
+        	ret.add(list.get(0).getQuestion());
             if (e instanceof KBDuplicateSQLException) {
                 throw (KBDuplicateSQLException) e;
             } else if (e instanceof KBInsertSQLException) {
@@ -805,6 +876,10 @@ public class DBManager {
 	        	sbf.append(" ,ext_scope = ? ");  
 	            params.add(kbindex.getExt_scope());  
 	        }
+	        if(StringUtils.isNotBlank(kbindex.getKtype())){  
+	        	sbf.append(" ,ktype = ? ");  
+	            params.add(kbindex.getKtype());  
+	        }
 	        sbf.append(" where id = ?");  
 	        params.add(kbindex.getId());  
 	        flag = DbUtil.updateKbInfo(sbf.toString(),params, kbindex, dbconf);
@@ -923,6 +998,50 @@ public class DBManager {
         Map<String,String> map = new HashMap<String,String>();
         try {
         	map = DbUtil.queryDimensionTj(field, dbconf);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return map;
+    }
+    
+    public Map<String,String> queryQaTopTj(int topn,String istop, Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+        	map = DbUtil.queryQaTopTj(topn,istop, dbconf);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return map;
+    }
+    
+    public JSONArray queryDimensionData(String field, Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        JSONArray array = new JSONArray();
+        try {
+        	array = DbUtil.queryDimensionData(field, dbconf);
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        return array;
+    }
+    public Map<String,String> queryQaTopTjForDimension(int topn,String istop,String field,String fieldValue, Tenant tenant) {
+        // TODO Auto-generated method stub
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        Map<String,String> map = new HashMap<String,String>();
+        try {
+        	map = DbUtil.queryQaTopTjForDimension(topn,istop,field,fieldValue, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
