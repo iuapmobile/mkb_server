@@ -91,7 +91,7 @@ public class QueryQaTopTj extends HttpServlet {
 
         try {
         	QAManager qam = new QAManager();
-        	if(null == field || "all".equals(field)){
+        	if(null == field || "all".equals(fieldValue)){
             	Map<String,String> map = qam.queryQaTopTj(topn,istop, tenant);
             	String[] arr = new String[map.size()];
             	String[] dataArr = new String[map.size()];
