@@ -297,7 +297,7 @@ public class Query extends HttpServlet {
             ro.setBotResponseKV("code", "200000");// 链接类
             String _q = uniqueQA.getString("kb_q");
 //            ro.setBotResponseKV("text", "为您找到文档：" + _q + "，" + _a);
-            ro.setBotResponseKV("text", "".equals(_a)?_q:_a);
+            ro.setBotResponseKV("text", "".equals(_a)?"为您找到一个链接":_a);
             ro.setBotResponseKV("url", _url);
             ro.setBotResponseKV("qtype", _qtype);
             ro.setBotResponseKV("kbid", "1");
