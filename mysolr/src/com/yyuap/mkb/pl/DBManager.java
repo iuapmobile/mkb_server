@@ -747,7 +747,7 @@ public class DBManager {
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
             // 2、检查是否已经存在
-            List<KBIndex> list = DbUtil.selectOneIsExists("select * from kbIndexInfo where title = ?", vo, dbconf);
+            List<KBIndex> list = DbUtil.selectOneIsExists("select * from kbIndexinfo where title = ?", vo, dbconf);
             if (list.size() == 0) {
                 DbUtil.insert(Common.INSERT_KBINDEXINFO_SQL, vo, dbconf);
                 
@@ -782,7 +782,7 @@ public class DBManager {
 	        DBConfig dbconf = this.getDBConfigByTenant(tenant);
 	        StringBuffer sbf = new StringBuffer();
 //	        String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-	        sbf.append(" UPDATE kbIndexInfo SET  updateTime = ? ");
+	        sbf.append(" UPDATE kbIndexinfo SET  updateTime = ? ");
 	        params.add(kbindex.getUpdateTime());
 	        if(StringUtils.isNotBlank(kbindex.getTitle())){  
 	        	sbf.append(" ,title = ? ");  
@@ -905,7 +905,7 @@ public class DBManager {
         try {
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
-            boolean success = DbUtil.delkbInfo("delete from kbIndexInfo where id = ?", ids, dbconf);
+            boolean success = DbUtil.delkbInfo("delete from kbIndexinfo where id = ?", ids, dbconf);
 
             if (!success) {
                 throw new KBDelSQLException("删除失败，请联系管理员！");

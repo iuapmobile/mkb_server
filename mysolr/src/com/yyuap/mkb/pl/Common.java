@@ -50,9 +50,9 @@ public class Common {
     // + "?useUnicode=true&characterEncoding=utf-8";
 
     // sql
-    public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexInfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain,weight,content,product,subproduct,s_top,s_kbsrc,s_kbcategory,s_hot,kbid,ext_supportsys,ext_resourcetype,ext_scope,createTime,updateTime,ktype) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    public static final String SELECT_KBINDEXINFO_SQL = "select * from kbIndexInfo where title = ? and descript = ? and url = ?";
-    public static final String UPDATE_KBINDEXINFO_SQL = "UPDATE kbIndexInfo SET `title`=?, `descript`=?, `descriptImg`=?, `text`=?, `url`=?, `keywords`=?, `domain`=?, `tag`=?  WHERE `id`=?";
+    public static final String INSERT_KBINDEXINFO_SQL = "insert into kbIndexinfo(id, title, descript, descriptImg, url, text, author,keywords,tag,category,grade,domain,weight,content,product,subproduct,s_top,s_kbsrc,s_kbcategory,s_hot,kbid,ext_supportsys,ext_resourcetype,ext_scope,createTime,updateTime,ktype) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String SELECT_KBINDEXINFO_SQL = "select * from kbIndexinfo where title = ? and descript = ? and url = ?";
+    public static final String UPDATE_KBINDEXINFO_SQL = "UPDATE kbIndexinfo SET `title`=?, `descript`=?, `descriptImg`=?, `text`=?, `url`=?, `keywords`=?, `domain`=?, `tag`=?  WHERE `id`=?";
 
     public static final String SELECT_QA_SQL = "select * from qa where question = ?  and qtype = ?";//and answer = ?
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
