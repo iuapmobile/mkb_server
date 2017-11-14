@@ -747,7 +747,7 @@ public class DBManager {
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
 
             // 2、检查是否已经存在
-            List<KBIndex> list = DbUtil.selectOneIsExists("select * from kbIndexinfo where title = ?", vo, dbconf);
+            List<KBIndex> list = DbUtil.selectOneIsExists("select * from kbindexinfo where title = ?", vo, dbconf);
             if (list.size() == 0) {
                 DbUtil.insert(Common.INSERT_KBINDEXINFO_SQL, vo, dbconf);
                 
