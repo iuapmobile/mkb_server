@@ -782,7 +782,7 @@ public class DBManager {
 	        DBConfig dbconf = this.getDBConfigByTenant(tenant);
 	        StringBuffer sbf = new StringBuffer();
 //	        String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-	        sbf.append(" UPDATE kbIndexinfo SET  updateTime = ? ");
+	        sbf.append(" UPDATE kbindexinfo SET  updateTime = ? ");
 	        params.add(kbindex.getUpdateTime());
 	        if(StringUtils.isNotBlank(kbindex.getTitle())){  
 	        	sbf.append(" ,title = ? ");  
@@ -905,7 +905,7 @@ public class DBManager {
         try {
             // 1、根据租户获取DBconfig
             DBConfig dbconf = this.getDBConfigByTenant(tenant);
-            boolean success = DbUtil.delkbInfo("delete from kbIndexinfo where id = ?", ids, dbconf);
+            boolean success = DbUtil.delkbInfo("delete from kbindexinfo where id = ?", ids, dbconf);
 
             if (!success) {
                 throw new KBDelSQLException("删除失败，请联系管理员！");
