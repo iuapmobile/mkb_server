@@ -1165,7 +1165,7 @@ public class SolrManager {
         } else if (q.equals("")) {
         	q = "*:* ";
         }
-        q = q + " AND -qid:[\"\" TO *] ";//*  在solr当中  应该代表 有值  -取反
+        q = q + " AND -qid:[\"\" TO *] AND ktype:qa";//*  在solr当中  应该代表 有值  -取反
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
