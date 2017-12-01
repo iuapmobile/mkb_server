@@ -1107,6 +1107,9 @@ public class SolrManager {
             json.put("url", doc.get("url"));
 
             json.put("qtype", doc.get("qtype"));
+            
+            json.put("domain", doc.get("domain"));
+            json.put("product", doc.get("product"));
 
         }
         return json;
@@ -1126,6 +1129,11 @@ public class SolrManager {
         SolrQuery query = new SolrQuery();
         // 1、设置solr查询参数
         String _q = requestParam.getString("q");
+        
+        String dept = requestParam.getString("dept");
+        String startDate = requestParam.getString("startDate");
+        String endDate = requestParam.getString("endDate");
+        String people = requestParam.getString("people");
 
         int rows = 10;
         int start = 0;
@@ -1166,6 +1174,20 @@ public class SolrManager {
         	q = "*:* ";
         }
         q = q + " AND -qid:[\"\" TO *] AND -(ktype:kb OR ktype:video OR ktype:doc )";//*  在solr当中  应该代表 有值  -取反
+//        String dept = requestParam.getString("dept");
+//        String startDate = requestParam.getString("startDate");
+//        String endDate = requestParam.getString("endDate");
+//        String people = requestParam.getString("people");
+        if(null!=dept&&!"".equals(dept)){
+        	q = q + " AND extend0:"+dept;
+        }
+        if(null!=startDate&&!"".equals(startDate)&&null!=endDate&&!"".equals(endDate)){
+        	q = q + " AND updateTime:["+startDate+" TO "+endDate+"]";
+        }
+        if(null!=people&&!"".equals(people)){
+        	q = q + " AND extend1:*"+people+"*";
+        }
+
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
@@ -1254,6 +1276,8 @@ public class SolrManager {
             obj.put("createTime", doc.get("createTime"));
             obj.put("url", doc.get("url"));
             obj.put("qtype", doc.get("qtype"));
+            obj.put("domain", doc.get("domain"));
+            obj.put("product", doc.get("product"));
 
 
             obj.put("extend0", doc.get("extend0"));

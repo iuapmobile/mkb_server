@@ -80,6 +80,22 @@ public class MKBRequestProcessor {
         
         String dailogid = request.getParameter("dailogid");
         param.put("dailogid", dailogid);
+        
+        //部门
+        String dept = request.getParameter("dept");
+        param.put("dept", dept);
+        
+        //起始时间
+        String startDate = request.getParameter("startDate");
+        param.put("startDate", startDate);
+        
+        //结束时间
+        String endDate = request.getParameter("endDate");
+        param.put("endDate", endDate);
+        
+        //人员
+        String people = request.getParameter("people");
+        param.put("people", people);
 
         return param;
     }
