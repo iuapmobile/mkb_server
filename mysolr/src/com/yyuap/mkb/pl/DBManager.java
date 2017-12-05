@@ -940,10 +940,13 @@ public class DBManager {
         try {
 //        	String sql = "select * from information_schema.columns where table_name='"+tableName+"' and table_schema='"+tenant.getdbname()+"'";
             StringBuffer sbf = new StringBuffer();
+//            sbf.append(" select t.table_name,t.column_name field_name,t1.field_desc from information_schema.columns t ");
+//            sbf.append(" left join tablefield_definition t1 on t.table_name = t1.table_name");
+//            sbf.append(" where  t.column_name like'extend%' and t.table_name='"+tableName+"' and t.table_schema='"+tenant.getdbname()+"'");
             sbf.append(" select t.table_name,t.column_name field_name,t1.field_desc from information_schema.columns t ");
-            sbf.append(" left join tablefield_definition t1 on t.table_name = t1.table_name");
-            sbf.append(" where  t.column_name like'extend%' and t.table_name='"+tableName+"' and t.table_schema='"+tenant.getdbname()+"'");
-        	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
+            sbf.append(" left join tablefield_definition t1 on t.column_name = t1.field_name ");
+            sbf.append(" where  t.column_name like'extend%' and t.table_name='"+tableName+"' and t1.table_name='"+tableName+"' and table_schema='"+tenant.getdbname()+"' ");
+            list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

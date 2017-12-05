@@ -1938,9 +1938,12 @@ public class DbUtil {
             rs = ps.executeQuery();
             while (rs.next()) {
                 JSONObject json = new JSONObject();
-                json.put("table_name", rs.getString("table_name"));//表名
-                json.put("field_name", rs.getString("field_name"));// 字段名
-                json.put("field_desc", rs.getString("field_desc")==null?"":rs.getString("field_desc"));// 字段描述
+//                json.put("table_name", rs.getString("table_name"));//表名
+//                json.put("field_name", rs.getString("field_name"));// 字段名
+//                json.put("field_desc", rs.getString("field_desc")==null?"":rs.getString("field_desc"));// 字段描述
+                JSONObject obj = new JSONObject();
+                obj.put("field_desc", rs.getString("field_desc")==null?"":rs.getString("field_desc"));
+                json.put(rs.getString("field_name"), obj);
                 array.add(json);
             }
         } catch (Exception e) {
