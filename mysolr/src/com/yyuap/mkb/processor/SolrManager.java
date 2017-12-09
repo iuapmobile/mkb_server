@@ -410,7 +410,8 @@ public class SolrManager {
         kbindex.setUpdateTime(kbqa.getUpdateTime());
         kbindex.setQtype(kbqa.getQtype());
         kbindex.setExt_scope(kbqa.getExt_scope());//可见范围
-        kbindex.setKtype(KnowlegeType.QA_KTYPE);//知识类型
+        //kbindex.setKtype(KnowlegeType.QA_KTYPE_QA);//知识类型
+        kbindex.setKtype(kbqa.getKtype());
         kbindex.setDomain(kbqa.getDomain());//领域
         kbindex.setProduct(kbqa.getProduct());//产品
         kbindex.setSubproduct(kbqa.getSubproduct());//子产品
@@ -434,7 +435,6 @@ public class SolrManager {
         kbindex.setExtend17(kbqa.getExtend17());
         kbindex.setExtend18(kbqa.getExtend18());
         kbindex.setExtend19(kbqa.getExtend19());
-        
 
         this.addDoc(kbindex);
     }

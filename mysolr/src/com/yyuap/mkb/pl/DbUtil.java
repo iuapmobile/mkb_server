@@ -416,6 +416,14 @@ public class DbUtil {
             }else{
             	ps.setString(37, qa.getExtend19());
             }
+            
+            if(qa.getKtype()==null || qa.getKtype().equals("")){
+                //ps.setNull(38, Types.NULL);
+                ps.setString(38, "qa");//默认都是qa类型的问答
+            }else{
+                ps.setString(38, qa.getKtype());
+            }
+            
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
@@ -696,7 +704,7 @@ public class DbUtil {
                     kbqs.setId(id);
                     kbqs.setQuestion(qs);
                     kbqs.setQid(qa.getId());
-                    qa.getQS().add(kbqs);
+                    qa.getQS().add(kbqs);//这里将成功insert数据库的数据转化为kbqs，供插入solr使用
                     System.out.println(
                             "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " succeed!");
                 } else {
@@ -2271,5 +2279,92 @@ public class DbUtil {
             }
         }
         return map;
+    }
+    
+    
+    public static JSONArray selectQAByKtype(String sql, String[] params, DBConfig dbconf) {
+        //public static final String SELECT_QA_BY_KTYPE_SQL = "SELECT id, '' qid, question, answer, qtype, ktype FROM qa WHERE ktype = ? union all SELECT id, qid, question, '' answer, '' qtype, '' ktype FROM qa_similar where qid in (SELECT id FROM qa where ktype=?);";
+        JSONArray array = new JSONArray();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            Class.forName(Common.DRIVER);
+            conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, params[0]);
+            ps.setString(2, params[0]);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                JSONObject qa = new JSONObject();
+                qa.put("id", rs.getString("id"));
+                qa.put("qid", rs.getString("qid"));
+                qa.put("question", rs.getString("question"));
+                qa.put("answer", rs.getString("answer"));
+                qa.put("qtype", rs.getString("qtype"));
+                qa.put("ktype", rs.getString("ktype"));
+                qa.put("createTime", rs.getString("createTime"));
+                qa.put("updateTime", rs.getString("updateTime"));
+                qa.put("createBy", rs.getString("createBy"));
+                qa.put("updateBy", rs.getString("updateBy"));
+                
+                array.add(qa);
+            }
+            // while (rs.next()) {
+            // String id = rs.getString("id");
+            // String tenantid = rs.getString("tenantid");;
+            // String userid = rs.getString("userid");;
+            // String kbindexid = rs.getString("kbindexid");;
+            // String title = rs.getString("title");;
+            // String descript = rs.getString("descript");;
+            // String url = rs.getString("url");;
+            // String qid = rs.getString("qid");;
+            // String qsid = rs.getString("qsid");;
+            // String question = rs.getString("question");;
+            // String answer = rs.getString("answer");;
+            // if (answer != null && !answer.equals("") && userid != null &&
+            // !userid.equals("")
+            // && kbindexid != null && !kbindexid.equals("") && title != null &&
+            // !title.equals("")
+            // && descript != null && !descript.equals("") && url != null &&
+            // !url.equals("")) {
+            // QaCollection qaco = new QaCollection();
+            // qaco.setTenantid(tenantid);
+            // qaco.setUserid(userid);
+            // qaco.setKbindexid(kbindexid);
+            // qaco.setTitle(title);
+            // qaco.setDescript(descript);
+            // qaco.setUrl(url);
+            // qaco.setQid(qid);
+            // qaco.setQsid(qsid);
+            // qaco.setQuestion(question);
+            // qaco.setAnswer(answer);
+            // qaco.setId(id);
+            // list.add(qaco);
+            // } else {
+            // // nothing to do
+            // }
+            // }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+
+            }
+        }
+        return array;
     }
 }
