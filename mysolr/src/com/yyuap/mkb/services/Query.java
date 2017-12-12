@@ -77,6 +77,11 @@ public class Query extends HttpServlet {
         String bot = requestParam.getString("bot");
         String apiKey = requestParam.getString("apiKey");
         String buserid = requestParam.getString("buserid");
+        String userid = requestParam.getString("userid");
+        if(userid == null){
+            //不存在userid时，使用buserid，兼容老的使用buserid的调用
+            userid = buserid;
+        }
         String dailog = requestParam.getString("dailog");
         String dailogid = requestParam.getString("dailogid");
         if(dailogid != null && !"".equals(dailogid)){
@@ -94,7 +99,7 @@ public class Query extends HttpServlet {
             tenant = api.getTenantInfo(apiKey);
 
             MKBSessionManager sessionMgr = new MKBSessionManager();
-            if (tenant.getUseSynonym()) {
+            if (tenant!=null && tenant.getUseSynonym()) {
                 String new_q = sessionMgr.findKeywordFromSynonym(q, request, tenant);
                 if (new_q != null && !new_q.equals("")) {
                     q = new_q;
@@ -224,7 +229,7 @@ public class Query extends HttpServlet {
                  		ro.setBotResponse(json);
                      }else{
                     	 if (bot == null || !bot.equalsIgnoreCase("false")) {
-                             JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, buserid);
+                             JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, userid);
                              jsonTu.put("dailogid", dailogid);
                              ro.setBotResponse(jsonTu);
                          } 

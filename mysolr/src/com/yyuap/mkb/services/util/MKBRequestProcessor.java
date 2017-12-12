@@ -68,6 +68,9 @@ public class MKBRequestProcessor {
 
         String buserid = request.getParameter("buserid");
         param.put("buserid", buserid);
+        
+        String userid = request.getParameter("userid");
+        param.put("userid", userid);
 
         String rows = request.getParameter("rows");
         param.put("rows", rows);
