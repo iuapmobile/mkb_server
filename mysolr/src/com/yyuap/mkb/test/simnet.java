@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 
 import org.apache.commons.httpclient.HttpException;
@@ -86,8 +87,9 @@ public class simnet {
 
     public static void zaoju() {
         JSONArray dataSource = new JSONArray();
-        File file = new File("/Users/gct/work2/zaoju.txt");
-        String filePath = "/Users/gct/work2/zaoju.xlsx";
+        // File file = new File("/Users/gct/work2/zaoju.txt");
+        String filePath = "/Users/gct/work2/请假原因_" + Calendar.getInstance().getTimeInMillis() + ".xlsx";
+        File file = new File(filePath);
         PrintStream ps;
         try {
             ps = new PrintStream(new FileOutputStream(file));
@@ -96,7 +98,8 @@ public class simnet {
 
             ArrayList<String> zhu_yu = zhuyu();
             ArrayList<String> gaun_xi = guanxi();
-            ArrayList<String> wei_yu = weiyu();
+            JSONArray wei_yu = weiyu();
+
             ArrayList<String> bu_yu = buyu();
             ArrayList<String> mu_di = mudi();
 
@@ -110,24 +113,39 @@ public class simnet {
 
                 for (String zhuyu0 : zhu_yu) {
                     for (String guanxi0 : gaun_xi) {
-                        for (String weiyu0 : wei_yu) {
-                            for (String buyu0 : bu_yu) {
-                                for (String mudi0 : mu_di) {
-                                    String q = zhuyu0 + guanxi0 + weiyu0 + buyu0 + mudi0;
-                                    String reason = zhuyu0 + guanxi0 + weiyu0 + buyu0;
-                                    // System.out.println(xxx);
-                                    
-                                    // ps.println(q + " 原因:" + reason);//
-                                    // 往文件里写入字符串
-                                    // ps.append(" 原因:" + reason);//
-                                    // 在已有的基础上添加字符串
+                        for (int i = 0, len = wei_yu.size(); i < len; i++) {
+                            JSONObject weiyu = wei_yu.getJSONObject(i);
+                            String wei_yu_reason1 = weiyu.getString("reason");
+                            ArrayList<String> weiyuList = (ArrayList<String>) weiyu.get("weiyu");
 
-                                    JSONObject json = new JSONObject();
-                                    json.put("q", q);
-                                    json.put("a", reason);
-                                    dataSource.add(json);
-                                    
-                                    count++;
+                            for (String weiyu0 : weiyuList) {
+                                for (String buyu0 : bu_yu) {
+                                    for (String mudi0 : mu_di) {
+                                        String q = zhuyu0 + guanxi0 + weiyu0 + buyu0 + mudi0;
+                                        String reason = "";
+                                        if (wei_yu_reason1.equals("生病了")) {
+                                            if (guanxi0.equals("")) {
+                                                reason = zhuyu0 + wei_yu_reason1;
+                                            } else if (!guanxi0.equals("")) {
+                                                reason = zhuyu0 + "家人" + wei_yu_reason1;
+                                            }
+                                        }else if (wei_yu_reason1.equals("家里有事")){
+                                            reason = zhuyu0 +  wei_yu_reason1;
+                                        }
+                                        // System.out.println(xxx);
+
+                                        // ps.println(q + " 原因:" + reason);//
+                                        // 往文件里写入字符串
+                                        // ps.append(" 原因:" + reason);//
+                                        // 在已有的基础上添加字符串
+
+                                        JSONObject json = new JSONObject();
+                                        json.put("q", q);
+                                        json.put("a", reason);
+                                        dataSource.add(json);
+
+                                        count++;
+                                    }
                                 }
                             }
                         }
@@ -175,130 +193,164 @@ public class simnet {
         result.add("奶奶");
         result.add("姥姥");
         result.add("姥爷");
-        result.add("叔叔");
-        result.add("姨");
-        result.add("姨夫");
+        //result.add("叔叔");
+        //result.add("姨");
+        //result.add("姨夫");
         result.add("大舅");
         result.add("二舅");
         result.add("三舅");
         result.add("孩子");
-        result.add("闺女");
+        //result.add("闺女");
         result.add("小孩");
-        result.add("儿子");
-        result.add("女儿");
+        //result.add("儿子");
+        //result.add("女儿");
         result.add("老婆");
         result.add("媳妇");
-        result.add("对象");
-        result.add("妻子");
-        result.add("老伴");
-        result.add("内人");
+        //result.add("对象");
+        //result.add("妻子");
+        //result.add("老伴");
+        //result.add("内人");
         result.add("家人");
-        result.add("家里人");
-        result.add("亲人");
-        result.add("亲戚");
-        result.add("亲属");
+        //result.add("家里人");
+        //result.add("亲人");
+        //result.add("亲戚");
+        //result.add("亲属");
         result.add("老人");
         result.add("父母");
-        result.add("爱人");
-        result.add("孩儿");
+        //result.add("爱人");
+        //result.add("孩儿");
         return result;
     }
 
-    public static ArrayList<String> weiyu() {
+    public static JSONArray weiyu() {
+        JSONArray ret = new JSONArray();
+
+        JSONObject json = new JSONObject();
+        json.put("reason", "生病了");
+        json.put("weiyu", weiyu_shengbingle());
+        ret.add(json);
+
+        JSONObject json1 = new JSONObject();
+        json1.put("reason", "家里有事");
+        json1.put("weiyu", weiyu_jialiyoushi());
+        ret.add(json1);
+
+        return ret;
+
+    }
+
+    public static ArrayList<String> weiyu_shengbingle() {
 
         ArrayList<String> result = new ArrayList<String>();
 
         result.add("病了");
         result.add("得病了");
         result.add("生病了");
-        result.add("不舒服了");
-        result.add("发烧了");
-        result.add("感觉不舒服");
+        result.add("身体不舒服");
+        //result.add("发烧了");
+        //result.add("感觉不舒服");
 
         result.add("发烧");
-        result.add("发高烧");
+        //result.add("发高烧");
         result.add("有点发烧");
 
         result.add("拉肚子");
-        result.add("吃坏肚子");
-        result.add("肚子难受");
+        //result.add("吃坏肚子");
+        //result.add("肚子难受");
         result.add("肚子疼");
-        result.add("肠胃疼");
-        result.add("胃疼");
-        result.add("心口疼");
+        //result.add("肠胃疼");
+        //result.add("胃疼");
+        //result.add("心口疼");
 
-        result.add("全身疼");
-        result.add("周身疼");
-        result.add("浑身疼");
+        //result.add("全身疼");
+        //result.add("周身疼");
+        //result.add("浑身疼");
         result.add("感觉不舒服");
-        result.add("浑身没劲");
-        result.add("难受的很");
-        result.add("很难受");
-        
+        //result.add("浑身没劲");
+        //result.add("难受的很");
+        //result.add("很难受");
+
         result.add("摔跤了");
         result.add("摔倒了");
-        result.add("摔得挺严重");
+        //result.add("摔得挺严重");
         result.add("不小心摔了一跤");
-        result.add("崴脚了");
-        result.add("出车祸了");
+        //result.add("崴脚了");
+        //result.add("出车祸了");
         result.add("被撞了");
-        result.add("被车撞了");
+        //result.add("被车撞了");
 
         /*
-        result.add("去火车站接人");
+         * result.add("去火车站接人"); result.add("去接人"); result.add("去车站接人");
+         * result.add("去火车站接人"); result.add("去机场接人");
+         * 
+         * result.add("来找我"); result.add("来找我有点事");
+         * 
+         * 
+         * result.add("要结婚"); result.add("要回家结婚"); result.add("要回老家结婚");
+         * result.add("要办理结婚手续"); result.add("要举行婚礼"); result.add("要办婚宴");
+         * result.add("要举办婚宴"); result.add("要回家办婚礼");
+         */
+     
+
+        return result;
+    }
+
+    public static ArrayList<String> weiyu_jialiyoushi() {
+
+        ArrayList<String> result = new ArrayList<String>();
+        //result.add("去火车站接人");
         result.add("去接人");
-        result.add("去车站接人");
-        result.add("去火车站接人");
-        result.add("去机场接人");
-       
-        result.add("来找我");
-        result.add("来找我有点事");
-    
+        //result.add("去车站接人");
+        //result.add("去机场接人");
+
+        //result.add("办手续");
+        result.add("买房子");
+        result.add("房子过户");
+        //result.add("签协议过户");
 
         result.add("要结婚");
         result.add("要回家结婚");
         result.add("要回老家结婚");
         result.add("要办理结婚手续");
         result.add("要举行婚礼");
-        result.add("要办婚宴");
-        result.add("要举办婚宴");
+        //result.add("要办婚宴");
+        //result.add("要举办婚宴");
         result.add("要回家办婚礼");
-*/
-        result.add("有点私事");
-        result.add("有点事");
-        result.add("办事");
+
+        //result.add("有点私事");
+        //result.add("有点事");
+        //result.add("办事");
         result.add("有事");
-     
-        
+
         return result;
     }
 
     public static ArrayList<String> buyu() {
         ArrayList<String> result = new ArrayList<String>();
         result.add("");
-        result.add("想在家休息一天");
-        result.add("想在家休息两天");
+        //result.add("想在家休息一天");
+        result.add("想在家休息");
         result.add("没法工作");
-        result.add("没法下床");
-        result.add("没法起来");
+        //result.add("没法下床");
+        //result.add("没法起来");
         result.add("没法上班");
-        result.add("没法动身");
-        result.add("没法动");
+        //result.add("没法动身");
+        //result.add("没法动");
         result.add("要去医院看病");
-        result.add("要去医院");
+        //result.add("要去医院");
         result.add("去医院");
-        result.add("去趟医院");
+       // result.add("去趟医院");
         result.add("去看医生");
-        result.add("去让医生看病");
+        //result.add("去让医生看病");
         result.add("去看病");
-        result.add("去看看医生");
-        result.add("去医院看看");
-        result.add("去医院检查身体");
-        result.add("去医院做检查");
+        //result.add("去看看医生");
+        //result.add("去医院看看");
+        //result.add("去医院检查身体");
+        //result.add("去医院做检查");
         result.add("去医院检查");
-        result.add("去检查");
-        result.add("去医院开药");
-        result.add("去医院看医生");
+        //result.add("去检查");
+        //result.add("去医院开药");
+        //result.add("去医院看医生");
 
         return result;
     }
