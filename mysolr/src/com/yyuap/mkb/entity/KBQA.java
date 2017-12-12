@@ -57,6 +57,7 @@ public class KBQA extends KBEntity {
     private String extend17 = null;
     private String extend18 = null;
     private String extend19 = null;
+    private String ktype = "qa";
 
     public String getId() {
         return id;
@@ -364,6 +365,13 @@ public class KBQA extends KBEntity {
 	public void setExtend19(String extend19) {
 		this.extend19 = extend19;
 	}
+
+	public void setKtype(String ktype) {
+       this.ktype= ktype;
+    }
+    public String getKtype() {
+        return this.ktype;
+    }
 
     
 

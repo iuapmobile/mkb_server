@@ -162,7 +162,7 @@ public class DBManager {
                 String id = list.get(0).getId();
 
                 KBDuplicateSQLException e = new KBDuplicateSQLException(
-                        "存在重复的记录id[" + id + "]，q=" + qa.getQuestion() + ", a=" + qa.getAnswer() + ", 未能持久化成功改次操作");
+                        "存在重复的记录id[" + id + "]，q=" + qa.getQuestion() + ", a=" + qa.getAnswer() + ", 未能持久化成功该次操作");
                 e.getExtData().put("id", id);
                 throw e;
             }
@@ -522,6 +522,9 @@ public class DBManager {
         for (int i = 0, len = qss.size(); i < len; i++) {
             KBQS qs = qss.get(i);
             String status = qs.getStatus();
+            if (status == null) {
+                status = "modified";//没有状态的默认都需要update一下
+            }
             if (status != null) {
                 switch (status) {
                 case "added":
@@ -1051,6 +1054,19 @@ public class DBManager {
         }
 
         return map;
+    }
+
+    public JSONArray selectQACommandByTenant(Tenant tenant) {
+        JSONArray array = new JSONArray();
+
+        // 1、根据租户获取DBconfig
+        DBConfig dbconf = this.getDBConfigByTenant(tenant);
+
+        // 2、
+        String ktype = "command";
+        array = DbUtil.selectQAByKtype(Common.SELECT_QA_BY_KTYPE_SQL, new String[] { ktype }, dbconf);
+
+        return array;
     }
     
 

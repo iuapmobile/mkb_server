@@ -103,6 +103,7 @@ public class QAManager {
         qa.setUrl(json.getString("url"));// 是否置顶
         qa.setKbid(json.getString("kbid"));// 是否置顶
         qa.setQtype(json.getString("qtype"));
+        qa.setKtype(json.getString("ktype"));//该问答的类型
         qa.setExt_scope(json.getString("ext_scope"));//可见范围
         qa.setDomain(json.getString("domain"));
         qa.setProduct(json.getString("product"));
@@ -603,6 +604,16 @@ public class QAManager {
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryQaTopTjForDimension(topn,istop,field,fieldValue, tenant);
+    }
+
+    public JSONObject queryQACommandByTenant(Tenant tenant) {
+        JSONObject json = new JSONObject();
+        
+        DBManager dbmgr = new DBManager();
+        JSONArray array = dbmgr.selectQACommandByTenant(tenant);
+        
+        json.put("docs", array);
+        return json;
     }
     
 }

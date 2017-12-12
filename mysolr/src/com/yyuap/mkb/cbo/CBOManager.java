@@ -11,7 +11,8 @@ import java.util.List;
 public class CBOManager {
 
     public Tenant getTenantInfo(String apiKey) throws SQLException {
-
+        if(apiKey==null || apiKey.equals(""))
+            return null;
         Tenant tenant = null;
 
         String sql = CommonSQL.SELECT_TENANT_BY_APIKEY_SQL;

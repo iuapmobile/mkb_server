@@ -57,7 +57,7 @@ public class Common {
     public static final String SELECT_QA_SQL = "select * from qa where question = ?  and qtype = ?";//and answer = ?
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
-    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid,ext_scope,domain,product,subproduct,extend0,extend1,extend2,extend3,extend4,extend5,extend6,extend7,extend8,extend9,extend10,extend11,extend12,extend13,extend14,extend15,extend16,extend17,extend18,extend19) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid,ext_scope,domain,product,subproduct,extend0,extend1,extend2,extend3,extend4,extend5,extend6,extend7,extend8,extend9,extend10,extend11,extend12,extend13,extend14,extend15,extend16,extend17,extend18,extend19,ktype) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     public static final String INSERT_QA_SIMILAR_SQL = "insert into qa_similar(id, question, qid, createTime, updateTime, createBy, updateBy) values(?, ?, ?, ?, ?, ?, ?)";
 
     public static final String SELECT_ANSWER_BY_Q_SQL = "select * from qa where trim(question) = ?";
@@ -97,4 +97,5 @@ public class Common {
     // 获取同义词对应的mapping keyword
     public static final String SELECT_SYNONYM_SQL = "select * from mkb.u_synonyms";
     
+    public static final String SELECT_QA_BY_KTYPE_SQL = "SELECT id, '' qid, question, answer, qtype, ktype, createTime, updateTime, createBy, updateBy FROM qa WHERE ktype = ? union all SELECT id, qid, question, '' answer, '' qtype, '' ktype, createTime, updateTime, createBy, updateBy FROM qa_similar where qid in (SELECT id FROM qa where ktype=?);";
 }
