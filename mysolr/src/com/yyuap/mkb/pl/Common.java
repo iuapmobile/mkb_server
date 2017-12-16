@@ -54,7 +54,8 @@ public class Common {
     public static final String SELECT_KBINDEXINFO_SQL = "select * from kbindexinfo where title = ? and descript = ? and url = ?";
     public static final String UPDATE_KBINDEXINFO_SQL = "UPDATE kbindexinfo SET `title`=?, `descript`=?, `descriptImg`=?, `text`=?, `url`=?, `keywords`=?, `domain`=?, `tag`=?  WHERE `id`=?";
 
-    public static final String SELECT_QA_SQL = "select * from qa where question = ?  and qtype = ?";//and answer = ?
+    //public static final String SELECT_QA_SQL = "select * from qa where question = ?  and qtype = ?";//and answer = ?
+    public static final String SELECT_QA_SQL = "select * from qa where question = ?";
     public static final String SELECT_ALL_QA_SQL = "select * from qa";
 
     public static final String INSERT_QA_SQL = "insert into qa(id, libraryPk, question, answer, qtype, createTime, updateTime, createBy, updateBy,istop,settoptime,url,kbid,ext_scope,domain,product,subproduct,extend0,extend1,extend2,extend3,extend4,extend5,extend6,extend7,extend8,extend9,extend10,extend11,extend12,extend13,extend14,extend15,extend16,extend17,extend18,extend19,ktype) values(?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";

@@ -69,6 +69,9 @@ public class AddQA extends HttpServlet {
         String url = request.getParameter("url");
         String qtype = request.getParameter("qtype");
         String kbid = request.getParameter("kbid");// 该问答属于那一个知识库，一个用户可以有多个知识库
+        if (null == kbid || "".equals(kbid)) {
+            kbid = "1";
+        }
         String istop = request.getParameter("istop");// 是否置顶
         if (null == istop || "".equals(istop)) {
             istop = "0";
@@ -82,6 +85,9 @@ public class AddQA extends HttpServlet {
         String subproduct = request.getParameter("subproduct");//子产品
         String libraryPk = request.getParameter("libraryPk");
         String ktype = request.getParameter("ktype");//表示该问答是那种类型，command、doc、qa、kb
+        if (null == ktype || "".equals(ktype)) {
+            ktype = "qa";
+        }
         String[] qs = request.getParameterValues("qs");
         if(null == url || "".equals(url)){
         	 if (q != null && !q.equals("") && a != null && !a.equals("")) {

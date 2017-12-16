@@ -20,6 +20,7 @@ import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.fileUtil.KnowlegeType;
 import com.yyuap.mkb.nlp.BaiAdapter;
 import com.yyuap.mkb.pl.DBManager;
+import com.yyuap.mkb.services.util.PropertiesUtil;
 
 public class QAManager {
     public QAManager() {
@@ -29,7 +30,11 @@ public class QAManager {
     public JSONObject getUniqueAnswer(String q, Tenant tenant,String[] tag) throws SolrServerException, IOException {
         // TODO Auto-generated method stub
         JSONObject ret = null;
-
+        String search_num= PropertiesUtil.getConfigPropString("search_num");
+        if(search_num == null || search_num ==""){
+            search_num = "1";
+        }
+        
         DBManager dbmgr = new DBManager();
         ret = dbmgr.selectUniqueAnswer(q, tenant,tag);
         if (ret == null || ret.equals("")) {
@@ -40,12 +45,12 @@ public class QAManager {
             SolrManager solr = new SolrManager(corename);
             JSONObject requestParam = new JSONObject();
             requestParam.put("q", q);
-            requestParam.put("num", 3);
+            requestParam.put("num", search_num);
             JSONObject topQ = solr.queryQuestion(requestParam,tag);
             JSONArray array = topQ.getJSONObject("response").getJSONArray("docs");
 
             Float scoreMax = 0f;
-            for (int i = 0, len = array.size(); i < len; i = i+100) {
+            for (int i = 0, len = array.size(); i < len; i++) {
                 String _q = array.getJSONObject(i).getString("question");
                 String _a = array.getJSONObject(i).getString("answer");
                 String _url = array.getJSONObject(i).getString("url");
@@ -62,7 +67,7 @@ public class QAManager {
 
                 if (_q == null || _q.equals("") || q == null || q.equals("")) {
 
-                } else if (_q.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
+                } else if (false && _q.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
                     score = 2;
                 } else {
                     BaiAdapter bai = new BaiAdapter();

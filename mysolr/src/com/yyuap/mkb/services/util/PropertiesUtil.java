@@ -94,7 +94,7 @@ public class PropertiesUtil {
 			try {
 				InputStream a = new FileInputStream("/D:/software/apache-tomcat-8.5.15/webapps/kb/WEB-INF/properties/jdbc.properties");
 				jdbcProp.load(a);
-				System.out.println(getJdbcString("port"));
+				System.out.println(getJdbcString("db_port"));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

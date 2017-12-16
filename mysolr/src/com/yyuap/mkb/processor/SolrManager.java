@@ -50,6 +50,7 @@ import com.yyuap.mkb.fileUtil.KnowlegeType;
 import com.yyuap.mkb.nlp.SAConfig;
 import com.yyuap.mkb.nlp.SemanticAnalysis;
 import com.yyuap.mkb.pl.DBManager;
+import com.yyuap.mkb.services.util.PropertiesUtil;
 
 public class SolrManager {
     private String SOLR_URL = "http://127.0.0.1:8080/kb/kbcore1";
@@ -57,7 +58,9 @@ public class SolrManager {
     // "http://127.0.0.1:8001/kb/kbcore1";
     // private final static String SOLR_URL =
     // "http://127.0.0.1:8002/kb/kbcore1";
-
+    public final String BOT_IP = PropertiesUtil.getJdbcString("bot_ip");
+    public final String BOT_PORT = PropertiesUtil.getJdbcString("bot_port");
+    public final String BOT_WEBAPP = PropertiesUtil.getJdbcString("bot_webapp");
     private static CoreContainer initializer = null;
     private static CoreContainer coreContainer = null;
     private static EmbeddedSolrServer server = null;
@@ -66,7 +69,7 @@ public class SolrManager {
     public SolrManager(String kbcore) {
         String x = "ddd";
         if (x == "ddd") {
-            SOLR_URL = "http://127.0.0.1:8080/kb/" + kbcore;
+            SOLR_URL = "http://"+this.BOT_IP+":"+this.BOT_PORT+"/"+this.BOT_WEBAPP+"/" + kbcore;
         }
     }
 

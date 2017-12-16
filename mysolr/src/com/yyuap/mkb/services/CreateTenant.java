@@ -16,6 +16,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -71,6 +74,51 @@ public class CreateTenant extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        ResultObjectFactory rof = new ResultObjectFactory();
+        ResultObject ro = rof.create(0);
+
+        String sourceCorePath = PropertiesUtil.getConfigPropString("sourceCorePath");
+        if(sourceCorePath==null){
+            ro.setReason("config.properties里没有sourceCorePath的配置！");
+            response.getWriter().write(ro.toString());
+            return;
+        }
+        
+        String solrhomePath = PropertiesUtil.getConfigPropString("solrhomePath");
+        if(solrhomePath==null){
+            ro.setReason("config.properties里没有solrhomePath的配置！");
+            response.getWriter().write(ro.toString());
+            return;
+        }
+        
+        
+        
+        String solrPath = PropertiesUtil.getConfigPropString("solrPath");
+        if(solrPath==null){
+            ro.setReason("config.properties里没有solrPath的配置！");
+            response.getWriter().write(ro.toString());
+            return;
+        }
+        
+        String db_ip = PropertiesUtil.getJdbcString("db_ip");
+        if(db_ip==null){
+            ro.setReason("jdbc.properties里没有db_ip的配置！");
+            response.getWriter().write(ro.toString());
+            return;
+        }
+        
+        String db_port = PropertiesUtil.getJdbcString("db_port");
+        if(db_port==null){
+            ro.setReason("jdbc.properties里没有db_port的配置！");
+            response.getWriter().write(ro.toString());
+            return;
+        }
+        String db_password = PropertiesUtil.getJdbcString("db_password");
+        if(db_password==null){
+            ro.setReason("jdbc.properties里没有db_password的配置！");
+            response.getWriter().write(ro.toString());
+            return;
+        }
         // 这句话的意思，是让浏览器用utf8来解析返回的数据
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
@@ -94,8 +142,7 @@ public class CreateTenant extends HttpServlet {
         	apiKey = UUID.randomUUID().toString();
         }
         
-        ResultObjectFactory rof = new ResultObjectFactory();
-        ResultObject ro = rof.create(0);
+        
 
         StringBuffer sbf = new StringBuffer();
         sbf.append(" insert into u_tenant( ");
@@ -127,7 +174,7 @@ public class CreateTenant extends HttpServlet {
         
         try {
 			Class.forName(CommonSQL.DRIVER);
-			conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+			conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
 			
 //			ps = conn.prepareStatement("select * from u_tenant where dbname = ?");
 //			ps.setString(1, dbname);
@@ -159,11 +206,11 @@ public class CreateTenant extends HttpServlet {
 		        ps.setString(7, tusername);
 		        ps.setString(8, "kb_u_"+tusername+"_core");
 		        ps.setString(9, "kb_u_"+tusername+"_core");
-		        ps.setString(10, "127.0.0.1");
-		        ps.setString(11, "3306");
+		        ps.setString(10, db_ip);
+		        ps.setString(11, db_port);
 		        ps.setString(12, dbname);
 		        ps.setString(13, "root");
-		        ps.setString(14, PropertiesUtil.getJdbcString("password"));//1qazZAQ!
+		        ps.setString(14, db_password);//1qazZAQ!
 		        ps.setString(15, "ad2c9f8b0ec544e2a4354ffd2f2f30f1");
 		        ps.setString(16, null);
 		        ps.setString(17, datetime);
@@ -201,14 +248,18 @@ public class CreateTenant extends HttpServlet {
 	            
 	            //复制core
 	            FileCopyUtil  fileCopy = new FileCopyUtil();
-	            String sourceCorePath = PropertiesUtil.getConfigPropString("sourceCorePath");
-	            String destCorePath = PropertiesUtil.getConfigPropString("solrhomePath")+tkbcore;
+	            
+	            if(!solrhomePath.endsWith("/")){
+	                solrhomePath+="/";
+	            }
+	            String destCorePath = solrhomePath + tkbcore;
 	            File file = new File(sourceCorePath);
 	            File file2 = new File(destCorePath);
 	            fileCopy.copyFile(file, file2);
 	            XMLParseDataConfig  xmlParse = new XMLParseDataConfig();
 	            String xmlpath = destCorePath+File.separator+"conf"+File.separator+"data-config.xml";
-	            String url="jdbc:mysql://localhost:3306/"+dbname+"?characterEncoding=utf-8&amp;autoReconnect=true";   
+	            
+	            String url="jdbc:mysql://"+db_ip+":"+db_port+"/"+dbname+"?characterEncoding=utf-8&amp;autoReconnect=true";   
 	            //获取document
 	            File xmlFile = xmlParse.getXmlFile(xmlpath);
 	            Document document = xmlParse.getDocument(xmlFile);
@@ -234,16 +285,16 @@ public class CreateTenant extends HttpServlet {
 	            xmlParse.saveDocument(document, xmlFile);
 	            
 	            //通过 HTTP 创建core
-	            String httpUrl = PropertiesUtil.getConfigPropString("solrPath");
+	            
 	            // config=solrconfig.xml&schema=schema.xml&dataDir=data  &config={2}&schema={3}&dataDir={4}
-	            httpUrl = httpUrl + "?action=CREATE&name={0}&instanceDir={1}";
+	            solrPath = solrPath + "?action=CREATE&name={0}&instanceDir={1}";
 	            MKBHttpClient httpclient = new MKBHttpClient();
-	            String result = httpclient.doHttpGet(httpUrl, tkbcore,tkbcore);
+	            String result = httpclient.doHttpGet(solrPath, tkbcore,tkbcore);
 	            ro.setStatus(0);
 	            if(null == result){
 	            	ro.setReason("创建solr服务引擎失败，请手动创建！");
 	            }else{
-	            	ro.setReason("开通成功，请使用吧！用户名："+tusername+"，密码是:"+tusername);
+	            	ro.setReason("开通成功，可以使用用户名："+tusername+"，密码是:"+tusername+"进行登陆管理系统！");
 	            }
 	           
 	            response.getWriter().write(ro.toString());
@@ -314,7 +365,7 @@ public class CreateTenant extends HttpServlet {
     }
     
     private File getFilePath(HttpServletRequest request){
-            String resource = request.getServletContext().getRealPath("/WEB-INF/mkbsql");
+            String resource = request.getServletContext().getRealPath("/WEB-INF/bot_kb_sql");
             //request.getServletContext().getRealPath("/WEB-INF/mkbsql");
             System.out.println(resource);
             File file = new File(resource);
@@ -410,6 +461,17 @@ public class CreateTenant extends HttpServlet {
         return dbc;
     }
     
+    private String checkPropertyConfig(Map<String,String> map, String filename){
+        for(String key:map.keySet()){
+            if(key==null || key == ""){
+                String reason = map.get(key) + "里没有"+key+"的配置！";
+                return reason;
+            }else{
+                return null;
+            }
+        }
+        return null;
+    }
     public static void main(String[] args) {
     	 //通过 HTTP 创建core
         String httpUrl = "http://127.0.0.1:8080/kb/admin/cores";

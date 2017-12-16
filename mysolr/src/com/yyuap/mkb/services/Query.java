@@ -230,6 +230,7 @@ public class Query extends HttpServlet {
                      }else{
                     	 if (bot == null || !bot.equalsIgnoreCase("false")) {
                              JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, userid);
+                             jsonTu.put("ktype", "qa");//默认是qa的知识
                              jsonTu.put("dailogid", dailogid);
                              ro.setBotResponse(jsonTu);
                          } 

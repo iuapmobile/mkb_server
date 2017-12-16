@@ -22,7 +22,7 @@ public class CBOManager {
 
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, apiKey);
@@ -90,7 +90,7 @@ public class CBOManager {
 
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, apiKey);
@@ -166,7 +166,7 @@ public class CBOManager {
         List<TenantInfo> list = new ArrayList<TenantInfo>();
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             rs = ps.executeQuery();
@@ -234,7 +234,7 @@ public class CBOManager {
         boolean flag = false;
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, tenant.getTname());
@@ -279,7 +279,7 @@ public class CBOManager {
         boolean flag = false;
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             ps.setFloat(1, tenant.getSimscore());
@@ -319,7 +319,7 @@ public class CBOManager {
         boolean flag = false;
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
 
             String sql = "update mkb.u_tenant set ?=? where apiKey=?";
             ps = conn.prepareStatement(sql);
@@ -354,7 +354,7 @@ public class CBOManager {
 
         Tenant tenant = null;
 
-        String sql = "select * from mkb.u_tenant where id = ?";
+        String sql = "select * from u_tenant where id = ?";
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -362,7 +362,7 @@ public class CBOManager {
         boolean success2 = false;
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, id);
@@ -409,7 +409,7 @@ public class CBOManager {
 
         try {
             Class.forName(CommonSQL.DRIVER);
-            conn = DriverManager.getConnection(CommonSQL.URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
+            conn = DriverManager.getConnection(CommonSQL.DB_MKB_URL, CommonSQL.USERNAME, CommonSQL.PASSWORD);
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, username);

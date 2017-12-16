@@ -144,7 +144,7 @@ public class DbUtil {
 
                  ps.setString(1, kbqa.getQuestion());
                  //ps.setString(2, kbqa.getAnswer());
-                 ps.setString(2, kbqa.getQtype());
+                 //ps.setString(2, kbqa.getQtype());
 
                  rs = ps.executeQuery();
             }

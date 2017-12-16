@@ -6,14 +6,14 @@ public class CommonSQL {
 
     public static final String DRIVER = "com.mysql.jdbc.Driver";
 
-    public static final String DB_NAME = PropertiesUtil.getJdbcString("db_name");
-    public static final String USERNAME = PropertiesUtil.getJdbcString("username");
-    public static final String PASSWORD = PropertiesUtil.getJdbcString("password");// mac
+    public static final String DB_NAME = PropertiesUtil.getJdbcString("db_mkb");
+    public static final String USERNAME = PropertiesUtil.getJdbcString("db_username");
+    public static final String PASSWORD = PropertiesUtil.getJdbcString("db_password");// mac
     // public static final String PASSWORD = "1qazZAQ!";//mac
-    public static final String IP = PropertiesUtil.getJdbcString("ip");
-    public static final String PORT = PropertiesUtil.getJdbcString("port");
+    public static final String IP = PropertiesUtil.getJdbcString("db_ip");
+    public static final String PORT = PropertiesUtil.getJdbcString("db_port");
 
-    public static final String URL = "jdbc:mysql://" + IP + ":" + PORT + "/" + DB_NAME
+    public static final String DB_MKB_URL = "jdbc:mysql://" + IP + ":" + PORT + "/" + DB_NAME
             + "?useUnicode=true&characterEncoding=utf-8";
 
     // public static final String DB_NAME = "mkb";

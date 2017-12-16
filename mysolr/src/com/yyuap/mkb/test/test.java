@@ -25,6 +25,7 @@ import org.wltea.analyzer.core.Lexeme;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.nlp.BaiAdapter;
 import com.yyuap.mkb.turbot.MKBHttpClient;
 
 //develop
@@ -48,7 +49,9 @@ public class test {
     // }
 
     public static void main(String[] args) throws IOException {
-        test();
+        //test();
+        //相似度测试
+        simnet.test();
     }
 
     public static void test() throws IOException {
@@ -440,6 +443,9 @@ public class test {
         System.out.println(dataStr);
         return jsonRet;
     }
+    
+    
+   
 
 }
 
