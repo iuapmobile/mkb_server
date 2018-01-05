@@ -39,7 +39,7 @@ import com.yyuap.mkb.fileUtil.XMLParseDataConfig;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.services.util.PropertiesUtil;
-import com.yyuap.mkb.turbot.MKBHttpClient;
+import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 /**
  * Servlet implementation class CreateTenant

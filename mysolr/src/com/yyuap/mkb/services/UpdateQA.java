@@ -71,6 +71,11 @@ public class UpdateQA extends HttpServlet {
         String istop = requestParam.getString("istop");//是否置顶
         String[] qs = (String[]) requestParam.get("qs");
         
+        String ktype = requestParam.getString("ktype");
+        if (null == ktype || "".equals(ktype)) {
+            ktype = "qa";
+        }
+        
         String ext_scope = requestParam.getString("tag");//可见范围
         String domain = requestParam.getString("domain");//领域
         String product = requestParam.getString("product");//产品
@@ -182,6 +187,15 @@ public class UpdateQA extends HttpServlet {
         
         String[] qs = request.getParameterValues("qs");
         param.put("qs", qs);
+        
+        String kbid = request.getParameter("kbid");
+        param.put("kbid", kbid);
+        
+        String ktype = request.getParameter("ktype");
+        param.put("ktype", ktype);
+
+        String qtype = request.getParameter("qtype");
+        param.put("qtype", qtype);
         
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);

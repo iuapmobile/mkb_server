@@ -69,44 +69,49 @@ public class DbUtil {
 
             ps.setString(11, kbIndex.getGrade());
             ps.setString(12, kbIndex.getDomain());
-            
+
             ps.setString(13, kbIndex.getWeight());
             ps.setString(14, kbIndex.getContent());
             ps.setString(15, kbIndex.getProduct());
             ps.setString(16, kbIndex.getSubproduct());
-            if(null == kbIndex.getS_top()){
-            	ps.setNull(17, Types.NULL);
-            }else{
-            	 ps.setInt(17, kbIndex.getS_top()==null?null:Integer.valueOf(kbIndex.getS_top()).intValue());
+            if (null == kbIndex.getS_top()) {
+                ps.setNull(17, Types.NULL);
+            } else {
+                ps.setInt(17, kbIndex.getS_top() == null ? null : Integer.valueOf(kbIndex.getS_top()).intValue());
             }
-            if(null == kbIndex.getS_kbsrc()){
-            	ps.setNull(18, Types.NULL);
-            }else{
-           	 	ps.setInt(18, kbIndex.getS_kbsrc()==null?null:Integer.valueOf(kbIndex.getS_kbsrc()).intValue());
+            if (null == kbIndex.getS_kbsrc()) {
+                ps.setNull(18, Types.NULL);
+            } else {
+                ps.setInt(18, kbIndex.getS_kbsrc() == null ? null : Integer.valueOf(kbIndex.getS_kbsrc()).intValue());
             }
-            if(null == kbIndex.getS_kbcategory()){
-            	ps.setNull(19, Types.NULL);
-            }else{
-           	 	ps.setInt(19, kbIndex.getS_kbcategory()==null?null:Integer.valueOf(kbIndex.getS_kbcategory()).intValue());
+            if (null == kbIndex.getS_kbcategory()) {
+                ps.setNull(19, Types.NULL);
+            } else {
+                ps.setInt(19, kbIndex.getS_kbcategory() == null ? null
+                        : Integer.valueOf(kbIndex.getS_kbcategory()).intValue());
             }
-            if(null == kbIndex.getS_hot()){
-            	ps.setNull(20, Types.NULL);
-            }else{
-           	 	ps.setInt(20, kbIndex.getS_hot()==null?null:Integer.valueOf(kbIndex.getS_hot()).intValue());
+            if (null == kbIndex.getS_hot()) {
+                ps.setNull(20, Types.NULL);
+            } else {
+                ps.setInt(20, kbIndex.getS_hot() == null ? null : Integer.valueOf(kbIndex.getS_hot()).intValue());
             }
-//            ps.setInt(17, kbIndex.getS_top()==null?null:Integer.valueOf(kbIndex.getS_top()).intValue());
-//            ps.setInt(18, kbIndex.getS_kbsrc()==null?null:Integer.valueOf(kbIndex.getS_kbsrc()).intValue());
-//            ps.setInt(19, kbIndex.getS_kbcategory()==null?null:Integer.valueOf(kbIndex.getS_kbcategory()).intValue());
-//            ps.setInt(20, kbIndex.getS_hot()==null?null:Integer.valueOf(kbIndex.getS_hot()).intValue());
+            // ps.setInt(17,
+            // kbIndex.getS_top()==null?null:Integer.valueOf(kbIndex.getS_top()).intValue());
+            // ps.setInt(18,
+            // kbIndex.getS_kbsrc()==null?null:Integer.valueOf(kbIndex.getS_kbsrc()).intValue());
+            // ps.setInt(19,
+            // kbIndex.getS_kbcategory()==null?null:Integer.valueOf(kbIndex.getS_kbcategory()).intValue());
+            // ps.setInt(20,
+            // kbIndex.getS_hot()==null?null:Integer.valueOf(kbIndex.getS_hot()).intValue());
             ps.setString(21, kbIndex.getKbid());
             ps.setString(22, kbIndex.getExt_supportsys());
             ps.setString(23, kbIndex.getExt_resourcetype());
             ps.setString(24, kbIndex.getExt_scope());
-            
+
             ps.setString(25, kbIndex.getCreateTime());
             ps.setString(26, kbIndex.getUpdateTime());
             ps.setString(27, kbIndex.getKtype());
-            
+
             boolean flag = ps.execute();
             if (!flag) {
                 System.out.println("import data : title = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
@@ -132,23 +137,23 @@ public class DbUtil {
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-            if(null == kbqa.getQtype()){//and answer = ?
-            	ps = conn.prepareStatement("select * from qa where question = ?  and qtype is null");
+            if (null == kbqa.getQtype()) {// and answer = ?
+                ps = conn.prepareStatement("select * from qa where question = ?  and qtype is null");
 
                 ps.setString(1, kbqa.getQuestion());
-               // ps.setString(2, kbqa.getAnswer());
+                // ps.setString(2, kbqa.getAnswer());
 
                 rs = ps.executeQuery();
-            }else{
-            	 ps = conn.prepareStatement(sql);
+            } else {
+                ps = conn.prepareStatement(sql);
 
-                 ps.setString(1, kbqa.getQuestion());
-                 //ps.setString(2, kbqa.getAnswer());
-                 //ps.setString(2, kbqa.getQtype());
+                ps.setString(1, kbqa.getQuestion());
+                // ps.setString(2, kbqa.getAnswer());
+                // ps.setString(2, kbqa.getQtype());
 
-                 rs = ps.executeQuery();
+                rs = ps.executeQuery();
             }
-           
+
             while (rs.next()) {
                 String q = rs.getString("question");
                 String a = rs.getString("answer");
@@ -301,129 +306,129 @@ public class DbUtil {
             ps.setString(12, qa.getUrl());// url
             ps.setString(13, qa.getKbid());// kbid
             ps.setString(14, qa.getExt_scope());// 可见范围
-            if(null == qa.getDomain()){
-            	ps.setNull(15, Types.NULL);
-            }else{
-            	ps.setString(15, qa.getDomain());
+            if (null == qa.getDomain()) {
+                ps.setNull(15, Types.NULL);
+            } else {
+                ps.setString(15, qa.getDomain());
             }
-            if(null == qa.getProduct()){
-            	ps.setNull(16, Types.NULL);
-            }else{
-            	ps.setString(16, qa.getProduct());
+            if (null == qa.getProduct()) {
+                ps.setNull(16, Types.NULL);
+            } else {
+                ps.setString(16, qa.getProduct());
             }
-            if(null == qa.getSubproduct()){
-            	ps.setNull(17, Types.NULL);
-            }else{
-            	ps.setString(17, qa.getSubproduct());
+            if (null == qa.getSubproduct()) {
+                ps.setNull(17, Types.NULL);
+            } else {
+                ps.setString(17, qa.getSubproduct());
             }
-            if(null == qa.getExtend0()){
-            	ps.setNull(18, Types.NULL);
-            }else{
-            	ps.setString(18, qa.getExtend0());
+            if (null == qa.getExtend0()) {
+                ps.setNull(18, Types.NULL);
+            } else {
+                ps.setString(18, qa.getExtend0());
             }
-            if(null == qa.getExtend1()){
-            	ps.setNull(19, Types.NULL);
-            }else{
-            	ps.setString(19, qa.getExtend1());
+            if (null == qa.getExtend1()) {
+                ps.setNull(19, Types.NULL);
+            } else {
+                ps.setString(19, qa.getExtend1());
             }
-            if(null == qa.getExtend2()){
-            	ps.setNull(20, Types.NULL);
-            }else{
-            	ps.setString(20, qa.getExtend2());
+            if (null == qa.getExtend2()) {
+                ps.setNull(20, Types.NULL);
+            } else {
+                ps.setString(20, qa.getExtend2());
             }
-            if(null == qa.getExtend3()){
-            	ps.setNull(21, Types.NULL);
-            }else{
-            	ps.setString(21, qa.getExtend3());
+            if (null == qa.getExtend3()) {
+                ps.setNull(21, Types.NULL);
+            } else {
+                ps.setString(21, qa.getExtend3());
             }
-            if(null == qa.getExtend4()){
-            	ps.setNull(22, Types.NULL);
-            }else{
-            	ps.setString(22, qa.getExtend4());
+            if (null == qa.getExtend4()) {
+                ps.setNull(22, Types.NULL);
+            } else {
+                ps.setString(22, qa.getExtend4());
             }
-            if(null == qa.getExtend5()){
-            	ps.setNull(23, Types.NULL);
-            }else{
-            	ps.setString(23, qa.getExtend5());
+            if (null == qa.getExtend5()) {
+                ps.setNull(23, Types.NULL);
+            } else {
+                ps.setString(23, qa.getExtend5());
             }
-            if(null == qa.getExtend6()){
-            	ps.setNull(24, Types.NULL);
-            }else{
-            	ps.setString(24, qa.getExtend6());
+            if (null == qa.getExtend6()) {
+                ps.setNull(24, Types.NULL);
+            } else {
+                ps.setString(24, qa.getExtend6());
             }
-            if(null == qa.getExtend7()){
-            	ps.setNull(25, Types.NULL);
-            }else{
-            	ps.setString(25, qa.getExtend7());
+            if (null == qa.getExtend7()) {
+                ps.setNull(25, Types.NULL);
+            } else {
+                ps.setString(25, qa.getExtend7());
             }
-            if(null == qa.getExtend8()){
-            	ps.setNull(26, Types.NULL);
-            }else{
-            	ps.setString(26, qa.getExtend8());
+            if (null == qa.getExtend8()) {
+                ps.setNull(26, Types.NULL);
+            } else {
+                ps.setString(26, qa.getExtend8());
             }
-            if(null == qa.getExtend9()){
-            	ps.setNull(27, Types.NULL);
-            }else{
-            	ps.setString(27, qa.getExtend9());
+            if (null == qa.getExtend9()) {
+                ps.setNull(27, Types.NULL);
+            } else {
+                ps.setString(27, qa.getExtend9());
             }
-            if(null == qa.getExtend10()){
-            	ps.setNull(28, Types.NULL);
-            }else{
-            	ps.setString(28, qa.getExtend10());
+            if (null == qa.getExtend10()) {
+                ps.setNull(28, Types.NULL);
+            } else {
+                ps.setString(28, qa.getExtend10());
             }
-            if(null == qa.getExtend11()){
-            	ps.setNull(29, Types.NULL);
-            }else{
-            	ps.setString(29, qa.getExtend11());
+            if (null == qa.getExtend11()) {
+                ps.setNull(29, Types.NULL);
+            } else {
+                ps.setString(29, qa.getExtend11());
             }
-            if(null == qa.getExtend12()){
-            	ps.setNull(30, Types.NULL);
-            }else{
-            	ps.setString(30, qa.getExtend12());
+            if (null == qa.getExtend12()) {
+                ps.setNull(30, Types.NULL);
+            } else {
+                ps.setString(30, qa.getExtend12());
             }
-            if(null == qa.getExtend13()){
-            	ps.setNull(31, Types.NULL);
-            }else{
-            	ps.setString(31, qa.getExtend13());
+            if (null == qa.getExtend13()) {
+                ps.setNull(31, Types.NULL);
+            } else {
+                ps.setString(31, qa.getExtend13());
             }
-            if(null == qa.getExtend14()){
-            	ps.setNull(32, Types.NULL);
-            }else{
-            	ps.setString(32, qa.getExtend14());
+            if (null == qa.getExtend14()) {
+                ps.setNull(32, Types.NULL);
+            } else {
+                ps.setString(32, qa.getExtend14());
             }
-            if(null == qa.getExtend15()){
-            	ps.setNull(33, Types.NULL);
-            }else{
-            	ps.setString(33, qa.getExtend15());
+            if (null == qa.getExtend15()) {
+                ps.setNull(33, Types.NULL);
+            } else {
+                ps.setString(33, qa.getExtend15());
             }
-            if(null == qa.getExtend16()){
-            	ps.setNull(34, Types.NULL);
-            }else{
-            	ps.setString(34, qa.getExtend16());
+            if (null == qa.getExtend16()) {
+                ps.setNull(34, Types.NULL);
+            } else {
+                ps.setString(34, qa.getExtend16());
             }
-            if(null == qa.getExtend17()){
-            	ps.setNull(35, Types.NULL);
-            }else{
-            	ps.setString(35, qa.getExtend17());
+            if (null == qa.getExtend17()) {
+                ps.setNull(35, Types.NULL);
+            } else {
+                ps.setString(35, qa.getExtend17());
             }
-            if(null == qa.getExtend18()){
-            	ps.setNull(36, Types.NULL);
-            }else{
-            	ps.setString(36, qa.getExtend18());
+            if (null == qa.getExtend18()) {
+                ps.setNull(36, Types.NULL);
+            } else {
+                ps.setString(36, qa.getExtend18());
             }
-            if(null == qa.getExtend19()){
-            	ps.setNull(37, Types.NULL);
-            }else{
-            	ps.setString(37, qa.getExtend19());
+            if (null == qa.getExtend19()) {
+                ps.setNull(37, Types.NULL);
+            } else {
+                ps.setString(37, qa.getExtend19());
             }
-            
-            if(qa.getKtype()==null || qa.getKtype().equals("")){
-                //ps.setNull(38, Types.NULL);
-                ps.setString(38, "qa");//默认都是qa类型的问答
-            }else{
+
+            if (qa.getKtype() == null || qa.getKtype().equals("")) {
+                // ps.setNull(38, Types.NULL);
+                ps.setString(38, "qa");// 默认都是qa类型的问答
+            } else {
                 ps.setString(38, qa.getKtype());
             }
-            
+
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
@@ -459,20 +464,24 @@ public class DbUtil {
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(sql);
 
-            
-        	ps.setString(1, q);
+            ps.setString(1, q);
 
             rs = ps.executeQuery();
             while (rs.next()) {
                 JSONObject obj = new JSONObject();
                 String ques = rs.getString("question");
                 String ans = rs.getString("answer");
+                String ktype = rs.getString("ktype");
                 String qtype = rs.getString("qtype");
+                String url = rs.getString("url");
                 obj.put(q, ans);// 不能写成ques，sql比较不区分大小写
                 obj.put("request_q", q);
                 obj.put("kb_q", ques);
                 obj.put("a", ans);
+                obj.put("kbid", rs.getString("kbid"));
+                obj.put("ktype", ktype);
                 obj.put("qtype", qtype);
+                obj.put("url", url);
                 list.add(obj);
             }
         } catch (Exception e) {
@@ -491,11 +500,13 @@ public class DbUtil {
         return list;
     }
 
-    public static ArrayList<JSONObject> selectAnswerSimilar(String sql, String q, DBConfig dbconf,String[] tag) throws SQLException {
+    public static ArrayList<JSONObject> selectAnswerSimilarFromDB(String sql, String q, DBConfig dbconf, String[] tag)
+            throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<JSONObject> list = new ArrayList<JSONObject>();
+        ArrayList<String> qsidList = new ArrayList<String>();// 存放 qa的id
         ArrayList<String> qidList = new ArrayList<String>();// 存放 qa的id
         try {
             Class.forName(Common.DRIVER);
@@ -504,13 +515,15 @@ public class DbUtil {
             ps.setString(1, q);
             rs = ps.executeQuery();
             while (rs.next()) {
+                qsidList.add(rs.getString("id"));
                 qidList.add(rs.getString("qid"));
             }
             // 如果qid唯一 再去查询 说明 命中 唯一答案
             if (qidList.size() > 0) {
-                ps = conn.prepareStatement(sql);
+                ps = conn.prepareStatement(sql);// 从qs查出来qid，再从qa表内查数据
 
-                ps.setString(1, qidList.get(0));
+                ps.setString(1, qidList.get(0));// 只取第一个qid
+                String qsid = qsidList.get(0);// 只取第一个qid
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
@@ -521,6 +534,12 @@ public class DbUtil {
                     obj.put("kb_q", rs.getString("question"));
                     obj.put("a", rs.getString("answer"));
                     obj.put(q, ans);// 把 key的 ques 换成 q 要不 前面取值 报错
+                    
+                    obj.put("qid", rs.getString("id"));
+                    obj.put("qsid", qsid);
+                    obj.put("id", qsid);
+                    obj.put("kbid", rs.getString("kbid"));
+                    obj.put("ktype", rs.getString("ktype"));
                     obj.put("qtype", rs.getString("qtype"));
                     list.add(obj);
                 }
@@ -704,7 +723,7 @@ public class DbUtil {
                     kbqs.setId(id);
                     kbqs.setQuestion(qs);
                     kbqs.setQid(qa.getId());
-                    qa.getQS().add(kbqs);//这里将成功insert数据库的数据转化为kbqs，供插入solr使用
+                    qa.getQS().add(kbqs);// 这里将成功insert数据库的数据转化为kbqs，供插入solr使用
                     System.out.println(
                             "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " succeed!");
                 } else {
@@ -881,12 +900,11 @@ public class DbUtil {
             ps.setString(5, datetime);
             ps.setString(6, qa.getCreateBy());
             ps.setString(7, qa.getUpdateBy());
-            if(null==qa.getId() || "".equals(qa.getId())){
-            	ps.setNull(8, Types.NULL);
-            }else{
-            	ps.setString(8, qa.getId());
+            if (null == qa.getId() || "".equals(qa.getId())) {
+                ps.setNull(8, Types.NULL);
+            } else {
+                ps.setString(8, qa.getId());
             }
-            
 
             boolean flag = ps.execute();
 
@@ -908,7 +926,7 @@ public class DbUtil {
 
     }
 
-    public static JSONArray selectQA_topn(String qaTop5SQL, int topn, DBConfig dbconf,String tag) throws SQLException {
+    public static JSONArray selectQA_topn(String qaTop5SQL, int topn, DBConfig dbconf, String tag) throws SQLException {
         // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
@@ -925,14 +943,14 @@ public class DbUtil {
             // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
             // Common.PASSWORD);
             String sql1 = "";
-            if(null == tag){
-            	sql1 = " select * from qa where istop=1 order by settoptime desc limit ? ";
-            }else if("personinside".equals(tag)){
-            	sql1 = " select * from qa where istop=1 order by settoptime desc limit ? ";
-            }else{
-            	sql1 = " select * from qa where istop=1 and ext_scope is null order by settoptime desc limit ? ";
+            if (null == tag) {
+                sql1 = " select * from qa where istop=1 order by settoptime desc limit ? ";
+            } else if ("personinside".equals(tag)) {
+                sql1 = " select * from qa where istop=1 order by settoptime desc limit ? ";
+            } else {
+                sql1 = " select * from qa where istop=1 and ext_scope is null order by settoptime desc limit ? ";
             }
-            	
+
             ps = conn.prepareStatement(sql1);
             ps.setInt(1, topn);
             rs = ps.executeQuery();
@@ -1088,123 +1106,134 @@ public class DbUtil {
 
             ps.setString(7, qa.getExt_scope());
 
-            if(null == qa.getDomain()){
-            	ps.setNull(8, Types.NULL);
-            }else{
-            	ps.setString(8, qa.getDomain());
+            if (null == qa.getDomain()) {
+                ps.setNull(8, Types.NULL);
+            } else {
+                ps.setString(8, qa.getDomain());
             }
-            if(null == qa.getProduct()){
-            	ps.setNull(9, Types.NULL);
-            }else{
-            	ps.setString(9, qa.getProduct());
+            if (null == qa.getProduct()) {
+                ps.setNull(9, Types.NULL);
+            } else {
+                ps.setString(9, qa.getProduct());
             }
-            if(null == qa.getSubproduct()){
-            	ps.setNull(10, Types.NULL);
-            }else{
-            	ps.setString(10, qa.getSubproduct());
+            if (null == qa.getSubproduct()) {
+                ps.setNull(10, Types.NULL);
+            } else {
+                ps.setString(10, qa.getSubproduct());
             }
-            if(null == qa.getExtend0()){
-            	ps.setNull(11, Types.NULL);
-            }else{
-            	ps.setString(11, qa.getExtend0());
+            if (null == qa.getExtend0()) {
+                ps.setNull(11, Types.NULL);
+            } else {
+                ps.setString(11, qa.getExtend0());
             }
-            if(null == qa.getExtend1()){
-            	ps.setNull(12, Types.NULL);
-            }else{
-            	ps.setString(12, qa.getExtend1());
+            if (null == qa.getExtend1()) {
+                ps.setNull(12, Types.NULL);
+            } else {
+                ps.setString(12, qa.getExtend1());
             }
-            if(null == qa.getExtend2()){
-            	ps.setNull(13, Types.NULL);
-            }else{
-            	ps.setString(13, qa.getExtend2());
+            if (null == qa.getExtend2()) {
+                ps.setNull(13, Types.NULL);
+            } else {
+                ps.setString(13, qa.getExtend2());
             }
-            if(null == qa.getExtend3()){
-            	ps.setNull(14, Types.NULL);
-            }else{
-            	ps.setString(14, qa.getExtend3());
+            if (null == qa.getExtend3()) {
+                ps.setNull(14, Types.NULL);
+            } else {
+                ps.setString(14, qa.getExtend3());
             }
-            if(null == qa.getExtend4()){
-            	ps.setNull(15, Types.NULL);
-            }else{
-            	ps.setString(15, qa.getExtend4());
+            if (null == qa.getExtend4()) {
+                ps.setNull(15, Types.NULL);
+            } else {
+                ps.setString(15, qa.getExtend4());
             }
-            if(null == qa.getExtend5()){
-            	ps.setNull(16, Types.NULL);
-            }else{
-            	ps.setString(16, qa.getExtend5());
+            if (null == qa.getExtend5()) {
+                ps.setNull(16, Types.NULL);
+            } else {
+                ps.setString(16, qa.getExtend5());
             }
-            if(null == qa.getExtend6()){
-            	ps.setNull(17, Types.NULL);
-            }else{
-            	ps.setString(17, qa.getExtend6());
+            if (null == qa.getExtend6()) {
+                ps.setNull(17, Types.NULL);
+            } else {
+                ps.setString(17, qa.getExtend6());
             }
-            if(null == qa.getExtend7()){
-            	ps.setNull(18, Types.NULL);
-            }else{
-            	ps.setString(18, qa.getExtend7());
+            if (null == qa.getExtend7()) {
+                ps.setNull(18, Types.NULL);
+            } else {
+                ps.setString(18, qa.getExtend7());
             }
-            if(null == qa.getExtend8()){
-            	ps.setNull(19, Types.NULL);
-            }else{
-            	ps.setString(19, qa.getExtend8());
+            if (null == qa.getExtend8()) {
+                ps.setNull(19, Types.NULL);
+            } else {
+                ps.setString(19, qa.getExtend8());
             }
-            if(null == qa.getExtend9()){
-            	ps.setNull(20, Types.NULL);
-            }else{
-            	ps.setString(20, qa.getExtend9());
+            if (null == qa.getExtend9()) {
+                ps.setNull(20, Types.NULL);
+            } else {
+                ps.setString(20, qa.getExtend9());
             }
-            if(null == qa.getExtend10()){
-            	ps.setNull(21, Types.NULL);
-            }else{
-            	ps.setString(21, qa.getExtend10());
+            if (null == qa.getExtend10()) {
+                ps.setNull(21, Types.NULL);
+            } else {
+                ps.setString(21, qa.getExtend10());
             }
-            if(null == qa.getExtend11()){
-            	ps.setNull(22, Types.NULL);
-            }else{
-            	ps.setString(22, qa.getExtend11());
+            if (null == qa.getExtend11()) {
+                ps.setNull(22, Types.NULL);
+            } else {
+                ps.setString(22, qa.getExtend11());
             }
-            if(null == qa.getExtend12()){
-            	ps.setNull(23, Types.NULL);
-            }else{
-            	ps.setString(23, qa.getExtend12());
+            if (null == qa.getExtend12()) {
+                ps.setNull(23, Types.NULL);
+            } else {
+                ps.setString(23, qa.getExtend12());
             }
-            if(null == qa.getExtend13()){
-            	ps.setNull(24, Types.NULL);
-            }else{
-            	ps.setString(24, qa.getExtend13());
+            if (null == qa.getExtend13()) {
+                ps.setNull(24, Types.NULL);
+            } else {
+                ps.setString(24, qa.getExtend13());
             }
-            if(null == qa.getExtend14()){
-            	ps.setNull(25, Types.NULL);
-            }else{
-            	ps.setString(25, qa.getExtend14());
+            if (null == qa.getExtend14()) {
+                ps.setNull(25, Types.NULL);
+            } else {
+                ps.setString(25, qa.getExtend14());
             }
-            if(null == qa.getExtend15()){
-            	ps.setNull(26, Types.NULL);
-            }else{
-            	ps.setString(26, qa.getExtend15());
+            if (null == qa.getExtend15()) {
+                ps.setNull(26, Types.NULL);
+            } else {
+                ps.setString(26, qa.getExtend15());
             }
-            if(null == qa.getExtend16()){
-            	ps.setNull(27, Types.NULL);
-            }else{
-            	ps.setString(27, qa.getExtend16());
+            if (null == qa.getExtend16()) {
+                ps.setNull(27, Types.NULL);
+            } else {
+                ps.setString(27, qa.getExtend16());
             }
-            if(null == qa.getExtend17()){
-            	ps.setNull(28, Types.NULL);
-            }else{
-            	ps.setString(28, qa.getExtend17());
+            if (null == qa.getExtend17()) {
+                ps.setNull(28, Types.NULL);
+            } else {
+                ps.setString(28, qa.getExtend17());
             }
-            if(null == qa.getExtend18()){
-            	ps.setNull(29, Types.NULL);
-            }else{
-            	ps.setString(29, qa.getExtend18());
+            if (null == qa.getExtend18()) {
+                ps.setNull(29, Types.NULL);
+            } else {
+                ps.setString(29, qa.getExtend18());
             }
-            if(null == qa.getExtend19()){
-            	ps.setNull(30, Types.NULL);
-            }else{
-            	ps.setString(30, qa.getExtend19());
+            if (null == qa.getExtend19()) {
+                ps.setNull(30, Types.NULL);
+            } else {
+                ps.setString(30, qa.getExtend19());
             }
-            ps.setString(31, qa.getId());
-
+            
+            if (null == qa.getKtype()) {
+                ps.setNull(31, Types.NULL);
+            } else {
+                ps.setString(31, qa.getKtype());
+            }
+            if (null == qa.getKbid()) {
+                ps.setNull(32, Types.NULL);
+            } else {
+                ps.setString(32, qa.getKbid());
+            }
+            
+            ps.setString(33, qa.getId());
 
             boolean flag = ps.execute();
             if (!flag) {
@@ -1718,41 +1747,39 @@ public class DbUtil {
 
         return list;
     }
-    
-    public static Map<String,String> queryDataTj(String day, DBConfig dbconf) throws SQLException {
+
+    public static Map<String, String> queryDataTj(String day, DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Map<String,String> map = new HashMap<String,String>();
+        Map<String, String> map = new HashMap<String, String>();
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-           
+
             StringBuffer sbf = new StringBuffer();
-    		sbf.append(" select  ");
-    		if(!"0".equals(day)&&!"-1".equals(day)){
-    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') sj, ");
-    		}else{
-    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d %H') sj, ");
-    		}
-    		sbf.append(" count(*) c from qa_tj where");
-    		if(!"0".equals(day)&&!"-1".equals(day)){
-    			sbf.append(" TIMESTAMPDIFF(day,createTime,now()) <=ABS("+day+") ");
-    			sbf.append(" group by DATE_FORMAT(createTime,'%Y-%m-%d')  ");
-    		}else{
-    			sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') = DATE_FORMAT(CURDATE()+"+day+",'%Y-%m-%d')  ");
-    			sbf.append(" group by DATE_FORMAT(createTime,'%Y-%m-%d %H') ");
-    		}
-            
+            sbf.append(" select  ");
+            if (!"0".equals(day) && !"-1".equals(day)) {
+                sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') sj, ");
+            } else {
+                sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d %H') sj, ");
+            }
+            sbf.append(" count(*) c from qa_tj where");
+            if (!"0".equals(day) && !"-1".equals(day)) {
+                sbf.append(" TIMESTAMPDIFF(day,createTime,now()) <=ABS(" + day + ") ");
+                sbf.append(" group by DATE_FORMAT(createTime,'%Y-%m-%d')  ");
+            } else {
+                sbf.append(" DATE_FORMAT(createTime,'%Y-%m-%d') = DATE_FORMAT(CURDATE()+" + day + ",'%Y-%m-%d')  ");
+                sbf.append(" group by DATE_FORMAT(createTime,'%Y-%m-%d %H') ");
+            }
+
             ps = conn.prepareStatement(sbf.toString());
 
-            
-//            if(!"0".equals(day)&&!"-1".equals(day)){
-//            	ps.setString(1, "");
-//    		}else{
-//    			 ps.setString(1, "DATE_FORMAT(CURDATE()+"+day+",'%Y-%m-%d')");
-//    		}
-           
+            // if(!"0".equals(day)&&!"-1".equals(day)){
+            // ps.setString(1, "");
+            // }else{
+            // ps.setString(1, "DATE_FORMAT(CURDATE()+"+day+",'%Y-%m-%d')");
+            // }
 
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -1775,20 +1802,19 @@ public class DbUtil {
         }
         return map;
     }
-    
+
     public static String queryBotServicesTj(DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String c="";
+        String c = "";
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-           
+
             StringBuffer sbf = new StringBuffer();
-    		sbf.append(" select count(*) c from qa_tj ");
-    		
-            
+            sbf.append(" select count(*) c from qa_tj ");
+
             ps = conn.prepareStatement(sbf.toString());
 
             rs = ps.executeQuery();
@@ -1810,9 +1836,10 @@ public class DbUtil {
         }
         return c;
     }
-    
+
     /**
      * 增加kbindexinfo 表数据时，判断 是否已经存在，用title判断
+     * 
      * @param sql
      * @param kbIndex
      * @param dbconf
@@ -1834,10 +1861,10 @@ public class DbUtil {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-            	String title = rs.getString("title");
-            	String id = rs.getString("id");
-            	KBIndex kb = new KBIndex();
-            	kb.setTitle(title);
+                String title = rs.getString("title");
+                String id = rs.getString("id");
+                KBIndex kb = new KBIndex();
+                kb.setTitle(title);
                 kb.setId(id);
                 list.add(kb);
             }
@@ -1856,8 +1883,9 @@ public class DbUtil {
         }
         return list;
     }
-    
-    public static boolean updateKbInfo(String sql,List<Object> params, KBIndex kbIndex, DBConfig dbconf) throws SQLException {
+
+    public static boolean updateKbInfo(String sql, List<Object> params, KBIndex kbIndex, DBConfig dbconf)
+            throws SQLException {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -1867,11 +1895,11 @@ public class DbUtil {
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
             ps = conn.prepareStatement(sql);
 
-            setParameter(params,ps);
-            
+            setParameter(params, ps);
+
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("更新文档成功，id===="+kbIndex.getId());
+                System.out.println("更新文档成功，id====" + kbIndex.getId());
                 rflag = true;
             }
         } catch (Exception e) {
@@ -1886,7 +1914,7 @@ public class DbUtil {
         }
         return rflag;
     }
-    
+
     public static boolean delkbInfo(String deleteQaSql, String[] ids, DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -1898,19 +1926,19 @@ public class DbUtil {
             String _psw = dbconf.getPassword();
             String _url = dbconf.getUlr();
             conn = DriverManager.getConnection(_url, _username, _psw);
-            conn.setAutoCommit(false);   
+            conn.setAutoCommit(false);
             ps = conn.prepareStatement(deleteQaSql);
 
-            for(int i =0 ;i < ids.length; i++){
-            	ps.setString(1, ids[i]);
-            	ps.addBatch();
+            for (int i = 0; i < ids.length; i++) {
+                ps.setString(1, ids[i]);
+                ps.addBatch();
             }
             ps.executeBatch();
             conn.commit();
-            
+
             ret = true;
         } catch (Exception e) {
-        	conn.rollback();
+            conn.rollback();
             e.printStackTrace();
         } finally {
             if (ps != null) {
@@ -1924,10 +1952,12 @@ public class DbUtil {
         return ret;
 
     }
+
     /**
-     *  根据表名，查询表中字段
+     * 根据表名，查询表中字段
+     * 
      * @param sql
-     * @param dbconf 
+     * @param dbconf
      * @return
      */
     public static JSONArray queryFieldForTable(String sql, DBConfig dbconf) throws SQLException {
@@ -1941,14 +1971,13 @@ public class DbUtil {
 
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
 
-            	
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
                 JSONObject json = new JSONObject();
-                json.put("table_name", rs.getString("table_name"));//表名
+                json.put("table_name", rs.getString("table_name"));// 表名
                 json.put("field_name", rs.getString("field_name"));// 字段名
-                json.put("field_desc", rs.getString("field_desc")==null?"":rs.getString("field_desc"));// 字段描述
+                json.put("field_desc", rs.getString("field_desc") == null ? "" : rs.getString("field_desc"));// 字段描述
                 array.add(json);
             }
         } catch (Exception e) {
@@ -1966,10 +1995,12 @@ public class DbUtil {
         }
         return array;
     }
+
     /**
-     *  根据表名，保存表中字段
+     * 根据表名，保存表中字段
+     * 
      * @param sql
-     * @param dbconf 
+     * @param dbconf
      * @return
      */
     public static boolean saveFieldForTable(JSONArray paramArr, DBConfig dbconf) throws SQLException {
@@ -1978,63 +2009,63 @@ public class DbUtil {
         PreparedStatement ps = null;
         ResultSet rs = null;
         JSONArray array = new JSONArray();
-        boolean delqasuccess = false;//qa删除表字段定义标志
-        boolean delkbsuccess = false;//kbindexinfo删除表字段定义标志
-        boolean inqasuccess = false;//qa新增表字段定义标志
-        boolean inkbsuccess = false;//kbindexinfo新增表字段定义标志
+        boolean delqasuccess = false;// qa删除表字段定义标志
+        boolean delkbsuccess = false;// kbindexinfo删除表字段定义标志
+        boolean inqasuccess = false;// qa新增表字段定义标志
+        boolean inkbsuccess = false;// kbindexinfo新增表字段定义标志
         try {
             Class.forName(Common.DRIVER);
 
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-            for(int i=0;i<paramArr.size();i++){
-            	JSONObject obj = paramArr.getJSONObject(i); 
-            	String qasql = "DELETE from tablefield_definition where table_name=? and field_name=?";
-            	ps = conn.prepareStatement(qasql);
-            	ps.setString(1, obj.getString("table_name")==null?"":obj.getString("table_name"));
-            	ps.setString(2, obj.getString("field_name")==null?"":obj.getString("field_name"));
-            	boolean delqaflag = ps.execute();
-            	String kbsql = "DELETE from tablefield_definition where table_name=? and field_name=?";
-            	ps = conn.prepareStatement(kbsql);
-            	ps.setString(1, obj.getString("table_name")==null?"":obj.getString("table_name"));
-            	ps.setString(2, obj.getString("field_name")==null?"":obj.getString("field_name"));
-            	boolean delkbflag = ps.execute();
-            	if(!delqaflag){
-            		delqasuccess = true;
-            	}
-            	if(!delkbflag){
-            		delkbsuccess = true;
-            	}
-            	if(null == obj.getString("field_desc") || "".equals(obj.getString("field_desc"))){
-            		inqasuccess = true;
-            		inkbsuccess = true;
-            	}else{
-            		String isqaql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
-                	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-                	ps = conn.prepareStatement(isqaql);
-                	ps.setString(1, UUID.randomUUID().toString());
-                	ps.setString(2, "qa");
-                	ps.setString(3, obj.getString("field_name")==null?"":obj.getString("field_name"));
-                	ps.setString(4, obj.getString("field_desc")==null?"":obj.getString("field_desc"));
-                	ps.setString(5, datetime);
-                	ps.setString(6, datetime);
-                	boolean inqaflag = ps.execute();
-                	if(!inqaflag){
-                		inqasuccess = true;
-                	}
-                	String iskbql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
-                	ps = conn.prepareStatement(iskbql);
-                	ps.setString(1, UUID.randomUUID().toString());
-                	ps.setString(2, "kbindexinfo");
-                	ps.setString(3, obj.getString("field_name")==null?"":obj.getString("field_name"));
-                	ps.setString(4, obj.getString("field_desc")==null?"":obj.getString("field_desc"));
-                	ps.setString(5, datetime);
-                	ps.setString(6, datetime);
-                	boolean inkbflag = ps.execute();
-                	if(!inkbflag){
-                		inkbsuccess = true;
-                	}
-            	}
-            	
+            for (int i = 0; i < paramArr.size(); i++) {
+                JSONObject obj = paramArr.getJSONObject(i);
+                String qasql = "DELETE from tablefield_definition where table_name=? and field_name=?";
+                ps = conn.prepareStatement(qasql);
+                ps.setString(1, obj.getString("table_name") == null ? "" : obj.getString("table_name"));
+                ps.setString(2, obj.getString("field_name") == null ? "" : obj.getString("field_name"));
+                boolean delqaflag = ps.execute();
+                String kbsql = "DELETE from tablefield_definition where table_name=? and field_name=?";
+                ps = conn.prepareStatement(kbsql);
+                ps.setString(1, obj.getString("table_name") == null ? "" : obj.getString("table_name"));
+                ps.setString(2, obj.getString("field_name") == null ? "" : obj.getString("field_name"));
+                boolean delkbflag = ps.execute();
+                if (!delqaflag) {
+                    delqasuccess = true;
+                }
+                if (!delkbflag) {
+                    delkbsuccess = true;
+                }
+                if (null == obj.getString("field_desc") || "".equals(obj.getString("field_desc"))) {
+                    inqasuccess = true;
+                    inkbsuccess = true;
+                } else {
+                    String isqaql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
+                    String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+                    ps = conn.prepareStatement(isqaql);
+                    ps.setString(1, UUID.randomUUID().toString());
+                    ps.setString(2, "qa");
+                    ps.setString(3, obj.getString("field_name") == null ? "" : obj.getString("field_name"));
+                    ps.setString(4, obj.getString("field_desc") == null ? "" : obj.getString("field_desc"));
+                    ps.setString(5, datetime);
+                    ps.setString(6, datetime);
+                    boolean inqaflag = ps.execute();
+                    if (!inqaflag) {
+                        inqasuccess = true;
+                    }
+                    String iskbql = "insert into tablefield_definition(id,table_name,field_name,field_desc,createTime,updateTime) VALUES(?,?,?,?,?,?)";
+                    ps = conn.prepareStatement(iskbql);
+                    ps.setString(1, UUID.randomUUID().toString());
+                    ps.setString(2, "kbindexinfo");
+                    ps.setString(3, obj.getString("field_name") == null ? "" : obj.getString("field_name"));
+                    ps.setString(4, obj.getString("field_desc") == null ? "" : obj.getString("field_desc"));
+                    ps.setString(5, datetime);
+                    ps.setString(6, datetime);
+                    boolean inkbflag = ps.execute();
+                    if (!inkbflag) {
+                        inkbsuccess = true;
+                    }
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -2049,36 +2080,37 @@ public class DbUtil {
                 conn.close();
             }
         }
-        return delqasuccess&&delkbsuccess&&inqasuccess&&inkbsuccess;
+        return delqasuccess && delkbsuccess && inqasuccess && inkbsuccess;
     }
-    public static void setParameter(List<Object> params,PreparedStatement preparedStatement) throws SQLException{  
-        for(int i=0;i<params.size();i++){  
-            Object p = params.get(i);  
-            if(p instanceof Integer){  
-                preparedStatement.setInt(i+1, (Integer)p);  
-            }else if(p instanceof String){  
-                preparedStatement.setString(i+1, (String)p);  
-            }else if( p == null) {
-            	preparedStatement.setNull(i+1, Types.NULL);
-			}  
-        }  
+
+    public static void setParameter(List<Object> params, PreparedStatement preparedStatement) throws SQLException {
+        for (int i = 0; i < params.size(); i++) {
+            Object p = params.get(i);
+            if (p instanceof Integer) {
+                preparedStatement.setInt(i + 1, (Integer) p);
+            } else if (p instanceof String) {
+                preparedStatement.setString(i + 1, (String) p);
+            } else if (p == null) {
+                preparedStatement.setNull(i + 1, Types.NULL);
+            }
+        }
     }
-    
-    public static Map<String,String> queryDimensionTj(String field, DBConfig dbconf) throws SQLException {
+
+    public static Map<String, String> queryDimensionTj(String field, DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Map<String,String> map = new HashMap<String,String>();
+        Map<String, String> map = new HashMap<String, String>();
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-           
+
             StringBuffer sbf = new StringBuffer();
-    		sbf.append(" select  ");
-			sbf.append(" "+field+" name, ");
-    		sbf.append(" count(*) c from qa where 1=1");
-			sbf.append(" group by "+field+"  ");
-            
+            sbf.append(" select  ");
+            sbf.append(" " + field + " name, ");
+            sbf.append(" count(*) c from qa where 1=1");
+            sbf.append(" group by " + field + "  ");
+
             ps = conn.prepareStatement(sbf.toString());
 
             rs = ps.executeQuery();
@@ -2102,15 +2134,15 @@ public class DbUtil {
         }
         return map;
     }
-    
-    public static Map<String,String> queryQaTopTj(int topn,String istop, DBConfig dbconf) throws SQLException {
-    	// TODO Auto-generated method stub
+
+    public static Map<String, String> queryQaTopTj(int topn, String istop, DBConfig dbconf) throws SQLException {
+        // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-//        JSONArray array = new JSONArray();
-//        List<String> list = new ArrayList<String>();
-        Map<String,String> map = new HashMap<String,String>();
+        // JSONArray array = new JSONArray();
+        // List<String> list = new ArrayList<String>();
+        Map<String, String> map = new HashMap<String, String>();
         try {
             Class.forName(Common.DRIVER);
 
@@ -2120,69 +2152,70 @@ public class DbUtil {
 
             // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
             // Common.PASSWORD);
-            String sql = "select * from (select question, count(*) counts from qa_tj " 
-            		+ "group by question) t order by counts desc limit ?";
+            String sql = "select * from (select question, count(*) counts from qa_tj "
+                    + "group by question) t order by counts desc limit ?";
             ps = conn.prepareStatement(sql);
             ps.setInt(1, topn);
             rs = ps.executeQuery();
             while (rs.next()) {
-//            	JSONObject json = new JSONObject();
-//            	json.put("question", rs.getString("question"));
-//            	json.put("askedNum", rs.getString("counts"));
-//            	array.add(json);
-            	map.put(rs.getString("question"), rs.getString("counts"));
+                // JSONObject json = new JSONObject();
+                // json.put("question", rs.getString("question"));
+                // json.put("askedNum", rs.getString("counts"));
+                // array.add(json);
+                map.put(rs.getString("question"), rs.getString("counts"));
             }
-//            String sql1 = "";
-//            if(null == istop){
-//            	sql1 = " select * from qa   limit ? ";
-//            }else{
-//            	sql1 = " select *  from qa where istop=?  limit ? ";
-//            }
-//            	
-//            ps = conn.prepareStatement(sql1);
-//            if(null == istop){
-//            	ps.setInt(1, Integer.valueOf(topn));
-//            }else{
-//            	ps.setString(1, istop);
-//            	ps.setInt(2, Integer.valueOf(topn));
-//            }
-//            rs = ps.executeQuery();
-//            int rownum = 0;
-//            while (rs.next()) {
-//                JSONObject json = new JSONObject();
-//                json.put("question", rs.getString("question"));
-//                json.put("askedNum", "-1");// 这应该是-1 因为置顶 就是一个
-//                array.add(json);
-//                rownum++;
-//                list.add(rs.getString("question"));
-//            }
+            // String sql1 = "";
+            // if(null == istop){
+            // sql1 = " select * from qa limit ? ";
+            // }else{
+            // sql1 = " select * from qa where istop=? limit ? ";
+            // }
+            //
+            // ps = conn.prepareStatement(sql1);
+            // if(null == istop){
+            // ps.setInt(1, Integer.valueOf(topn));
+            // }else{
+            // ps.setString(1, istop);
+            // ps.setInt(2, Integer.valueOf(topn));
+            // }
+            // rs = ps.executeQuery();
+            // int rownum = 0;
+            // while (rs.next()) {
+            // JSONObject json = new JSONObject();
+            // json.put("question", rs.getString("question"));
+            // json.put("askedNum", "-1");// 这应该是-1 因为置顶 就是一个
+            // array.add(json);
+            // rownum++;
+            // list.add(rs.getString("question"));
+            // }
 
             // 这说明 置顶的不满足需要查询的topn数据
-//            if (topn - rownum > 0) {
-//                // 根据参数列表的大小生成in串
-//                StringBuffer buffer = new StringBuffer();
-//                for (int i = 0; i < list.size(); i++) {
-//                    buffer.append("?, ");
-//                }
-//                buffer.deleteCharAt(buffer.length() - 1);
-//                buffer.deleteCharAt(buffer.length() - 1);
-//                String sql = "select * from (select question, count(*) counts from qa_tj " + "where  "
-//                        + "question not in (" + buffer.toString() + ") "
-//                        + "group by question) t order by counts desc limit ?";
-//                ps = conn.prepareStatement(sql);
-//                // 根据参数列表设置sql参数
-//                for (int i = 0; i < list.size(); i++) {
-//                    ps.setString(i + 1, list.get(i));
-//                }
-//                ps.setInt(list.size() + 1, topn - rownum);
-//                rs = ps.executeQuery();
-//                while (rs.next()) {
-//                    JSONObject json = new JSONObject();
-//                    json.put("question", rs.getString("question"));
-//                    json.put("askedNum", rs.getString("counts"));
-//                    array.add(json);
-//                }
-//            }
+            // if (topn - rownum > 0) {
+            // // 根据参数列表的大小生成in串
+            // StringBuffer buffer = new StringBuffer();
+            // for (int i = 0; i < list.size(); i++) {
+            // buffer.append("?, ");
+            // }
+            // buffer.deleteCharAt(buffer.length() - 1);
+            // buffer.deleteCharAt(buffer.length() - 1);
+            // String sql = "select * from (select question, count(*) counts
+            // from qa_tj " + "where "
+            // + "question not in (" + buffer.toString() + ") "
+            // + "group by question) t order by counts desc limit ?";
+            // ps = conn.prepareStatement(sql);
+            // // 根据参数列表设置sql参数
+            // for (int i = 0; i < list.size(); i++) {
+            // ps.setString(i + 1, list.get(i));
+            // }
+            // ps.setInt(list.size() + 1, topn - rownum);
+            // rs = ps.executeQuery();
+            // while (rs.next()) {
+            // JSONObject json = new JSONObject();
+            // json.put("question", rs.getString("question"));
+            // json.put("askedNum", rs.getString("counts"));
+            // array.add(json);
+            // }
+            // }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -2199,7 +2232,7 @@ public class DbUtil {
         }
         return map;
     }
-    
+
     public static JSONArray queryDimensionData(String field, DBConfig dbconf) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -2208,12 +2241,12 @@ public class DbUtil {
         try {
             Class.forName(Common.DRIVER);
             conn = DriverManager.getConnection(dbconf.getUlr(), dbconf.getUsername(), dbconf.getPassword());
-           
+
             StringBuffer sbf = new StringBuffer();
-    		sbf.append(" select  DISTINCT");
-			sbf.append(" "+field+" name");
-    		sbf.append(" from qa where 1=1");
-            
+            sbf.append(" select  DISTINCT");
+            sbf.append(" " + field + " name");
+            sbf.append(" from qa where 1=1");
+
             ps = conn.prepareStatement(sbf.toString());
 
             rs = ps.executeQuery();
@@ -2236,14 +2269,16 @@ public class DbUtil {
         }
         return array;
     }
-    public static Map<String,String> queryQaTopTjForDimension(int topn,String istop,String field,String fieldValue, DBConfig dbconf) throws SQLException {
-    	// TODO Auto-generated method stub
+
+    public static Map<String, String> queryQaTopTjForDimension(int topn, String istop, String field, String fieldValue,
+            DBConfig dbconf) throws SQLException {
+        // TODO Auto-generated method stub
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-//        JSONArray array = new JSONArray();
-//        List<String> list = new ArrayList<String>();
-        Map<String,String> map = new HashMap<String,String>();
+        // JSONArray array = new JSONArray();
+        // List<String> list = new ArrayList<String>();
+        Map<String, String> map = new HashMap<String, String>();
         try {
             Class.forName(Common.DRIVER);
 
@@ -2253,16 +2288,15 @@ public class DbUtil {
 
             // conn = DriverManager.getConnection(Common.URL, Common.USERNAME,
             // Common.PASSWORD);
-             
-            
-            String sql = "select tj.question,count(*) counts from qa_tj tj,qa qa " 
-            		+ "where tj.qid=qa.id and "+field+"=? group by tj.question  order by counts desc limit ?";
+
+            String sql = "select tj.question,count(*) counts from qa_tj tj,qa qa " + "where tj.qid=qa.id and " + field
+                    + "=? group by tj.question  order by counts desc limit ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, fieldValue);
             ps.setInt(2, topn);
             rs = ps.executeQuery();
             while (rs.next()) {
-            	map.put(rs.getString("question"), rs.getString("counts"));
+                map.put(rs.getString("question"), rs.getString("counts"));
             }
 
         } catch (Exception e) {
@@ -2280,10 +2314,12 @@ public class DbUtil {
         }
         return map;
     }
-    
-    
+
     public static JSONArray selectQAByKtype(String sql, String[] params, DBConfig dbconf) {
-        //public static final String SELECT_QA_BY_KTYPE_SQL = "SELECT id, '' qid, question, answer, qtype, ktype FROM qa WHERE ktype = ? union all SELECT id, qid, question, '' answer, '' qtype, '' ktype FROM qa_similar where qid in (SELECT id FROM qa where ktype=?);";
+        // public static final String SELECT_QA_BY_KTYPE_SQL = "SELECT id, ''
+        // qid, question, answer, qtype, ktype FROM qa WHERE ktype = ? union all
+        // SELECT id, qid, question, '' answer, '' qtype, '' ktype FROM
+        // qa_similar where qid in (SELECT id FROM qa where ktype=?);";
         JSONArray array = new JSONArray();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -2308,7 +2344,7 @@ public class DbUtil {
                 qa.put("updateTime", rs.getString("updateTime"));
                 qa.put("createBy", rs.getString("createBy"));
                 qa.put("updateBy", rs.getString("updateBy"));
-                
+
                 array.add(qa);
             }
             // while (rs.next()) {

@@ -18,7 +18,7 @@ import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.fileUtil.KnowlegeType;
-import com.yyuap.mkb.nlp.BaiAdapter;
+import com.yyuap.mkb.nlp.OpenAPI;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.services.util.PropertiesUtil;
 
@@ -27,17 +27,21 @@ public class QAManager {
 
     }
 
-    public JSONObject getUniqueAnswer(String q, Tenant tenant,String[] tag) throws SolrServerException, IOException {
+    public JSONObject getUniqueAnswer(String q, Tenant tenant, String[] tag) throws SolrServerException, IOException {
         // TODO Auto-generated method stub
         JSONObject ret = null;
-        String search_num= PropertiesUtil.getConfigPropString("search_num");
-        if(search_num == null || search_num ==""){
-            search_num = "1";
+        String search_num = "1";
+        // String search_num =
+        // PropertiesUtil.getConfigPropString("bot_kb_simSearch_num");
+        int bot_kb_simSearch_num = tenant.getBot_kb_simSearch_num();
+        if (bot_kb_simSearch_num > 0) {
+            search_num = String.valueOf(bot_kb_simSearch_num);
         }
-        
+
         DBManager dbmgr = new DBManager();
-        ret = dbmgr.selectUniqueAnswer(q, tenant,tag);
+        ret = dbmgr.selectUniqueAnswerFromDB(q, tenant, tag);
         if (ret == null || ret.equals("")) {
+            // 没有从DB中直接查出来数据时，从solr里查找
             // 1、通过solr查询出前x条，进行相似度处理
 
             String corename = tenant.gettqakbcore();
@@ -46,7 +50,7 @@ public class QAManager {
             JSONObject requestParam = new JSONObject();
             requestParam.put("q", q);
             requestParam.put("num", search_num);
-            JSONObject topQ = solr.queryQuestion(requestParam,tag);
+            JSONObject topQ = solr.queryQuestion(requestParam, tag);
             JSONArray array = topQ.getJSONObject("response").getJSONArray("docs");
 
             Float scoreMax = 0f;
@@ -55,6 +59,8 @@ public class QAManager {
                 String _a = array.getJSONObject(i).getString("answer");
                 String _url = array.getJSONObject(i).getString("url");
                 String _qtype = array.getJSONObject(i).getString("qtype");
+                String _ktype = array.getJSONObject(i).getString("ktype");
+                String _kbid = array.getJSONObject(i).getString("kbid");
                 String id = array.getJSONObject(i).getString("id");
 
                 float simscoreDef = 0f;
@@ -70,8 +76,8 @@ public class QAManager {
                 } else if (false && _q.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
                     score = 2;
                 } else {
-                    BaiAdapter bai = new BaiAdapter();
-                    score = bai.simnet(_q, q);
+                    OpenAPI bai = new OpenAPI();
+                    score = bai.simnet(_q, q);// _q是备选问题，q是用户问题
                 }
 
                 if (score > simscoreDef) {
@@ -85,6 +91,8 @@ public class QAManager {
                         botRes.put("simscore", score);
                         botRes.put(q, _a);
                         botRes.put("qtype", _qtype);
+                        botRes.put("ktype", _ktype);
+                        botRes.put("kbid", _kbid);
                         botRes.put("id", id);
                         ret = botRes;
                     }
@@ -108,8 +116,8 @@ public class QAManager {
         qa.setUrl(json.getString("url"));// 是否置顶
         qa.setKbid(json.getString("kbid"));// 是否置顶
         qa.setQtype(json.getString("qtype"));
-        qa.setKtype(json.getString("ktype"));//该问答的类型
-        qa.setExt_scope(json.getString("ext_scope"));//可见范围
+        qa.setKtype(json.getString("ktype"));// 该问答的类型
+        qa.setExt_scope(json.getString("ext_scope"));// 可见范围
         qa.setDomain(json.getString("domain"));
         qa.setProduct(json.getString("product"));
         qa.setSubproduct(json.getString("subproduct"));
@@ -192,8 +200,8 @@ public class QAManager {
         return ret;
     }
 
-    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop,String ext_scope,String domain,String product,String subproduct,JSONObject json)
-            throws SQLException {
+    public boolean updateQA(String id, String q, String a, String[] qs, Tenant tenant, String istop, String ext_scope,
+            String domain, String product, String subproduct, JSONObject json) throws SQLException {
         // TODO Auto-generated method stub
         KBQA kbqa = new KBQA();
         kbqa.setId(id);
@@ -225,7 +233,7 @@ public class QAManager {
         kbqa.setExtend17(json.getString("extend17"));
         kbqa.setExtend17(json.getString("extend18"));
         kbqa.setExtend19(json.getString("extend19"));
-        
+
         kbqa.setQuestions(qs);
 
         DBManager dbmgr = new DBManager();
@@ -244,7 +252,7 @@ public class QAManager {
         return json;
     }
 
-    public String addTongji(String q, String a,String qid, Tenant tenant) {
+    public String addTongji(String q, String a, String qid, Tenant tenant) {
         // TODO Auto-generated method stub
         String id = "";
         KBQA qa = new KBQA();
@@ -256,12 +264,12 @@ public class QAManager {
         return id;
     }
 
-    public JSONArray topN(int topn, Tenant tenant,String tag) {
+    public JSONArray topN(int topn, Tenant tenant, String tag) {
         // TODO Auto-generated method stub
         JSONArray array = new JSONArray();
 
         DBManager dbmgr = new DBManager();
-        array = dbmgr.query_tj(topn, tenant,tag);
+        array = dbmgr.query_tj(topn, tenant, tag);
         return array;
     }
 
@@ -280,8 +288,9 @@ public class QAManager {
         return success;
     }
 
-
-    public String updateQAQS(String id, String q, String a, JSONArray qs,String url,String qtype, Tenant tenant,String ext_scope,String domain,String product,String subproduct,JSONObject extendjson) throws SQLException {
+    public String updateQAQS(String id, String q, String a, JSONArray qs, String url, String qtype, Tenant tenant,
+            String ext_scope, String domain, String product, String subproduct, JSONObject data, JSONObject extendjson)
+            throws SQLException {
 
         // 根据数据构建Entity
         KBQA kbqa = new KBQA();
@@ -296,6 +305,10 @@ public class QAManager {
         kbqa.setDomain(domain);
         kbqa.setProduct(product);
         kbqa.setSubproduct(subproduct);
+        
+        kbqa.setKtype(data.getString("ktype"));
+        kbqa.setKbid(data.getString("kbid"));
+        
         kbqa.setExtend0(extendjson.getString("extend0"));
         kbqa.setExtend1(extendjson.getString("extend1"));
         kbqa.setExtend2(extendjson.getString("extend2"));
@@ -318,8 +331,8 @@ public class QAManager {
         kbqa.setExtend19(extendjson.getString("extend19"));
 
         // kbqa.setQtype(t);
-        if(qs!=null){
-        	for (int i = 0, len = qs.size(); i < len; i++) {
+        if (qs != null) {
+            for (int i = 0, len = qs.size(); i < len; i++) {
                 JSONObject json = qs.getJSONObject(i);
                 KBQS kbqs = new KBQS();
                 kbqs.setId(json.getString("id"));
@@ -329,7 +342,6 @@ public class QAManager {
                 kbqa.getQS().add(kbqs);
             }
         }
-        
 
         DBManager dbmgr = new DBManager();
 
@@ -421,24 +433,23 @@ public class QAManager {
 
         return flag;
     }
-    
-    
-    public Map<String,String> queryDataTj(String day, Tenant tenant) throws Exception {
+
+    public Map<String, String> queryDataTj(String day, Tenant tenant) throws Exception {
 
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryDataTj(day, tenant);
     }
-    
+
     public String queryBotServicesTj(Tenant tenant) throws Exception {
 
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryBotServicesTj(tenant);
     }
-    
+
     public String addKbInfo(JSONObject json, Tenant tenant) throws Exception {
-    	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+        String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
         KBIndex vo = new KBIndex();
         vo.setId(UUID.randomUUID().toString());
         vo.setTitle(json.getString("title"));
@@ -447,15 +458,15 @@ public class QAManager {
         vo.setText(json.getString("text"));
         vo.setUrl(json.getString("url"));
         vo.setAuthor(json.getString("author"));
-        if(null == json.getString("createTime") || "".equals(json.getString("createTime"))){
-        	 vo.setCreateTime(datetime);
-        }else{
-        	 vo.setCreateTime(json.getString("createTime"));
+        if (null == json.getString("createTime") || "".equals(json.getString("createTime"))) {
+            vo.setCreateTime(datetime);
+        } else {
+            vo.setCreateTime(json.getString("createTime"));
         }
-        if(null == json.getString("updateTime") || "".equals(json.getString("updateTime"))){
-        	vo.setUpdateTime(datetime);
-        }else{
-        	vo.setUpdateTime(json.getString("updateTime"));
+        if (null == json.getString("updateTime") || "".equals(json.getString("updateTime"))) {
+            vo.setUpdateTime(datetime);
+        } else {
+            vo.setUpdateTime(json.getString("updateTime"));
         }
         vo.setWeight(json.getString("weight"));
         vo.setKeywords(json.getString("keywords"));
@@ -474,26 +485,23 @@ public class QAManager {
         vo.setExt_supportsys(json.getString("ext_supportsys"));
         vo.setExt_resourcetype(json.getString("ext_resourcetype"));
         vo.setExt_scope(json.getString("ext_scope"));
-        //下面两个 实在添加solr时用到
+        // 下面两个 实在添加solr时用到
         vo.setQuestion(json.getString("title"));
         vo.setAnser(json.getString("descript"));
-        if(json.getString("resourcetype")==null){
-        	vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
-        }else{
-        	vo.setKtype(json.getString("resourcetype"));
+        if (json.getString("resourcetype") == null) {
+            vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        } else {
+            vo.setKtype(json.getString("resourcetype"));
         }
-        
-
 
         DBManager dbmgr = new DBManager();
 
         return dbmgr.insertKbInfo(vo, tenant);
     }
-    
-    public boolean updateKbInfo(JSONObject json, Tenant tenant)
-            throws Exception {
-    	String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-    	KBIndex vo = new KBIndex();
+
+    public boolean updateKbInfo(JSONObject json, Tenant tenant) throws Exception {
+        String datetime = DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
+        KBIndex vo = new KBIndex();
         vo.setId(json.getString("id"));
         vo.setTitle(json.getString("title"));
         vo.setDescript(json.getString("descript"));
@@ -502,7 +510,7 @@ public class QAManager {
         vo.setUrl(json.getString("url"));
         vo.setAuthor(json.getString("author"));
         vo.setCreateTime(json.getString("createTime"));
-    	vo.setUpdateTime(datetime);
+        vo.setUpdateTime(datetime);
         vo.setWeight(json.getString("weight"));
         vo.setKeywords(json.getString("keywords"));
         vo.setTag(json.getString("label"));
@@ -520,105 +528,113 @@ public class QAManager {
         vo.setExt_supportsys(json.getString("ext_supportsys"));
         vo.setExt_resourcetype(json.getString("ext_resourcetype"));
         vo.setExt_scope(json.getString("ext_scope"));
-        //下面两个 实在添加solr时用到
+        // 下面两个 实在添加solr时用到
         vo.setQuestion(json.getString("title"));
         vo.setAnser(json.getString("descript"));
-        if(json.getString("resourcetype")==null){
-        	vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
-        }else{
-        	vo.setKtype(json.getString("resourcetype"));
+        if (json.getString("resourcetype") == null) {
+            vo.setKtype(KnowlegeType.KBINDEXINFO_KTYPE);
+        } else {
+            vo.setKtype(json.getString("resourcetype"));
         }
         DBManager dbmgr = new DBManager();
 
         boolean success = dbmgr.updateKbInfo(vo, tenant);
         return success;
     }
-    
+
     public boolean delKbInfoBat(String[] ids, Tenant tenant) throws SQLException {
         // TODO Auto-generated method stub
-    	DBManager dbmgr = new DBManager();
+        DBManager dbmgr = new DBManager();
         boolean success = dbmgr.delKbInfo(ids, tenant);
         return success;
     }
-    
+
     /**
-     *  根据表名，查询表中字段 全部
+     * 根据表名，查询表中字段 全部
+     * 
      * @param tenant
-     * @param tableName 表名
+     * @param tableName
+     *            表名
      * @return
      */
-    public JSONArray queryFieldForTable(String tableName,Tenant tenant) {
+    public JSONArray queryFieldForTable(String tableName, Tenant tenant) {
         // TODO Auto-generated method stub
         JSONObject jsonQA = new JSONObject();
         DBManager dbmgr = new DBManager();
         JSONArray json = dbmgr.queryFieldForTable(tenant, tableName);
         return json;
     }
-    
+
     /**
-     *  根据表名，查询表中字段 每个租户已定义的
+     * 根据表名，查询表中字段 每个租户已定义的
+     * 
      * @param tenant
-     * @param tableName 表名
+     * @param tableName
+     *            表名
      * @return
      */
-    public JSONArray queryFieldForTableTenant(String tableName,Tenant tenant) {
+    public JSONArray queryFieldForTableTenant(String tableName, Tenant tenant) {
         // TODO Auto-generated method stub
         JSONObject jsonQA = new JSONObject();
         DBManager dbmgr = new DBManager();
         JSONArray json = dbmgr.queryFieldForTableTenant(tenant, tableName);
         return json;
     }
-    
+
     /**
-     *  根据表名，保存表中字段
+     * 根据表名，保存表中字段
+     * 
      * @param tenant
-     * @param tableName 表名
+     * @param tableName
+     *            表名
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
-    public boolean saveFieldForTable(JSONArray paramArr,Tenant tenant) throws Exception {
+    public boolean saveFieldForTable(JSONArray paramArr, Tenant tenant) throws Exception {
         // TODO Auto-generated method stub
         JSONObject jsonQA = new JSONObject();
         DBManager dbmgr = new DBManager();
         boolean ret = dbmgr.saveFieldForTable(tenant, paramArr);
         return ret;
     }
-    
-    public Map<String,String> queryDimensionTj(String field, Tenant tenant) throws Exception {
+
+    public Map<String, String> queryDimensionTj(String field, Tenant tenant) throws Exception {
 
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryDimensionTj(field, tenant);
     }
-    public Map<String,String> queryQaTopTj(int topn,String istop,  Tenant tenant) throws Exception {
+
+    public Map<String, String> queryQaTopTj(int topn, String istop, Tenant tenant) throws Exception {
 
         DBManager dbmgr = new DBManager();
 
-        return dbmgr.queryQaTopTj(topn,istop, tenant);
+        return dbmgr.queryQaTopTj(topn, istop, tenant);
     }
-    
+
     public JSONArray queryDimensionData(String field, Tenant tenant) throws Exception {
 
         DBManager dbmgr = new DBManager();
 
         return dbmgr.queryDimensionData(field, tenant);
     }
-    
-    public Map<String,String> queryQaTopTjForDimension(int topn,String istop,String field,String fieldValue,  Tenant tenant) throws Exception {
+
+    public Map<String, String> queryQaTopTjForDimension(int topn, String istop, String field, String fieldValue,
+            Tenant tenant) throws Exception {
 
         DBManager dbmgr = new DBManager();
 
-        return dbmgr.queryQaTopTjForDimension(topn,istop,field,fieldValue, tenant);
+        return dbmgr.queryQaTopTjForDimension(topn, istop, field, fieldValue, tenant);
     }
 
     public JSONObject queryQACommandByTenant(Tenant tenant) {
         JSONObject json = new JSONObject();
-        
+
         DBManager dbmgr = new DBManager();
         JSONArray array = dbmgr.selectQACommandByTenant(tenant);
-        
+
         json.put("docs", array);
         return json;
     }
-    
+
 }

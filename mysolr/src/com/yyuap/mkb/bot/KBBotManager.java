@@ -16,7 +16,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.turbot.MKBHttpClient;
+import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 public class KBBotManager {
 

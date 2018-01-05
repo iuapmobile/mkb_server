@@ -15,30 +15,39 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.turbot.MKBHttpClient;
+import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
-public class BaiAdapter {
+class BaiAdapter {
+    // 文档http://ai.baidu.com/docs#/Auth/top
+    public static final String tokenURL = "https://aip.baidubce.com/oauth/2.0/token";
+    public static final String grant_type = "client_credentials";
+    public static final String client_id = "ah7yAv2YGjEyYNZEUdsrVNfG";
+    public static final String client_secret = "ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj";
+
+    public static final String simnet_url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet";
+
     public BaiAdapter() {
 
     }
 
-    public float simnet(String text_1, String text_2) {
+    public static float simnet(String text_1, String text_2) {
         float score = 0;
         try {
             MKBHttpClient httpclient = new MKBHttpClient();
             Map<String, String> createMap = new HashMap<String, String>();
-            createMap.put("grant_type", "client_credentials");
-            createMap.put("client_id", "ah7yAv2YGjEyYNZEUdsrVNfG");
-            createMap.put("client_secret", "ct5N3lbEnqGgkrZBRbB0TbOKhrgQ2eXj");
+            createMap.put("grant_type", grant_type);
+            createMap.put("client_id", client_id);
+            createMap.put("client_secret", client_secret);
             String charset = "gbk";
-            String tokenURL = "https://aip.baidubce.com/oauth/2.0/token";
 
             String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
             JSONObject obj = JSONObject.parseObject(botRes);
             String access_token = obj.getString("access_token");
-            System.out.println("access_token: " + access_token);
+            String expires_in = obj.getString("expires_in");
+            System.out.println(
+                    "ai.baidu.com >>>get token finish! access_token: " + access_token + ", expires_in:" + expires_in);
 
-            String url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet?access_token=" + access_token;
+            String url = simnet_url + "?access_token=" + access_token;
 
             PostMethod post = new PostMethod(url);
             RequestEntity re;
@@ -61,8 +70,9 @@ public class BaiAdapter {
 
             JSONObject jsonRet = JSONObject.parseObject(dataStr);
             score = jsonRet.getFloatValue("score");
-
-            System.out.println(dataStr);
+            String log = String.format("+++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=%s，_q=%s，结果：%s", text_2,
+                    text_1, dataStr);
+            System.out.println(log);
 
             return score;
 
@@ -106,6 +116,17 @@ public class BaiAdapter {
         }
 
         return "";
+    }
+
+    public static JSONObject lexer(String text) {
+        JSONObject ret = new JSONObject();
+        return ret;
+    }
+
+    public static JSONObject depparser(String text) {
+
+        JSONObject ret = new JSONObject();
+        return ret;
     }
 
 }

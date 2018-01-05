@@ -459,6 +459,8 @@ public class SolrManager {
             String qs = kbqs.getQuestion();
             String url = kbqa.getUrl();
             String kbid = kbqa.getKbid();
+            String ktype = kbqa.getKtype();
+            String qtype = kbqa.getQtype();
             String updateTime = kbqs.getUpdateTime();
             String createTime = kbqs.getCreateTime();
 
@@ -471,6 +473,8 @@ public class SolrManager {
             kbindex.setUrl(url);
             kbindex.setQid(qid);
             kbindex.setKbid(kbid);
+            kbindex.setKtype(ktype);
+            kbindex.setQtype(qtype);
             kbindex.setUpdateTime(updateTime);
             kbindex.setCreateTime(createTime);
 
@@ -896,6 +900,8 @@ public class SolrManager {
             obj.put("answer", doc.get("answer"));
             obj.put("url", doc.get("url"));
             obj.put("qtype", doc.get("qtype"));
+            obj.put("ktype", doc.get("ktype"));
+            obj.put("kbid", doc.get("kbid"));
             docs.add(obj);
         }
         response.put("docs", docs);
@@ -1110,6 +1116,8 @@ public class SolrManager {
             json.put("url", doc.get("url"));
 
             json.put("qtype", doc.get("qtype"));
+            json.put("ktype", doc.get("ktype"));
+            json.put("kbid", doc.get("kbid"));
             
             json.put("domain", doc.get("domain"));
             json.put("product", doc.get("product"));

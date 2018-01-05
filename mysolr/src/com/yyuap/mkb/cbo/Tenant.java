@@ -30,6 +30,11 @@ public class Tenant {
     private boolean _sorl_useFilterQueries = false;
     private String _botSkillConfig;
     private JSONObject _botSkillConfig_json;
+    private boolean _bot_social_chatBot_enabled = true;
+    private int _bot_social_chatBot_v = 1;
+    private int _bot_kb_simSearch_num = 3;
+    private JSONObject bot_api_ia_conf_JSON;
+    private String bot_api_ia_conf;
 
     public Tenant() {
 
@@ -50,33 +55,32 @@ public class Tenant {
     public void settname(String tname) {
         this.tname = tname;
     }
-    
+
     public String getTdescript() {
-		return tdescript;
-	}
+        return tdescript;
+    }
 
-	public void setTdescript(String tdescript) {
-		this.tdescript = tdescript;
-	}
+    public void setTdescript(String tdescript) {
+        this.tdescript = tdescript;
+    }
 
-	public String gettusername() {
+    public String gettusername() {
         return this.tusername;
     }
 
     public void settusername(String tusername) {
         this.tusername = tusername;
     }
-    
 
     public String getTpassword() {
-		return tpassword;
-	}
+        return tpassword;
+    }
 
-	public void setTpassword(String tpassword) {
-		this.tpassword = tpassword;
-	}
+    public void setTpassword(String tpassword) {
+        this.tpassword = tpassword;
+    }
 
-	public String gettAPIKey() {
+    public String gettAPIKey() {
         return this.apiKey;
     }
 
@@ -211,5 +215,48 @@ public class Tenant {
 
     public void setBotSkillConfig(String value) {
         this._botSkillConfig = value;
+    }
+
+    public boolean getBot_social_chatBot_enabled() {
+        return this._bot_social_chatBot_enabled;
+    }
+
+    public void setBot_social_chatBot_enabled(boolean value) {
+        this._bot_social_chatBot_enabled = value;
+    }
+
+    public int getBot_social_chatBot_v() {
+        return this._bot_social_chatBot_v;
+    }
+
+    public void setBot_social_chatBot_v(int value) {
+        this._bot_social_chatBot_v = value;
+    }
+
+    public int getBot_kb_simSearch_num() {
+        return this._bot_kb_simSearch_num;
+    }
+
+    public void setBot_kb_simSearch_num(int value) {
+        this._bot_kb_simSearch_num = value;
+    }
+
+    public JSONObject getBot_api_ia_conf_JSON() {
+        if (this.bot_api_ia_conf_JSON == null) {
+            try {
+                this.bot_api_ia_conf_JSON = JSON.parseObject(this.bot_api_ia_conf);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        return this.bot_api_ia_conf_JSON;
+    }
+
+    public void setBot_api_ia_conf(String value) {
+        this.bot_api_ia_conf = value;
+    }
+
+    public String getBot_api_ia_conf() {
+        return this.bot_api_ia_conf;
     }
 }

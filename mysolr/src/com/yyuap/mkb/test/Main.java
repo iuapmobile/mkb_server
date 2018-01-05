@@ -25,11 +25,10 @@ import org.wltea.analyzer.core.Lexeme;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.nlp.BaiAdapter;
-import com.yyuap.mkb.turbot.MKBHttpClient;
+import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 //develop
-public class test {
+public class Main {
     // public static void main1(String[] args) throws IOException {
     //
     //
@@ -49,9 +48,20 @@ public class test {
     // }
 
     public static void main(String[] args) throws IOException {
-        //test();
-        //相似度测试
-        simnet.test();
+        // String path = "/Users/gct/work2/xiaoyou/stuff原始数据_renyuan.xls";
+        // importStaff.test();
+       //searchStaff.test();
+
+        
+        importAtomServices.test();
+        
+        
+        // Test_emoji_replace.test();
+
+        // TestEmotiboChat.chat();
+        // test();
+        // 相似度测试
+        // simnet.test();
     }
 
     public static void test() throws IOException {
@@ -81,7 +91,7 @@ public class test {
         list.add("云端打电话给姚磊挺好");
         list.add("云端打电话姚磊挺好");
         list.add("云端打姚磊电话挺好");
-       
+
         list.add("呼叫下姚磊啊。");
         list.add("呼叫一下姚磊啊。");
         list.add("呼叫,姚磊啊~");
@@ -130,7 +140,7 @@ public class test {
         for (int i = 0, len = list.size(); i < len; i++) {
             String text = list.get(i);
             System.out.println(i + ":");// 输出
-         
+
             predictIntent(text);
         }
         System.out.println("-----------------end");// 输出
@@ -443,10 +453,5 @@ public class test {
         System.out.println(dataStr);
         return jsonRet;
     }
-    
-    
-   
 
 }
-
-

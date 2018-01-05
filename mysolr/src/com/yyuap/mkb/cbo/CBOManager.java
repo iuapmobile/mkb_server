@@ -11,7 +11,7 @@ import java.util.List;
 public class CBOManager {
 
     public Tenant getTenantInfo(String apiKey) throws SQLException {
-        if(apiKey==null || apiKey.equals(""))
+        if (apiKey == null || apiKey.equals(""))
             return null;
         Tenant tenant = null;
 
@@ -60,6 +60,11 @@ public class CBOManager {
                 tenant.setSorl_useFilterQueries(rs.getBoolean("solr_useFilterQueries"));
                 tenant.setBotSkillConfig(rs.getString("botSkillConfig"));
 
+                tenant.setBot_social_chatBot_enabled(rs.getBoolean("bot_social_chatBot_enabled"));
+                tenant.setBot_social_chatBot_v(rs.getInt("bot_social_chatBot_v"));
+                tenant.setBot_kb_simSearch_num(rs.getInt("bot_kb_simSearch_num"));
+                
+                tenant.setBot_api_ia_conf(rs.getString("bot_api_ia_conf"));
             }
 
         } catch (Exception e) {

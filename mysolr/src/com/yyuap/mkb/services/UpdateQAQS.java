@@ -72,11 +72,15 @@ public class UpdateQAQS extends HttpServlet {
         String url = requestParam.getString("url");
 
         String qtype = requestParam.getString("qtype");
-        String ext_scope = requestParam.getString("ext_scope");//可见范围
-        String domain = requestParam.getString("domain");//领域
-        String product = requestParam.getString("product");//产品
-        String subproduct = requestParam.getString("subproduct");//子产品
-
+        String ktype = requestParam.getString("ktype");
+        if (null == ktype || "".equals(ktype)) {
+            ktype = "qa";
+        }
+        String kbid = requestParam.getString("kbid");
+        String ext_scope = requestParam.getString("ext_scope");// 可见范围
+        String domain = requestParam.getString("domain");// 领域
+        String product = requestParam.getString("product");// 产品
+        String subproduct = requestParam.getString("subproduct");// 子产品
 
         if (apiKey == null || "".equals(apiKey)) {
             ResultObjectFactory rof = new ResultObjectFactory();
@@ -87,27 +91,27 @@ public class UpdateQAQS extends HttpServlet {
             return;
 
         }
-        
+
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
             return;
         }
 
-        if(null == url || "".equals(url)){
-       	 if (q != null && !q.equals("") && a != null && !a.equals("")) {
+        if (null == url || "".equals(url)) {
+            if (q != null && !q.equals("") && a != null && !a.equals("")) {
 
             } else {
                 response.getWriter().append("Served at: ").append(request.getContextPath());
                 return;
             }
-       }else{
-       	 if (q != null && !q.equals("") && url != null && !url.equals("")) {
+        } else {
+            if (q != null && !q.equals("") && url != null && !url.equals("")) {
 
             } else {
                 response.getWriter().append("Served at: ").append(request.getContextPath());
                 return;
             }
-       }
+        }
 
         // 1、获取租户信息
         Tenant tenant = null;
@@ -129,16 +133,20 @@ public class UpdateQAQS extends HttpServlet {
         QAManager qam = new QAManager();
         try {
 
+            JSONArray array = qam.queryFieldForTableTenant("qa", tenant);
+            JSONObject json = new JSONObject();
+            if (array != null && array.size() > 0) {
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
+                }
+            }
 
-        	 JSONArray array = qam.queryFieldForTableTenant("qa",tenant);
-        	 JSONObject json = new JSONObject();
-             if(array!=null&&array.size()>0){
-             	for(int i=0;i<array.size();i++){
-             		JSONObject obj = array.getJSONObject(i);
-             		json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
-             	}
-             }
-            String editId = qam.updateQAQS(id, q, a, qs,url,qtype, tenant,ext_scope,domain,product,subproduct,json);
+            JSONObject data = new JSONObject();
+            data.put("ktype", ktype);
+            data.put("kbid", kbid);
+            String editId = qam.updateQAQS(id, q, a, qs, url, qtype, tenant, ext_scope, domain, product, subproduct,
+                    data, json);
 
             if (editId != null && editId.equals("")) {
                 ro.setStatus(0);
@@ -208,22 +216,27 @@ public class UpdateQAQS extends HttpServlet {
 
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
-        
+
         String url = request.getParameter("url");
         param.put("url", url);
 
-        String ext_scope = request.getParameter("ext_scope");//可见范围
+        String ext_scope = request.getParameter("ext_scope");// 可见范围
         param.put("ext_scope", ext_scope);
+
+        String kbid = request.getParameter("kbid");
+        param.put("kbid", kbid);
+        
+        String ktype = request.getParameter("ktype");
+        param.put("ktype", ktype);
 
         String qtype = request.getParameter("qtype");
         param.put("qtype", qtype);
-        String domain = request.getParameter("domain");//领域
+        String domain = request.getParameter("domain");// 领域
         param.put("domain", domain);
-        String product = request.getParameter("product");//产品
+        String product = request.getParameter("product");// 产品
         param.put("product", product);
-        String subproduct = request.getParameter("subproduct");//子产品
+        String subproduct = request.getParameter("subproduct");// 子产品
         param.put("subproduct", subproduct);
-
 
         return param;
     }

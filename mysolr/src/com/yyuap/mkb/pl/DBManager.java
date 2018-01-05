@@ -240,7 +240,7 @@ public class DBManager {
         }
     }
 
-    public JSONObject selectUniqueAnswer(String q, Tenant tenant,String[] tag) {
+    public JSONObject selectUniqueAnswerFromDB(String q, Tenant tenant,String[] tag) {
         // TODO Auto-generated method stub
         JSONObject ret = null;
         DBConfig dbconf = this.getDBConfigByTenant(tenant);
@@ -270,7 +270,7 @@ public class DBManager {
             	}else{
             		sql = "select * from qa where id = ? and ext_scope is null";
             	}
-                list = DbUtil.selectAnswerSimilar(sql, q, dbconf,tag);
+                list = DbUtil.selectAnswerSimilarFromDB(sql, q, dbconf,tag);
             } catch (SQLException e) {
                 System.out.println("selectUniqueAnswer方法异常，取相似问题时，出现异常");
             }
@@ -502,9 +502,11 @@ public class DBManager {
         // 成功插入数据库后开始增加solr索引
         SolrManager solr = new SolrManager(tenant.gettkbcore());
         // 后期改成事务处理
+        //先update数据库
         boolean success = DbUtil.updateQA(Common.UPDATE_QA_SQL, kbqa, dbconf);
         if(success){
         	try {
+        	    //solr更新
 				solr.addQADoc(kbqa);
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block

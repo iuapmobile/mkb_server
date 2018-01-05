@@ -14,7 +14,7 @@ import org.apache.commons.httpclient.HttpException;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
-import com.yyuap.mkb.nlp.BaiAdapter;
+import com.yyuap.mkb.nlp.OpenAPI;
 
 public class simnet {
 
@@ -398,8 +398,8 @@ public class simnet {
     }
 
     public static float similar(String q1, String q2) throws HttpException, IOException {
-        BaiAdapter bai = new BaiAdapter();
-        float score = bai.simnet(q1, q2);
+        //BaiAdapter bai = new BaiAdapter();
+        float score = OpenAPI.simnet(q1, q2);
         return score;
     }
 
