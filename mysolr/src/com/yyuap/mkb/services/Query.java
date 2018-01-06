@@ -194,8 +194,8 @@ public class Query extends HttpServlet {
                                         // value1
                                         // value2 value3 中间空格 隔开
                                         for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
-                                            //System.out.println(entry.getKey() + ":" + entry.getValue());
-                                            MKBLogger.info(entry.getKey() + ":" + entry.getValue());
+                                            MKBLogger.debug("Scene: returnAfterEnd==false, predictIntentRet的Key-Value:"
+                                                    + entry.getKey() + ":" + entry.getValue());
                                             dataStr = dataStr + " " + entry.getValue();
                                         }
                                         dataStr = scenename + dataStr;
@@ -272,8 +272,9 @@ public class Query extends HttpServlet {
                     JSONObject _ret = solrmng.query(requestParam, tenant, id);// 获取查询结果,，一个新的对象
                     ro.set(_ret);// 导致botResponse需要重新赋值
                 } catch (Exception e) {
-                    System.out.println("==========>推荐出错！q=" + q + " tname=" + tenant.gettname() + " apiKey=" + apiKey
-                            + " " + e.toString());
+                    String log = "==========>推荐出错！q=" + q + " tname=" + tenant.gettname() + " apiKey=" + apiKey + " "
+                            + e.toString();
+                    MKBLogger.error(log);
                 }
             }
             if (uniqueQA != null && (!uniqueQA.getString(q).equals("") || !uniqueQA.getString("url").equals(""))) {
@@ -374,13 +375,7 @@ public class Query extends HttpServlet {
                                             if (data.size() > 0) {
                                                 String answer = data.getJSONObject(0).getString("value");
                                                 type = data.getJSONObject(0).getString("type");// 目前取值wei为text和url
-                                                // text =
-                                                // "您是要问我知识库以外的问题？好吧，我想说的是" +
-                                                // text;
-                                                // System.out.println("answer:"
-                                                // +
-                                                // answer);
-                                                // return obj;
+
                                                 text = answer;
                                             }
                                         }

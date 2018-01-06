@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
 import com.yyuap.mkb.services.util.MKBRequestProcessor;
 
@@ -175,7 +176,7 @@ public class UpdateQAQS extends HttpServlet {
                 json.append(line);
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            MKBLogger.error("UpdateQAQS.java readJSON4JSON() Exception: " + e.toString());
         }
         String str = json.toString();
         try {
@@ -225,7 +226,7 @@ public class UpdateQAQS extends HttpServlet {
 
         String kbid = request.getParameter("kbid");
         param.put("kbid", kbid);
-        
+
         String ktype = request.getParameter("ktype");
         param.put("ktype", ktype);
 

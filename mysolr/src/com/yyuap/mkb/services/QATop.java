@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
 import com.yyuap.mkb.services.util.PropertiesUtil;
 
@@ -26,7 +27,7 @@ import com.yyuap.mkb.services.util.PropertiesUtil;
 @WebServlet("/QATop")
 public class QATop extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -74,10 +75,9 @@ public class QATop extends HttpServlet {
         apiKey = requestParam.getString("apiKey");
 
         String top = request.getParameter("top");
-        //tag: "personinside" //内部为personinside 其余为空
+        // tag: "personinside" //内部为personinside 其余为空
         String tag = request.getParameter("tag");
-        
-        
+
         top = requestParam.getString("top");
         int topn = 5;
         try {
@@ -94,12 +94,12 @@ public class QATop extends HttpServlet {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        System.out.println(System.getProperty("user.dir"));
+        MKBLogger.info(System.getProperty("user.dir"));
         QAManager qamgr = new QAManager();
-        JSONArray array = qamgr.topN(topn, tenant,tag);
+        JSONArray array = qamgr.topN(topn, tenant, tag);
 
         ResultObject ro = (new ResultObjectFactory()).create(0);
-        //JSONObject res = ro.getResponse();
+        // JSONObject res = ro.getResponse();
         ro.setDocs(array);
         String result = ro.toString();
         PrintWriter out = response.getWriter();
@@ -119,7 +119,7 @@ public class QATop extends HttpServlet {
                 json.append(line);
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            MKBLogger.error("QATop.java readJSON4JSON() Exception:" + e.toString());
         }
         String str = json.toString();
         try {
@@ -153,9 +153,9 @@ public class QATop extends HttpServlet {
 
         return param;
     }
-    
+
     public static void main(String[] args) {
-    	// 1、获取租户信息
+        // 1、获取租户信息
         Tenant tenant = null;
         CBOManager api = new CBOManager();
         try {
@@ -164,7 +164,7 @@ public class QATop extends HttpServlet {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-    	System.out.println(PropertiesUtil.class.getClassLoader().getResource("jdbc.properties").getPath());
-	}
+        MKBLogger.info(PropertiesUtil.class.getClassLoader().getResource("jdbc.properties").getPath());
+    }
 
 }

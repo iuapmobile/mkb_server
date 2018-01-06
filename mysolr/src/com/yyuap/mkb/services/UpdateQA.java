@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
 import com.yyuap.mkb.services.util.MKBRequestProcessor;
 
@@ -54,8 +55,6 @@ public class UpdateQA extends HttpServlet {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         // 这句话的意思，是告诉servlet用UTF-8转码，而不是用默认的ISO8859
         response.setCharacterEncoding("UTF-8");
-        
-        
 
         String content_type = request.getContentType();
         JSONObject requestParam = new JSONObject();
@@ -68,20 +67,20 @@ public class UpdateQA extends HttpServlet {
         String id = requestParam.getString("id");
         String q = requestParam.getString("q");
         String a = requestParam.getString("a");
-        String istop = requestParam.getString("istop");//是否置顶
+        String istop = requestParam.getString("istop");// 是否置顶
         String[] qs = (String[]) requestParam.get("qs");
-        
+
         String ktype = requestParam.getString("ktype");
         if (null == ktype || "".equals(ktype)) {
             ktype = "qa";
         }
-        
-        String ext_scope = requestParam.getString("tag");//可见范围
-        String domain = requestParam.getString("domain");//领域
-        String product = requestParam.getString("product");//产品
-        String subproduct = requestParam.getString("subproduct");//子产品
-        if(null!=ext_scope && !"personinside".equals(ext_scope)){
-        	ext_scope = null;
+
+        String ext_scope = requestParam.getString("tag");// 可见范围
+        String domain = requestParam.getString("domain");// 领域
+        String product = requestParam.getString("product");// 产品
+        String subproduct = requestParam.getString("subproduct");// 子产品
+        if (null != ext_scope && !"personinside".equals(ext_scope)) {
+            ext_scope = null;
         }
         if (id == null || id.equals("")) {
             response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -116,15 +115,15 @@ public class UpdateQA extends HttpServlet {
         // 2、根据租户调用QAManager
         QAManager qam = new QAManager();
         try {
-        	 JSONArray array = qam.queryFieldForTableTenant("qa",tenant);
-        	 JSONObject json = new JSONObject();
-             if(array!=null&&array.size()>0){
-             	for(int i=0;i<array.size();i++){
-             		JSONObject obj = array.getJSONObject(i);
-             		json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
-             	}
-             }
-            boolean success = qam.updateQA(id, q, a, qs, tenant,istop,ext_scope,domain,product,subproduct,json);
+            JSONArray array = qam.queryFieldForTableTenant("qa", tenant);
+            JSONObject json = new JSONObject();
+            if (array != null && array.size() > 0) {
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    json.put(obj.getString("field_name"), request.getParameter(obj.getString("field_name")));
+                }
+            }
+            boolean success = qam.updateQA(id, q, a, qs, tenant, istop, ext_scope, domain, product, subproduct, json);
             if (success) {
                 ro.setStatus(0);
             }
@@ -137,8 +136,6 @@ public class UpdateQA extends HttpServlet {
         response.getWriter().write(ro.toString());
     }
 
-    
-    
     private JSONObject readJSON4JSON(HttpServletRequest request) {
         JSONObject param = new JSONObject();
         StringBuffer json = new StringBuffer();
@@ -149,7 +146,7 @@ public class UpdateQA extends HttpServlet {
                 json.append(line);
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            MKBLogger.error("UpdateQA.java readJSON4JSON() Exception: " + e.toString());
         }
         String str = json.toString();
         try {
@@ -178,39 +175,38 @@ public class UpdateQA extends HttpServlet {
 
         String id = request.getParameter("id");
         param.put("id", id);
-        
+
         String q = request.getParameter("q");
         param.put("q", q);
-        
+
         String a = request.getParameter("a");
         param.put("a", a);
-        
+
         String[] qs = request.getParameterValues("qs");
         param.put("qs", qs);
-        
+
         String kbid = request.getParameter("kbid");
         param.put("kbid", kbid);
-        
+
         String ktype = request.getParameter("ktype");
         param.put("ktype", ktype);
 
         String qtype = request.getParameter("qtype");
         param.put("qtype", qtype);
-        
+
         String apiKey = request.getParameter("apiKey");
         param.put("apiKey", apiKey);
-        
+
         String tag = request.getParameter("tag");
         param.put("tag", tag);
-        
-        String domain = request.getParameter("domain");//领域
+
+        String domain = request.getParameter("domain");// 领域
         param.put("domain", domain);
-        String product = request.getParameter("product");//产品
+        String product = request.getParameter("product");// 产品
         param.put("product", product);
-        String subproduct = request.getParameter("subproduct");//子产品
+        String subproduct = request.getParameter("subproduct");// 子产品
         param.put("subproduct", subproduct);
-     
-        
+
         return param;
     }
 }

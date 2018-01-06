@@ -36,6 +36,7 @@ import com.yyuap.mkb.cbo.CommonSQL;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.fileUtil.FileCopyUtil;
 import com.yyuap.mkb.fileUtil.XMLParseDataConfig;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.services.util.PropertiesUtil;
@@ -349,7 +350,7 @@ public class CreateTenant extends HttpServlet {
         }
         catch (SQLException e)
         {
-            System.out.println("执行DDL出错"+e);
+            MKBLogger.info("执行DDL出错"+e);
         }
         finally
         {
@@ -367,7 +368,7 @@ public class CreateTenant extends HttpServlet {
     private File getFilePath(HttpServletRequest request){
             String resource = request.getServletContext().getRealPath("/WEB-INF/bot_kb_sql");
             //request.getServletContext().getRealPath("/WEB-INF/mkbsql");
-            System.out.println(resource);
+            MKBLogger.info(resource);
             File file = new File(resource);
             return file;
     }
