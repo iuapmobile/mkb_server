@@ -13,12 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServerException;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
+import com.yyuap.mkb.log.MKBLogger3;
 import com.yyuap.mkb.processor.IntentPredictionManager;
 import com.yyuap.mkb.processor.MKBSessionManager;
 import com.yyuap.mkb.processor.QAManager;
@@ -26,8 +29,9 @@ import com.yyuap.mkb.processor.SolrManager;
 import com.yyuap.mkb.services.util.MKBRequestProcessor;
 import com.yyuap.mkb.services.util.PropertiesUtil;
 import com.yyuap.mkb.services.util.RedisUtil;
-import com.yyuap.mkb.socialChatBot.Emotibot;
+import com.yyuap.mkb.socialChatBot.EmotiBot;
 import com.yyuap.mkb.socialChatBot.MKBHttpClient;
+import com.yyuap.mkb.socialChatBot.TulingBot;
 
 import redis.clients.jedis.Jedis;
 
@@ -37,8 +41,8 @@ import redis.clients.jedis.Jedis;
 @WebServlet("/mkbQuery")
 public class Query extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static final String BOTURL = "http://www.tuling123.com/openapi/api";
-    private static final String BOTAPIKEY = "f08c391260304acc81f8fdb27de44832";// 雪儿
+    private static final String BOTURL_TL = "http://www.tuling123.com/openapi/api";
+    private static final String BOTAPIKEY_del = "f08c391260304acc81f8fdb27de44832";// 雪儿
     // private static final String BOTAPIKEY=
     // "301c3b5d56934e7b9248f7142fbad15d";
 
@@ -57,6 +61,7 @@ public class Query extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         // TODO Auto-generated method stub
         request.setCharacterEncoding("UTF-8");
         // 这句话的意思，是让浏览器用utf8来解析返回的数据
@@ -107,6 +112,10 @@ public class Query extends HttpServlet {
                                                          // //内部为personinside
                                                          // 其余为空
         requestParam.put("tag", tag);
+
+        MKBLogger.info("query request Start! apiKey=" + apiKey);
+        MKBLogger.error("test query error request! apiKey=" + apiKey);
+
         // Step1：获取租户信息
         Tenant tenant = this.getTenantInfo(apiKey);
         // 同义词转化
@@ -185,7 +194,8 @@ public class Query extends HttpServlet {
                                         // value1
                                         // value2 value3 中间空格 隔开
                                         for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
-                                            System.out.println(entry.getKey() + ":" + entry.getValue());
+                                            //System.out.println(entry.getKey() + ":" + entry.getValue());
+                                            MKBLogger.info(entry.getKey() + ":" + entry.getValue());
                                             dataStr = dataStr + " " + entry.getValue();
                                         }
                                         dataStr = scenename + dataStr;
@@ -304,7 +314,31 @@ public class Query extends HttpServlet {
 
                                 if (bot_social_chatBot_v == null || bot_social_chatBot_v.equals("1")) {
                                     if (bot == null || !bot.equalsIgnoreCase("false")) {
-                                        JSONObject jsonTu = this.tubot(tenant.getbotKey(), q, userid);
+                                        // JSONObject jsonTu =
+                                        // this.tubot(this.BOTURL_TL,
+                                        // tenant.getbotKey(), q, userid);
+                                        // jsonTu.put("kbid", "0");//
+                                        // 0表明不在用户业务kb范围之内
+                                        // jsonTu.put("ktype", "qa");// 默认是qa的知识
+                                        // jsonTu.put("dailogid", dialogid);
+                                        //
+                                        // jsonTu.put("bot_social_chatBot_botKey",
+                                        // tenant.getbotKey());
+                                        // jsonTu.put("bot_social_chatBot_enabled",
+                                        // bot_social_chatBot_enabled);
+                                        // jsonTu.put("bot_social_chatBot_v",
+                                        // bot_social_chatBot_v);
+                                        // ro.setBotResponse(jsonTu);
+
+                                        Map<String, String> mapParms = new HashMap<String, String>();
+                                        String tl_url = "http://www.tuling123.com/openapi/api";
+                                        String key = tenant.getbotKey();
+                                        mapParms.put("appid", key);
+                                        mapParms.put("userid", userid);
+                                        mapParms.put("text", q);
+
+                                        TulingBot tl = new TulingBot();
+                                        JSONObject jsonTu = tl.chat(tl_url, mapParms, null);
                                         jsonTu.put("kbid", "0");// 0表明不在用户业务kb范围之内
                                         jsonTu.put("ktype", "qa");// 默认是qa的知识
                                         jsonTu.put("dailogid", dialogid);
@@ -330,7 +364,7 @@ public class Query extends HttpServlet {
                                         JSONObject jsonEMT = new JSONObject();
                                         String text = "这个嘛～你说的我还不能完全理解，不过我会努力的。要不，你换个说法试一试。";
                                         String type = "text";
-                                        Emotibot em = new Emotibot();
+                                        EmotiBot em = new EmotiBot();
                                         String botRes = em.chat(url, mapParms);
 
                                         JSONObject jsonBotRes = JSONObject.parseObject(botRes);
@@ -475,7 +509,7 @@ public class Query extends HttpServlet {
         ro.setBotResponseKV("dailogid", dailogid);
     }
 
-    private JSONObject tubot(String botKey, String q, String botuserid) {
+    private JSONObject tubot(String botURL, String botKey, String q, String botuserid) {
         try {
             // 如果是机器人请求
             MKBHttpClient httpclient = new MKBHttpClient();
@@ -488,7 +522,7 @@ public class Query extends HttpServlet {
             }
             String charset = "utf-8";
 
-            String botRes = httpclient.doPost(BOTURL, createMap, charset);
+            String botRes = httpclient.doPost(botURL, createMap, charset);
 
             JSONObject obj = JSONObject.parseObject(botRes);
 
@@ -498,31 +532,32 @@ public class Query extends HttpServlet {
         }
     }
 
-    private JSONObject emotionBot(String botKey, String q, String botuserid) {
-        try {
-            // 如果是机器人请求
-            MKBHttpClient httpclient = new MKBHttpClient();
-
-            Map<String, String> createMap = new HashMap<String, String>();
-            createMap.put("key", botKey);
-            createMap.put("info", q);
-            if (botuserid != null && !botuserid.equals("")) {
-                createMap.put("userid", botuserid);
-            }
-            String charset = "utf-8";
-
-            String botRes = httpclient.doPost(BOTURL, createMap, charset);
-
-            JSONObject obj = JSONObject.parseObject(botRes);
-            String text = obj.getString("text");
-            // text = "您是要问我知识库以外的问题？好吧，我想说的是" + text;
-            obj.put("text", text);
-            obj.put("kbid", "0");
-            return obj;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
+    // private JSONObject emotionBot(String botKey, String q, String botuserid)
+    // {
+    // try {
+    // // 如果是机器人请求
+    // MKBHttpClient httpclient = new MKBHttpClient();
+    //
+    // Map<String, String> createMap = new HashMap<String, String>();
+    // createMap.put("key", botKey);
+    // createMap.put("info", q);
+    // if (botuserid != null && !botuserid.equals("")) {
+    // createMap.put("userid", botuserid);
+    // }
+    // String charset = "utf-8";
+    //
+    // String botRes = httpclient.doPost(BOTURL, createMap, charset);
+    //
+    // JSONObject obj = JSONObject.parseObject(botRes);
+    // String text = obj.getString("text");
+    // // text = "您是要问我知识库以外的问题？好吧，我想说的是" + text;
+    // obj.put("text", text);
+    // obj.put("kbid", "0");
+    // return obj;
+    // } catch (Exception e) {
+    // throw e;
+    // }
+    // }
 
     private ResultObject setResultObject4TenantNoExist(ResultObject ro, String apiKey, String q) {
         // 没有租户信息

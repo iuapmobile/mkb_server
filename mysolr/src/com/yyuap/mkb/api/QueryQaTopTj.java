@@ -95,7 +95,7 @@ public class QueryQaTopTj extends HttpServlet {
             	Map<String,String> map = qam.queryQaTopTj(topn,istop, tenant);
             	String[] arr = new String[map.size()];
             	String[] dataArr = new String[map.size()];
-                if(map!=null && map.size()>0){
+                if(map.size()>0){
         			int i = 0 ;
         			for (Map.Entry<String, String> entry : map.entrySet()) {
         				arr[i] = entry.getKey();

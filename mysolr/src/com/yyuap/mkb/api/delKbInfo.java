@@ -88,7 +88,7 @@ public class delKbInfo extends HttpServlet {
         
 
         ResultObjectFactory rof = new ResultObjectFactory();
-        ResultObject ro = null;
+        ResultObject ro = rof.create(0);
 
         // 1、获取租户信息
         Tenant tenant = null;

@@ -6,7 +6,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-public class Emotibot {
+public class EmotiBot {
 
     public String chat(String url, Map<String, String> mapParms) {
         String ret = "";

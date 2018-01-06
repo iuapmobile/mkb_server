@@ -27,7 +27,7 @@ import com.yyuap.mkb.services.ResultObjectFactory;
 @WebServlet("/QueryDimensionTj")
 public class QueryDimensionTj extends HttpServlet {
 
-	 /**
+    /**
      * @see HttpServlet#HttpServlet()
      */
     public QueryDimensionTj() {
@@ -58,7 +58,6 @@ public class QueryDimensionTj extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String field = request.getParameter("field");
-       
 
         String apiKey = request.getParameter("apiKey");
 
@@ -82,24 +81,23 @@ public class QueryDimensionTj extends HttpServlet {
         }
 
         try {
-        	QAManager qam = new QAManager();
-        	Map<String,String> map = qam.queryDimensionTj(field, tenant);
-        	String[] arr = new String[map.size()];
-        	String[] dataArr = new String[map.size()];
-            if(map!=null && map.size()>0){
-    			int i = 0 ;
-    			for (Map.Entry<String, String> entry : map.entrySet()) {
-    				arr[i] = entry.getKey();
-    				dataArr[i] = entry.getValue();
-    				i++;
-		        }
+            QAManager qam = new QAManager();
+            Map<String, String> map = qam.queryDimensionTj(field, tenant);
+            String[] arr = new String[map.size()];
+            String[] dataArr = new String[map.size()];
+            if (map.size() > 0) {
+                int i = 0;
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    arr[i] = entry.getKey();
+                    dataArr[i] = entry.getValue();
+                    i++;
+                }
             }
             String arrStr = JSON.toJSONString(arr);
             ro.setResponseKV("xAxis", JSONArray.toJSON(arrStr));
             String dataArrStr = JSON.toJSONString(dataArr);
             ro.setResponseKV("key", JSONArray.toJSON(dataArrStr));
-            
-           
+
         } catch (Exception e) {
             if (e instanceof KBDuplicateSQLException) {
 
@@ -121,6 +119,5 @@ public class QueryDimensionTj extends HttpServlet {
         response.getWriter().write(ro.toString());
 
     }
-    
-    
+
 }
