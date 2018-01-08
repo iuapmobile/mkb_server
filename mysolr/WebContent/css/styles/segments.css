@@ -16,128 +16,130 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-#content #segments .loader {
-	background-position: 0 50%;
-	padding-left: 21px;
+
+#content #segments .loader
+{
+  background-position: 0 50%;
+  padding-left: 21px;
 }
 
-#content #segments .reload {
-	background-image: url( ../../img/ico/arrow-circle.png );
-	background-position: 50% 50%;
-	display: block;
-	height: 30px;
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	width: 30px;
+#content #segments .reload
+{
+  background-image: url( ../../img/ico/arrow-circle.png );
+  background-position: 50% 50%;
+  display: block;
+  height: 30px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px; 
 }
 
-#content #segments .reload.loader {
-	padding-left: 0;
+#content #segments .reload.loader
+{
+  padding-left: 0;
 }
 
-#content #segments .reload span {
-	display: none;
+#content #segments .reload span
+{
+  display: none;
 }
 
-#content #segments #result {
-	width: 77%;
+#content #segments #result
+{   
+  width: 77%;
 }
 
-#content #segments #result #response {
-	margin-left: 25px;
+#content #segments #result #response
+{
+  margin-left: 25px;
 }
 
 #content #segments .segments-holder ul {
-	margin-left: 25px;
+    margin-left: 25px;
 }
-
 #content #segments .segments-holder li {
-	margin-bottom: 2px;
-	position: relative;
-	width: 100%;
+    margin-bottom: 2px;
+    position: relative;
+    width: 100%;
 }
 
 #content #segments .segments-holder li .toolitp {
-	display: none;
-	background: #C8C8C8;
-	position: absolute;
-	z-index: 1000;
-	width: 220px;
-	height: 120px;
-	margin-left: 100%;
-	opacity: .8;
-	padding: 5px;
-	border: 1px solid;
-	border-radius: 5px;
+  display: none;
+    background: #C8C8C8;
+    position: absolute;
+    z-index: 1000;
+    width:220px;
+    height:120px;
+    margin-left: 100%;
+    opacity: .8;
+    padding: 5px;
+    border: 1px solid;
+    border-radius: 5px;
 }
 
 #content #segments .segments-holder li .toolitp .label {
-	float: left;
-	width: 20%;
-	opacity: 1;
+  float: left;
+  width: 20%;  
+  opacity: 1;
 }
 
 #content #segments .segments-holder li:hover .toolitp {
-	display: block;
+  display:block;  
 }
 
-#content #segments .segments-holder li dl, #content #segments .segments-holder li dt
-	{
-	padding-bottom: 1px;
-	padding-top: 1px;
-}
-
-#content #segments .segments-holder li dl {
-	min-width: 1px;
-}
-
+#content #segments .segments-holder li dl, 
 #content #segments .segments-holder li dt {
-	color: #a0a0a0;
-	left: -45px;
-	overflow: hidden;
-	position: absolute;
-	top: 0;
+    padding-bottom: 1px;
+    padding-top: 1px;
 }
-
+#content #segments .segments-holder li dl {
+    min-width: 1px;
+}
+#content #segments .segments-holder li dt {
+    color: #a0a0a0;
+    left: -45px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
 #content #segments .segments-holder li dt div {
-	display: block;
-	padding-right: 4px;
-	text-align: right;
+    display: block;
+    padding-right: 4px;
+    text-align: right;
 }
-
 #content #segments .segments-holder li dd {
-	clear: left;
-	float: left;
-	margin-left: 2px;
-	white-space: nowrap;
-	width: 100%;
+    clear: left;
+    float: left;
+    margin-left: 2px;
+    white-space: nowrap;
+    width: 100%;
 }
 
 #content #segments .segments-holder li dd div.deleted {
-	background-color: #808080;
-	padding-left: 5px;
+    background-color: #808080;    
+    padding-left: 5px;    
 }
 
 #content #segments .segments-holder li dd div.live {
-	background-color: #DDDDDD;
-	float: left;
+  background-color: #DDDDDD;
+  float: left;  
 }
 
 #content #segments .segments-holder li dd div.start {
-	float: left;
-	width: 20%;
+  float: left;
+  width: 20%;
 }
 
 #content #segments .segments-holder li dd div.end {
-	text-align: right;
+  text-align: right;
 }
 
 .merge-candidate {
-	background-color: #FFC9F9 !important;
+  background-color: #FFC9F9 !important;
 }
 
 #content #segments .segments-holder li dd div.w5 {
-	width: 20%;
-	float: left;
+  width: 20%;
+  float: left;
 }

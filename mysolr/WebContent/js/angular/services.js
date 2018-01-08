@@ -47,7 +47,7 @@ solrAdminServices.factory('System',
     "add": {params:{action: "CREATE"}},
     "unload": {params:{action: "UNLOAD", core: "@core"}},
     "rename": {params:{action: "RENAME"}},
-    "swap": {params:{action: "SWAP"}},
+    "swap": {params:{}},
     "reload": {method: "GET", params:{action:"RELOAD", core: "@core"}, headers:{doNotIntercept: "true"}},
     "optimize": {params:{}}
     });
@@ -162,7 +162,7 @@ solrAdminServices.factory('System',
   }])
 .factory('DataImport',
   ['$resource', function($resource) {
-    return $resource('/solr/:core/:name', {core: '@core', name: '@name', indent:'on', wt:'json', _:Date.now()}, {
+    return $resource('/solr/:core/dataimport', {core: '@core', indent:'on', wt:'json', _:Date.now()}, {
       "config": {params: {command: "show-config"}, headers: {doNotIntercept: "true"},
                  transformResponse: function(data) {
                     return {config: data};
@@ -207,8 +207,6 @@ solrAdminServices.factory('System',
       "list": {},
       "get": {method: "GET", interceptor: {
           response: function(config) {return config;}
-      }, transformResponse: function(data) {
-          return data;
       }}
     });
   }])

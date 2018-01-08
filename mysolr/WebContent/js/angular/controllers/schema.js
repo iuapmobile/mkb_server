@@ -85,7 +85,7 @@ solrAdminApp.controller('SchemaController',
                 });
             });
             Config.get({core: $routeParams.core}, function(data) {
-                $scope.isSchemaUpdatable = (data.config.hasOwnProperty('schemaFactory') == false || data.config.schemaFactory.class == "ManagedIndexSchemaFactory");
+                $scope.isSchemaUpdatable = data.config.schemaFactory.class == "ManagedIndexSchemaFactory";
             });
         };
         $scope.refresh();
@@ -476,10 +476,6 @@ var getFieldProperties = function(data, core, is, field) {
     for (var i in display.rows) {
         var row = display.rows[i];
         row.cells = [];
-
-        if (!row.flags) {
-            continue; // Match the special case in the LukeRequestHandler
-        }
 
         for (var j in display.columns) {
             var flag = display.columns[j].key;

@@ -16,158 +16,168 @@ limitations under the License.
 -->
 <div id="dataimport" class="clearfix">
 
-	<div id="frame">
+  <div id="frame">
 
-		<div id="error"></div>
+    <div id="error"></div>
 
-		<div id="current_state">
+    <div id="current_state">
 
-			<p class="last_update">
-				Last Update: <abbr>Unknown</abbr>
-			</p>
-			<div class="info">
+      <p class="last_update">Last Update: <abbr>Unknown</abbr></p>
+      <div class="info">
 
-				<strong></strong>
-				<div class="details">
-					<div class="docs"></div>
-					<div class="dates"></div>
-				</div>
+        <strong></strong>
+        <div class="details">
+          <div class="docs"></div>
+          <div class="dates"></div>
+        </div>
 
-				<button class="abort-import warn">
-					<span data-aborting="Aborting Import">Abort Import</span>
-				</button>
+        <button class="abort-import warn"><span data-aborting="Aborting Import">Abort Import</span></button>
 
-			</div>
+      </div>
+    
+    </div>
 
-		</div>
+    <div class="block hidden" id="raw_output">
 
-		<div class="block hidden" id="raw_output">
+      <h2>
+        <a class="toggle"><span>Raw Status-Output</span></a>
+      </h2>
+        
+      <div class="message-container">
+          <div class="message"></div>
+      </div>
 
-			<h2>
-				<a class="toggle"><span>Raw Status-Output</span></a>
-			</h2>
+      <div class="content">
 
-			<div class="message-container">
-				<div class="message"></div>
-			</div>
+        <div id="raw_output_container"></div>
 
-			<div class="content">
+      </div>
+    
+    </div>
 
-				<div id="raw_output_container"></div>
+    <div class="block hidden" id="config">
 
-			</div>
+      <h2 class="clearfix">
+        <a class="toggle"><span>Configuration</span></a>
+        <a class="r reload_config" title="Reload Configuration">Reload</a>
+        <a class="r debug_mode">Debug-Mode</a>
+      </h2>
+        
+      <div class="message-container">
+          <div class="message"></div>
+      </div>
 
-		</div>
+      <div class="content">
 
-		<div class="block hidden" id="config">
+        <div id="dataimport_config">
 
-			<h2 class="clearfix">
-				<a class="toggle"><span>Configuration</span></a> <a
-					class="r reload_config" title="Reload Configuration">Reload</a> <a
-					class="r debug_mode">Debug-Mode</a>
-			</h2>
+          <div class="formatted">
 
-			<div class="message-container">
-				<div class="message"></div>
-			</div>
+            <div class="loader">Loading ...</div>
+          
+          </div>
 
-			<div class="content">
+          <div class="editable">
 
-				<div id="dataimport_config">
+            <textarea></textarea>
+          
+          </div>
 
-					<div class="formatted">
+        </div>
 
-						<div class="loader">Loading ...</div>
+      </div>
+    
+    </div>
 
-					</div>
+    <div class="block hidden" id="debug_response">
 
-					<div class="editable">
+      <h2>
+        <a class="toggle"><span>Raw Debug-Response</span></a>
+      </h2>
+        
+      <div class="message-container">
+          <div class="message"></div>
+      </div>
 
-						<textarea></textarea>
+      <div class="content">
 
-					</div>
+        <em>No Request executed</em>
 
-				</div>
+      </div>
+    
+    </div>
+  
+  </div>
 
-			</div>
+  <div id="form">
 
-		</div>
+    <div id="navigation">
 
-		<div class="block hidden" id="debug_response">
+      <ul></ul>
 
-			<h2>
-				<a class="toggle"><span>Raw Debug-Response</span></a>
-			</h2>
+    </div>
 
-			<div class="message-container">
-				<div class="message"></div>
-			</div>
+    <form action="#" method="get">
 
-			<div class="content">
+      <label for="command">
+        <a rel="help">Command</a>
+      </label>
+      <select name="command" id="command">
+        <option>full-import</option>
+        <option>delta-import</option>
+      </select>
 
-				<em>No Request executed</em>
+      <label for="verbose" class="checkbox">
+        <input type="checkbox" name="verbose" id="verbose" value="true">
+        <a rel="help">Verbose</a>
+      </label>
 
-			</div>
+      <label for="clean" class="checkbox">
+        <input type="checkbox" name="clean" id="clean" value="true" checked="checked">
+        <a rel="help">Clean</a>
+      </label>
 
-		</div>
+      <label for="commit" class="checkbox">
+        <input type="checkbox" name="commit" id="commit" value="true" checked="checked">
+        <a rel="help">Commit</a>
+      </label>
 
-	</div>
+      <label for="optimize" class="checkbox">
+        <input type="checkbox" name="optimize" id="optimize" value="true">
+        <a rel="help">Optimize</a>
+      </label>
 
-	<div id="form">
+      <label for="debug" class="checkbox">
+        <input type="checkbox" name="debug" id="debug" value="true">
+        <a rel="help">Debug</a>
+      </label>
 
-		<div id="navigation">
+      <label for="entity">
+        <a rel="help">Entity</a>
+      </label>
+      <select id="entity"></select>
 
-			<ul></ul>
+      <label for="start">
+        <a rel="help">Start</a>,
+        <a rel="help">Rows</a>
+      </label>
+      <div class="clearfix">
+        <input type="text" id="start" placeholder="0">
+        <input type="text" id="rows" placeholder="10">
+      </div>
 
-		</div>
+      <label for="custom_parameters">
+        <a rel="help">Custom Parameters</a>
+      </label>
+      <input type="text" id="custom_parameters" value="" placeholder="key1=val1&amp;key2=val2">
 
-		<form action="#" method="get">
+      <button class="execute" type="submit"><span data-debugmode="Execute with this Configuration →">Execute</span></button>
+      <button class="refresh-status"><span>Refresh Status</span></button>
+    
+    </form>
 
-			<label for="command"> <a rel="help">Command</a>
-			</label> <select name="command" id="command">
-				<option>full-import</option>
-				<option>delta-import</option>
-			</select> <label for="verbose" class="checkbox"> <input
-				type="checkbox" name="verbose" id="verbose" value="true"> <a
-				rel="help">Verbose</a>
-			</label> <label for="clean" class="checkbox"> <input type="checkbox"
-				name="clean" id="clean" value="true" checked="checked"> <a
-				rel="help">Clean</a>
-			</label> <label for="commit" class="checkbox"> <input type="checkbox"
-				name="commit" id="commit" value="true" checked="checked"> <a
-				rel="help">Commit</a>
-			</label> <label for="optimize" class="checkbox"> <input
-				type="checkbox" name="optimize" id="optimize" value="true">
-				<a rel="help">Optimize</a>
-			</label> <label for="debug" class="checkbox"> <input type="checkbox"
-				name="debug" id="debug" value="true"> <a rel="help">Debug</a>
-			</label> <label for="entity"> <a rel="help">Entity</a>
-			</label> <select id="entity"></select> <label for="start"> <a
-				rel="help">Start</a>, <a rel="help">Rows</a>
-			</label>
-			<div class="clearfix">
-				<input type="text" id="start" placeholder="0"> <input
-					type="text" id="rows" placeholder="10">
-			</div>
-
-			<label for="custom_parameters"> <a rel="help">Custom
-					Parameters</a>
-			</label> <input type="text" id="custom_parameters" value=""
-				placeholder="key1=val1&amp;key2=val2">
-
-			<button class="execute" type="submit">
-				<span data-debugmode="Execute with this Configuration →">Execute</span>
-			</button>
-			<button class="refresh-status">
-				<span>Refresh Status</span>
-			</button>
-
-		</form>
-
-		<p id="auto-refresh-status">
-			<a>Auto-Refresh Status</a>
-		</p>
-
-	</div>
+    <p id="auto-refresh-status"><a>Auto-Refresh Status</a></p>
+  
+  </div>
 
 </div>

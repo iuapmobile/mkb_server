@@ -111,11 +111,8 @@ solrAdminApp.controller('CollectionsController',
       }
 
       $scope.createAlias = function() {
-        var collections = [];
-        for (var i in $scope.aliasCollections) {
-          collections.push($scope.aliasCollections[i].name);
-        }
-        Collections.createAlias({name: $scope.aliasToCreate, collections: collections.join(",")}, function(data) {
+        var collections = $scope.aliasCollections.join(",");
+        Collections.createAlias({name: $scope.aliasToCreate, collections: collections}, function(data) {
           $scope.hideAll();
         });
       }

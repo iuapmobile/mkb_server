@@ -16,124 +16,113 @@ limitations under the License.
 -->
 <div id="analysis">
 
-	<div class="block analysis-error" id="analysis-handler-missing"
-		ng-show="isHandlerMissing">
-		<div class="head">
-			This Functionality requires the
-			<code>/analysis/field</code>
-			Handler to be registered and active!
-		</div>
-	</div>
+  <div class="block analysis-error" id="analysis-handler-missing" ng-show="isHandlerMissing">
+    <div class="head">This Functionality requires the <code>/analysis/field</code> Handler to be registered and active!</div>
+  </div>
 
-	<div class="block analysis-error" id="analysis-error"
-		ng-show="analysisError">
-		<div class="body">{{analysisError}}</div>
-	</div>
+  <div class="block analysis-error" id="analysis-error" ng-show="analysisError">
+    <div class="body">{{analysisError}}</div>
+  </div>
 
-	<div id="analysis-holder">
+  <div id="analysis-holder">
 
-		<div id="field-analysis">
+    <div id="field-analysis">
 
-			<form method="get">
+      <form method="get">
 
-				<ul class="clearfix">
+        <ul class="clearfix">
 
-					<li class="index"><label for="analysis_fieldvalue_index">Field
-							Value (Index)</label> <textarea name="analysis.fieldvalue"
-							id="analysis_fieldvalue_index" ng-model="indexText"></textarea></li>
+          <li class="index">
 
-					<li class="query"><label for="analysis_fieldvalue_query">Field
-							Value (Query)</label> <textarea name="analysis.query"
-							id="analysis_fieldvalue_query" ng-model="queryText"></textarea></li>
+            <label for="analysis_fieldvalue_index">Field Value (Index)</label>
+            <textarea name="analysis.fieldvalue" id="analysis_fieldvalue_index" ng-model="indexText"></textarea>
 
-					<li class="settings-holder clearfix">
-						<div class="settings clearfix">
-							<label for="type_or_name">Analyse Fieldname / FieldType:</label>
-							<select style="width: 130px" chosen
-								ng-change="changeFieldOrType()" id="type_or_name"
-								ng-model="fieldOrType"
-								ng-options="f.value as f.label group by f.group for f in fieldsAndTypes"></select>
+          </li>
 
-							<a id="tor_schema"
-								ng-href="#/{{core}}/schema?{{schemaBrowserUrl}}"><span>Schema
-									Browser</span>&nbsp;</a>
+          <li class="query">
 
-							<div class="buttons clearfix">
+            <label for="analysis_fieldvalue_query">Field Value (Query)</label>
+            <textarea name="analysis.query" id="analysis_fieldvalue_query" ng-model="queryText"></textarea>
 
-								<button type="submit" ng-click="updateQueryString()">
-									<span>Analyse Values</span>
-								</button>
+          </li>
 
-								<div class="verbose_output" ng-class="{active:verbose}">
-									<a ng-click="toggleVerbose()">Verbose Output</a>
-								</div>
+          <li class="settings-holder clearfix">
+            <div class="settings clearfix">
+              <label for="type_or_name">Analyse Fieldname / FieldType:</label>
+              <select style="width:130px" chosen ng-change="changeFieldOrType()" id="type_or_name" ng-model="fieldOrType" ng-options="f.value as f.label group by f.group for f in fieldsAndTypes"></select>
 
-							</div>
+              <a id="tor_schema" ng-href="#/{{core}}/schema?{{schemaBrowserUrl}}"><span>Schema Browser</span>&nbsp;</a>
 
-						</div>
-					</li>
+              <div class="buttons clearfix">
 
-				</ul>
+                <button type="submit" ng-click="updateQueryString()"><span>Analyse Values</span></button>
 
-			</form>
+                <div class="verbose_output" ng-class="{active:verbose}">
+                  <a ng-click="toggleVerbose()">Verbose Output</a>
+                </div>
 
-		</div>
+              </div>
 
-		<div id="analysis-result" class="clearfix verbose_output">
-			<div ng-class="key" ng-repeat="(key, type) in result">
-				<table border="0" cellspacing="0" cellpadding="0">
-					<tbody ng-repeat="component in type">
-						<tr class="step">
-							<td class="part analyzer">
-								<div>
-									<abbr title="{{component.name}}">{{component.short}}</abbr>
-								</div>
-							</td>
+            </div>
+          </li>
 
-							<td class="part legend" ng-show="verbose">
-								<div class="holder">
-									<table border="0" cellspacing="0" cellpadding="0">
-										<tr>
-											<td>
-												<table border="0" cellspacing="0" cellpadding="0">
-													<tr ng-repeat="caption in component.captions"
-														class="{{generate_class_name( short_key )}}">
-														<td>{{ caption }}</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-									</table>
-								</div>
-							</td>
-							<td class="part data" ng-class="{spacer:token.blank}" colspan="1"
-								ng-repeat="token in component.tokens track by token.index">
-								<div class="holder" ng-hide="token.blank">
-									<table border="0" cellspacing="0" cellpadding="0">
-										<tbody>
-											<tr class="details">
-												<td class="details">
-													<table border="0" cellspacing="0" cellpadding="0">
-														<tbody>
-															<tr class="{{value.name}}"
-																ng-repeat="value in token.keys"
-																ng-show="verbose || value.name=='text'">
-																<td>{{value.value}}</td>
-															</tr>
-														</tbody>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div class="holder" ng-show="token.blank">&nbsp;</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+        </ul>
+
+      </form>
+
+    </div>
+
+    <div id="analysis-result" class="clearfix verbose_output">
+      <div ng-class="key" ng-repeat="(key, type) in result">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tbody ng-repeat="component in type">
+            <tr class="step">
+              <td class="part analyzer">
+                <div>
+                  <abbr title="{{component.name}}">{{component.short}}</abbr>
+                </div>
+              </td>
+
+              <td class="part legend" ng-show="verbose">
+                <div class="holder">
+                  <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td>
+                        <table border="0" cellspacing="0" cellpadding="0">
+                          <tr ng-repeat="caption in component.captions" class="{{generate_class_name( short_key )}}">
+                            <td>{{ caption }}</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+              <td class="part data" ng-class="{spacer:token.blank}" colspan="1" ng-repeat="token in component.tokens track by token.index">
+                <div class="holder" ng-hide="token.blank">
+                  <table border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr class="details">
+                        <td class="details">
+                          <table border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                              <tr class="{{value.name}}" ng-repeat="value in token.keys" ng-show="verbose || value.name=='text'">
+                                <td>{{value.value}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="holder" ng-show="token.blank">&nbsp;</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 </div>

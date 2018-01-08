@@ -14,16 +14,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<div id="java-properties">
-	<ul>
-		<li ng-class="{odd:$odd}"
-			ng-repeat="prop in props | orderObjectBy:'name'">
-			<dl class="clearfix">
-				<dt ng-bind-html="prop.name | unsafe"></dt>
-				<dd ng-class="{odd:$odd, multi:props.length&gt;1}"
-					ng-repeat="value in prop.values">{{value.value}}</dd>
-			</dl>
-		</li>
-	</ul>
-</div>
+    <div id="java-properties">
+      <ul>
+        <li ng-class="{odd:$odd}" ng-repeat="prop in props | orderObjectBy:'name'">
+          <dl class="clearfix">
+            <dt ng-bind-html="prop.name | unsafe"></dt>
+            <dd ng-class="{odd:$odd, multi:props.length&gt;1}" ng-repeat="value in prop.values">{{value.value}}</dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
 

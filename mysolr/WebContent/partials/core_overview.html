@@ -16,232 +16,212 @@ limitations under the License.
 -->
 <div id="dashboard">
 
-	<div class="clearfix">
+  <div class="clearfix">
 
-		<div class="block fieldlist" id="statistics"
-			ng-class="{disabled: statisticsDisabled}">
+    <div class="block fieldlist" id="statistics" ng-class="{disabled: statisticsDisabled}">
 
-			<h2>
-				<span>Statistics</span>
-			</h2>
+      <h2><span>Statistics</span></h2>
 
-			<div class="message-container" ng-show="statsMessage">
-				<div class="message">{{statsMessage}}</div>
-			</div>
+      <div class="message-container" ng-show="statsMessage">
+        <div class="message">{{statsMessage}}</div>
+      </div>
 
-			<div class="content">
+      <div class="content">
 
-				<dl>
+        <dl>
 
-					<dt>Last Modified:</dt>
-					<dd class="value">{{index.lastModified | timeago}}</dd>
+          <dt>Last Modified:</dt>
+            <dd class="value">{{index.lastModified | timeago}}</dd>
 
-					<dt class="index_num-docs">Num Docs:</dt>
-					<dd class="value">{{index.numDocs}}</dd>
+          <dt class="index_num-docs">Num Docs:</dt>
+            <dd class="value">{{index.numDocs}}</dd>
 
-					<dt class="index_max-doc">Max Doc:</dt>
-					<dd class="index_max-doc value">{{index.maxDoc}}</dd>
+          <dt class="index_max-doc">Max Doc:</dt>
+            <dd class="index_max-doc value">{{index.maxDoc}}</dd>
 
-					<dt class="index_heap-usage-bytes">Heap Memory Usage:</dt>
-					<dd class="index_heap-usage-bytes value">{{index.indexHeapUsageBytes}}</dd>
+          <dt class="index_heap-usage-bytes">Heap Memory Usage:</dt>
+            <dd class="index_heap-usage-bytes value">{{index.indexHeapUsageBytes}}</dd>
 
-					<dt class="index_deleted-docs">Deleted Docs:</dt>
-					<dd class="index_deleted-docs value">{{index.deletedDocs}}</dd>
+          <dt class="index_deleted-docs">Deleted Docs:</dt>
+            <dd class="index_deleted-docs value">{{index.deletedDocs}}</dd>
 
-					<dt class="index_version">Version:</dt>
-					<dd class="index_version value">{{index.version}}</dd>
+          <dt class="index_version">Version:</dt>
+            <dd class="index_version value">{{index.version}}</dd>
 
-					<dt class="index_segmentCount">Segment Count:</dt>
-					<dd class="index_segmentCount value">{{index.segmentCount}}</dd>
+          <dt class="index_segmentCount">Segment Count:</dt>
+            <dd class="index_segmentCount value">{{index.segmentCount}}</dd>
 
-					<dt class="index_optimized">Optimized:</dt>
-					<dd class="index_optimized ico value"
-						ng-class="index.hasDeletions ? 'ico-0' : 'ico-1'">
-						<span></span> <a ng-click="optimizeIndex()"
-							ng-show="index.hasDeletions">optimize now</a>
-					</dd>
+          <dt class="index_optimized">Optimized:</dt>
+            <dd class="index_optimized ico value" ng-class="index.hasDeletions ? 'ico-0' : 'ico-1'"><span></span>
+            <a ng-click="optimizeIndex()" ng-show="index.hasDeletions">optimize now</a></dd>
 
-					<dt class="index_current">Current:</dt>
-					<dd class="ico" ng-class="index.current ?'ico-1' : 'ico-0'">
-						<span></span>
-					</dd>
+          <dt class="index_current">Current:</dt>
+            <dd class="ico" ng-class="index.current ?'ico-1' : 'ico-0'"><span></span></dd>
 
-				</dl>
+        </dl>
 
-			</div>
-		</div>
+      </div>
+    </div>
 
-		<div class="block fieldlist" id="instance">
+    <div class="block fieldlist" id="instance">
 
-			<h2>
-				<span>Instance</span>
-			</h2>
+      <h2><span>Instance</span></h2>
 
-			<div class="message-container" ng-show="indexMessage">
-				<div class="message">{{indexMessage}}</div>
-			</div>
+      <div class="message-container" ng-show="indexMessage">
+        <div class="message">{{indexMessage}}</div>
+      </div>
 
-			<div class="content">
+      <div class="content">
 
-				<dl>
+        <dl>
 
-					<dt>
-						<abbr title="Current Working Directory">CWD</abbr>:
-					</dt>
-					<dd class="value">{{ core.directory.cwd }}</dd>
+          <dt><abbr title="Current Working Directory">CWD</abbr>:</dt>
+            <dd class="value">{{ core.directory.cwd }}</dd>
 
-					<dt>Instance:</dt>
-					<dd class="value">{{ core.directory.instance }}</dd>
+          <dt>Instance:</dt>
+            <dd class="value">{{ core.directory.instance }}</dd>
 
-					<dt>Data:</dt>
-					<dd class="value">{{ core.directory.data }}</dd>
+          <dt>Data:</dt>
+            <dd class="value">{{ core.directory.data }}</dd>
 
-					<dt>Index:</dt>
-					<dd class="value">{{ core.directory.index }}</dd>
+          <dt>Index:</dt>
+            <dd class="value">{{ core.directory.index }}</dd>
 
-					<dt>Impl:</dt>
-					<dd class="value">{{ core.directory.dirimpl }}</dd>
+          <dt>Impl:</dt>
+            <dd class="value">{{ core.directory.dirimpl }}</dd>
 
-				</dl>
+        </dl>
 
-			</div>
-		</div>
+      </div>
+    </div>
 
-	</div>
-	<div class="clearfix">
+  </div>
+  <div class="clearfix">
 
-		<div class="block" id="replication">
+    <div class="block" id="replication">
 
-			<h2>
-				<span class="is-replicating"> Replication <span
-					ng-show="isSlave"> (Slave)</span> <span ng-show="isMaster">
-						(Master)</span>
-				</span>
-			</h2>
+      <h2>
+        <span class="is-replicating">
+          Replication
+          <span ng-show="isSlave"> (Slave)</span>
+          <span ng-show="isMaster"> (Master)</span>
+        </span>
+      </h2>
 
-			<div class="message-container" ng-show="replicationMessage">
-				<div class="message">{{replicationMessage}}</div>
-			</div>
+      <div class="message-container" ng-show="replicationMessage">
+        <div class="message">{{replicationMessage}}</div>
+      </div>
 
-			<div class="content clearfix" id="details">
+      <div class="content clearfix" id="details">
 
-				<table border="0" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0">
 
-					<thead>
+          <thead>
 
-						<tr>
+            <tr>
 
-							<td><span>Index</span></td>
-							<th>Version</th>
-							<th><abbr title="Generation">Gen</abbr></th>
-							<th>Size</th>
+              <td><span>Index</span></td>
+              <th>Version</th>
+              <th><abbr title="Generation">Gen</abbr></th>
+              <th>Size</th>
 
-						</tr>
+            </tr>
 
-					</thead>
-					<tbody>
+          </thead>
+          <tbody>
 
-						<tr class="masterSearch" ng-show="isMaster">
+            <tr class="masterSearch" ng-show="isMaster">
 
-							<th>Master (Searching)</th>
-							<td class="version"><div>{{replication.indexVersion}}</div></td>
-							<td class="generation"><div>{{replication.generation}}</div></td>
-							<td class="size"><div>{{replication.indexSize || '-'}}</div></td>
+              <th>Master (Searching)</th>
+              <td class="version"><div>{{replication.indexVersion}}</div></td>
+              <td class="generation"><div>{{replication.generation}}</div></td>
+              <td class="size"><div>{{replication.indexSize || '-'}}</div></td>
 
-						</tr>
+            </tr>
 
-						<tr class="master" ng-show="isMaster">
+            <tr class="master" ng-show="isMaster">
 
-							<th>Master (Replicable)</th>
-							<td class="version"><div>{{replication.master.replicableVersion
-									|| '-'}}</div></td>
-							<td class="generation"><div>{{replication.master.replicableGeneration
-									|| '-'}}</div></td>
-							<td class="size"><div>-</div></td>
+              <th>Master (Replicable)</th>
+              <td class="version"><div>{{replication.master.replicableVersion || '-'}}</div></td>
+              <td class="generation"><div>{{replication.master.replicableGeneration || '-'}}</div></td>
+              <td class="size"><div>-</div></td>
 
-						</tr>
+            </tr>
 
-						<tr class="master" ng-show="isSlave">
+            <tr class="master" ng-show="isSlave">
 
-							<th>Master (Replicable)</th>
-							<td class="version"><div>{{replication.master.replicableVersion
-									|| '-'}}</div></td>
-							<td class="generation"><div>{{replication.master.replicableGeneration
-									|| '-'}}</div></td>
-							<td class="size"><div>-</div></td>
+              <th>Master (Replicable)</th>
+              <td class="version"><div>{{replication.master.replicableVersion || '-'}}</div></td>
+              <td class="generation"><div>{{replication.master.replicableGeneration || '-'}}</div></td>
+              <td class="size"><div>-</div></td>
 
-						</tr>
+            </tr>
 
-						<tr class="masterSearch" ng-show="isSlave">
+            <tr class="masterSearch" ng-show="isSlave">
 
-							<th>Master (Searching)</th>
-							<td class="version"><div>{{replication.slave.masterDetails.indexVersion}}</div></td>
-							<td class="generation"><div>{{replication.slave.masterDetails.generation}}</div></td>
-							<td class="size"><div>{{replication.slave.masterDetails.indexSize
-									|| '-'}}</div></td>
+              <th>Master (Searching)</th>
+              <td class="version"><div>{{replication.slave.masterDetails.indexVersion}}</div></td>
+              <td class="generation"><div>{{replication.slave.masterDetails.generation}}</div></td>
+              <td class="size"><div>{{replication.slave.masterDetails.indexSize || '-'}}</div></td>
 
-						</tr>
+            </tr>
 
-						<tr class="slave slaveOnly" ng-show="isSlave">
+            <tr class="slave slaveOnly" ng-show="isSlave">
 
-							<th>Slave (Searching)</th>
-							<td class="version"><div>{{replication.indexVersion}}</div></td>
-							<td class="generation"><div>{{replication.generation}}</div></td>
-							<td class="size"><div>{{replication.indexSize || '-'}}</div></td>
+              <th>Slave (Searching)</th>
+              <td class="version"><div>{{replication.indexVersion}}</div></td>
+              <td class="generation"><div>{{replication.generation}}</div></td>
+              <td class="size"><div>{{replication.indexSize || '-'}}</div></td>
 
-						</tr>
-					</tbody>
+            </tr>
+          </tbody>
 
-				</table>
+        </table>
 
-			</div>
-		</div>
+      </div>
+    </div>
 
-		<div class="block fieldlist" id="healthcheck"
-			ng-class="{disabled: healthcheckMessage}">
+    <div class="block fieldlist" id="healthcheck" ng-class="{disabled: healthcheckMessage}">
 
-			<h2>
-				<span>Healthcheck</span>
-			</h2>
+      <h2><span>Healthcheck</span></h2>
 
-			<div class="message-container" ng-show="healthcheckMessage">
-				<div class="message">{{healthcheckMessage}}</div>
-			</div>
+      <div class="message-container" ng-show="healthcheckMessage">
+        <div class="message">{{healthcheckMessage}}</div>
+      </div>
 
-			<div class="content" ng-show="!healthcheckMessage">
-				<dl>
+      <div class="content" ng-show="!healthcheckMessage">
+        <dl>
 
-					<dt class="status">Status:</dt>
-					<dd class="status value ico ico-1" ng-show="healthcheckStatus">
-						<button class="healthcheck-status enabled">Healthcheck
-							Status</button>
-					</dd>
-					<dd class="status value ico ico-0" ng-show="!healthcheckStatus">
-						<button class="healthcheck-status">enable ping</button>
-					</dd>
-				</dl>
-			</div>
+          <dt class="status">Status:</dt>
+          <dd class="status value ico ico-1" ng-show="healthcheckStatus">
+            <button class="healthcheck-status enabled">Healthcheck Status</button>
+          </dd>
+          <dd class="status value ico ico-0" ng-show="!healthcheckStatus">
+            <button class="healthcheck-status">enable ping</button>
+          </dd>
+        </dl>
+      </div>
 
-		</div>
+    </div>
 
-	</div>
-	<div class="clearfix">
+  </div>
+  <div class="clearfix">
 
-		<div class="block" id="admin-extra">
+    <div class="block" id="admin-extra">
 
-			<h2>
-				<span>Admin Extra</span>
-			</h2>
+      <h2><span>Admin Extra</span></h2>
 
-			<div class="message-container">
-				<div class="message"></div>
-			</div>
+      <div class="message-container">
+        <div class="message"></div>
+      </div>
 
-			<div class="content"></div>
+      <div class="content">
 
-		</div>
+      </div>
 
-	</div>
+    </div>
+
+  </div>
 
 
 </div>

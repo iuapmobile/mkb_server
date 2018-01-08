@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2017/2/14.
  */
+
 function getChatHistory() {
     //用户聊天数据
     var chatData = {};
@@ -44,8 +45,22 @@ function renderChatHistory() {
 }
 
 //欢迎语
-function sayhello() {
-    var $li = $('<li class="left-item"> <img src="../../image/common/robotl.png" alt=""  onclick="goRobotDetail()"/> <div class="chat-item-text ">您好，我是HR小助手雪儿，有什么疑难问题都可以问我</div> </li>');
+function sayhello(id) {
+    var _hello = window.__robotConfig.yyuap_sayhello;
+    var _robotIcon = window.__robotConfig.yyuap_robotIcon;
+
+    var $li = $('<li class="left-item"> <img src="'+_robotIcon+'" alt=""  onclick="goRobotDetail()"/> <div class="chat-item-text ">'+_hello+'</div> </li>');
+    if(id){
+        //根据id获取描述
+        var val = "";
+        for(var i=0, len=public_curAllData.length;i<len;i++){
+            if(public_curAllData[i].id == id){
+                val = public_curAllData[i].descript;
+                break;
+            }
+        }
+        $li = $('<li class="left-item"> <img src="'+_robotIcon+'" alt=""  onclick="goRobotDetail()"/> <div class="chat-item-text ">'+ val +'</div> </li>');
+    }
     $('#chat-thread').append($li);
     var top = $('#convo').height()
     $('#content').animate({
@@ -73,6 +88,7 @@ function init() {
 };
 //创建用户问题
 function createUserTalk(text) {
+	/*
 	var _uinfo = summer.getStorage('userinfo');
     var headerPath = _uinfo.useravator ? _uinfo.useravator : {};
     if (typeof  headerPath == 'object') {
@@ -83,6 +99,9 @@ function createUserTalk(text) {
         var $li = $('<li class="right-item"> <img src="' + headerPath + '" alt=""/> <div class="chat-item-text">' + text + '</div> </li>');
 
     }
+    */
+   var headerPath = "../../img/icon.png"
+    var $li = $('<li class="right-item"> <img src="' + headerPath + '" alt=""/> <div class="chat-item-text">' + text + '</div> </li>');
     $('#chat-thread').append($li);
     var top = $('#convo').height();
     $('#content').animate({
@@ -91,12 +110,13 @@ function createUserTalk(text) {
 }
 //本地存储用户问题
 function storageUserTalk(text) {
+/*
     var userinfo = summer.getStorage("userinfo");
     //人员id
     var staffID = userinfo.staffid;
     //租户id
     var tenantID = userinfo.tenantid;
-
+*/
     var chatItem = {
         role: '1',//0是机器人，1是用户
         chat: {//文字类
@@ -126,27 +146,88 @@ function storageUserTalk(text) {
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var __buserid = (new Date()).valueOf();//实际开发是是用户的唯一标识
+console.log(__buserid)
+
+window.public_curAllData = [];
 //调用数据请求接口
 function getRobotResponse(text) {
-    var $li = $('<li class="left-item"> <img src="../../image/common/robotl.png" alt="" onclick="goRobotDetail()"/> <div class="chat-item-text">正在输入...</div> </li>')
+
+
+
+
+    var $li = $('<li class="left-item"> <img src="'+window.__robotConfig.yyuap_robotIcon+'" alt="" onclick="goRobotDetail()"/> <div class="chat-item-text">正在输入...</div> </li>')
     $('#chat-thread').append($li);
     var top = $('#convo').height();
     $('#content').animate({
         scrollTop: top
     }, 300);
-    ajaxRequest('/robot/ask', "get", "application/x-www-form-urlencoded", {
-        info: text,
-        msgtype: "text"
-    }, function (data) {
-        console.log(data);
-        storageRobotResponse(data);
-        renderRobotResponse(data, $li);
-    })
+	
+
+    var selfRet = SelfProcesser.process(text)
+    if(selfRet){
+       
+        renderRobotResponse(selfRet, $li);
+        return;
+    }
 
 
+
+    var apiKey = window.__robotConfig.yyuap_apiKey;//每一个租户都有唯一的apiKey
+    var _q = !text ? "*:*" : text;
+    $.ajax({
+		type : "post",
+        //contentType: "application/json",
+		dataType : "json",
+		//url2 : "http://172.27.35.3:8080/solr/mycore1/select",
+		url : KBCONFIG.MKBURL + "/mkb/s",
+		data : {
+			q : _q,
+            apiKey : apiKey,
+            buserid: __buserid
+		},
+		success : function(data) {
+            debugger;
+			public_curAllData = public_curAllData.concat(data.response.docs);
+			renderRobotResponse(data, $li);
+
+		},
+		error : function(res) {
+            debugger;
+			var data = data_demo;
+			renderRobotResponse(data, $li);
+		}
+	});
 }
+
 //渲染机器人单条回答
 function renderRobotResponse(data, $li) {
+    //debugger;
+	commonRenderRobot(data.response, $("#multiSelectTmpl"), $li);
+    
+	return;
     if (data.code == 100000) {
         $li.find('.chat-item-text').html(formatText(data.text));
         var top = $('#convo').height()
@@ -205,20 +286,28 @@ function storageRobotResponse(data) {
 //点击常用问题
 function commonQuestion(text) {
     createUserTalk(text);
-    storageUserTalk(text);
+    //storageUserTalk(text);
     getRobotResponse(text);
 }
 //点击回答中的链接
-function clickResponseUrl(url) {
-    var url = url.replace(/="" /g, '//');
+function clickResponseUrl(url,descript) {
+   /* var url = url.replace(/="" /g, '//');
+    var hti = title.substring(0,5);
     console.log(url);
     summer.openWin({
         id: 'responsePage',
         url: 'html/app_robot/responsePage.html',
         pageParam: {
-            frameUrl: url
+            frameUrl: url,
+            title : hti
         }
-    })
+    })*/
+    if(url && url != 'undefined')
+        window.open(url);
+    else{
+        sayhello(descript);
+    }
+
 }
 $(function () {
     //切换输入和语音方式
@@ -326,11 +415,16 @@ function showmore(obj) {
 function sendOut(dataval) {
     var chatText = dataval;
     if (chatText == '') {
+    	layer.open({
+            content: '请输入您的问题',
+            skin: 'msg',
+            time: 1 //1秒后自动关闭
+        });
         jqAlert('请输入您的问题！');
         return;
     } else {
         createUserTalk(chatText);
-        storageUserTalk(chatText);
+       // storageUserTalk(chatText);
         $('.chat-input').val('').blur();
         // setTimeout(function () {
         getRobotResponse(chatText);

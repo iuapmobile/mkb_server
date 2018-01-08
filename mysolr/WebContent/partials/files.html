@@ -16,35 +16,32 @@ limitations under the License.
 -->
 <div id="files" class="clearfix">
 
-	<div id="frame">
+  <div id="frame">
 
-		<div id="tree-holder">
+    <div id="tree-holder">
 
-			<jstree class="tree" on-select="showTreeLink(data)" data="tree"
-				id="tree"></jstree>
+     <jstree class="tree" on-select="showTreeLink(data)" data="tree" id="tree"></jstree>
 
-		</div>
-		<div id="file-content" class="clearfix">
+    </div>
+    <div id="file-content" class="clearfix">
 
-			<div class="top clearfix">
+      <div class="top clearfix">
 
-				<a id="url" class="address-bar" href="{{url}}" ng-show="url">{{url}}</a>
+        <a id="url" class="address-bar" href="{{url}}" ng-show="url">{{url}}</a>
 
-			</div>
+      </div>
 
-			<div class="view-file">
+      <div class="view-file">
 
-				<div class="response" ng-show="content">
-					<pre class="syntax language-{{lang}}">
-						<code ng-bind-html="content | highlight:lang | unsafe"></code>
-					</pre>
-				</div>
+        <div class="response" ng-show="content">
+            <pre class="syntax language-{{lang}}"><code ng-bind-html="content | highlight:lang | unsafe"></code></pre>
+        </div>
 
 
-			</div>
+      </div>
 
-		</div>
+    </div>
 
-	</div>
+  </div>
 
 </div>

@@ -16,189 +16,177 @@ limitations under the License.
 -->
 <div id="schema-browser" class="loaded">
 
-	<div class="clearfix">
+  <div class="clearfix">
 
-		<div id="data">
+    <div id="data">
 
-			<div id="field">
+      <div id="field">
 
-				<div class="field-options">
+        <div class="field-options">
 
-					<div class="block head">
-						<h2>
-							<span class="type"></span>: <span class="name"></span>
-						</h2>
-					</div>
+          <div class="block head">
+            <h2>
+              <span class="type"></span>:
+              <span class="name"></span>
+            </h2>
+          </div>
 
-					<div class="partial">
+          <div class="partial">
 
-						<p>Because your Index is empty, we have not enough Information
-							about this Field</p>
+            <p>Because your Index is empty, we have not enough Information about this Field</p>
 
-					</div>
+          </div>
 
-					<dl class="options clearfix">
+          <dl class="options clearfix">
 
-						<dt class="field-type">Field-Type:</dt>
+            <dt class="field-type">Field-Type:</dt>
 
-						<dt class="similarity">Similarity:</dt>
+            <dt class="similarity">Similarity:</dt>
 
-						<dt class="position-increment-gap">
-							<abbr title="Position Increment Gap">PI Gap</abbr>:
-						</dt>
+            <dt class="position-increment-gap"><abbr title="Position Increment Gap">PI Gap</abbr>:</dt>
 
-						<dt class="docs">Docs:</dt>
+            <dt class="docs">Docs:</dt>
 
-						<dt class="distinct">Distinct:</dt>
+            <dt class="distinct">Distinct:</dt>
+                        
+          </dl>
 
-					</dl>
+          <table class="flags" cellspacing="0" cellpadding="0" border="0">
 
-					<table class="flags" cellspacing="0" cellpadding="0" border="0">
+            <thead>
 
-						<thead>
+              <tr>
 
-							<tr>
+                <td>Flags:</td>
 
-								<td>Flags:</td>
+              </tr>
 
-							</tr>
+            </thead>
 
-						</thead>
+            <tbody>
 
-						<tbody>
+            </tbody>
 
-						</tbody>
+          </table>
 
-					</table>
+          <ul class="analyzer">
+            <li class="clearfix index">
 
-					<ul class="analyzer">
-						<li class="clearfix index">
+              <p><a><span>Index&nbsp;Analyzer:</span></a></p>
+              <dl>
+                <dt><a class="toggle"></a></dt>
+              </dl>
 
-							<p>
-								<a><span>Index&nbsp;Analyzer:</span></a>
-							</p>
-							<dl>
-								<dt>
-									<a class="toggle"></a>
-								</dt>
-							</dl>
+              <ul>
+                <li class="clearfix charFilters">
+                  <p>Char Filters:</p>
+                  <dl>
+                  </dl>
+                </li>
+                <li class="clearfix tokenizer">
+                  <p>Tokenizer:</p>
+                  <dl>
+                  </dl>
+                </li>
+                <li class="clearfix filters">
+                  <p>Token Filters:</p>
+                  <dl>
+                  </dl>
+                </li>
+              </ul>
+                            
+            </li>
+            <li class="clearfix query">
 
-							<ul>
-								<li class="clearfix charFilters">
-									<p>Char Filters:</p>
-									<dl>
-									</dl>
-								</li>
-								<li class="clearfix tokenizer">
-									<p>Tokenizer:</p>
-									<dl>
-									</dl>
-								</li>
-								<li class="clearfix filters">
-									<p>Token Filters:</p>
-									<dl>
-									</dl>
-								</li>
-							</ul>
+              <p><a><span>Query&nbsp;Analyzer:</span></a></p>
+              <dl>
+                <dt><a class="toggle"></a></dt>
+              </dl>
 
-						</li>
-						<li class="clearfix query">
+              <ul>
+                <li class="clearfix charFilters">
+                  <p>Char Filters:</p>
+                  <dl>
+                  </dl>
+                </li>
+                <li class="clearfix tokenizer">
+                  <p>Tokenizer:</p>
+                  <dl>
+                  </dl>
+                </li>
+                <li class="clearfix filters">
+                  <p>Token Filters:</p>
+                  <dl>
+                  </dl>
+                </li>
+              </ul>
+                            
+            </li>
+          </ul>
 
-							<p>
-								<a><span>Query&nbsp;Analyzer:</span></a>
-							</p>
-							<dl>
-								<dt>
-									<a class="toggle"></a>
-								</dt>
-							</dl>
+        </div>
 
-							<ul>
-								<li class="clearfix charFilters">
-									<p>Char Filters:</p>
-									<dl>
-									</dl>
-								</li>
-								<li class="clearfix tokenizer">
-									<p>Tokenizer:</p>
-									<dl>
-									</dl>
-								</li>
-								<li class="clearfix filters">
-									<p>Token Filters:</p>
-									<dl>
-									</dl>
-								</li>
-							</ul>
+        <div class="terminfo-holder clearfix">
 
-						</li>
-					</ul>
+          <div class="trigger">
 
-				</div>
+            <button class="submit"><span>Load Term Info</span></button>
 
-				<div class="terminfo-holder clearfix">
+            <a class="autoload" title="Automatically load Term Info?"><span>Autoload</span></a>
 
-					<div class="trigger">
+          </div>
 
-						<button class="submit">
-							<span>Load Term Info</span>
-						</button>
+          <p class="status">Sorry, no Term Info available :(</p>
 
-						<a class="autoload" title="Automatically load Term Info?"><span>Autoload</span></a>
+          <div class="topterms-holder">
 
-					</div>
+            <form>
+            <p class="head">
+              <input type="text">
+              <a class="max-holder" title="Load all Top-Terms">/<span class="max"></span></a> Top-Terms:
+              <a id="query_link" href="#"><span>Query</span>&nbsp;</a>
+            </p>
+            </form>
 
-					<p class="status">Sorry, no Term Info available :(</p>
+            <ul>
 
-					<div class="topterms-holder">
+            </ul>
 
-						<form>
-							<p class="head">
-								<input type="text"> <a class="max-holder"
-									title="Load all Top-Terms">/<span class="max"></span></a>
-								Top-Terms: <a id="query_link" href="#"><span>Query</span>&nbsp;</a>
-							</p>
-						</form>
+          </div>
 
-						<ul>
+          <div class="histogram-holder">
 
-						</ul>
+            <p class="head">Histogram:</p>
 
-					</div>
+            <ul></ul>
 
-					<div class="histogram-holder">
+          </div>
 
-						<p class="head">Histogram:</p>
+        </div>
 
-						<ul></ul>
+      </div>
 
-					</div>
+    </div>
 
-				</div>
+    <div id="related">
 
-			</div>
+      <select>
+        <option value="" selected="selected">Please select ...</option>
+      </select>
 
-		</div>
+      <dl id="f-df-t">
+      </dl>
 
-		<div id="related">
+      <dl class="ukf-dsf">
 
-			<select>
-				<option value="" selected="selected">Please select ...</option>
-			</select>
+        <dt class="unique-key-field">Unique Key Field</dt>
 
-			<dl id="f-df-t">
-			</dl>
+        <dt class="default-search-field">Default Search Field</dt>
+            
+      </dl>   
 
-			<dl class="ukf-dsf">
+    </div>
 
-				<dt class="unique-key-field">Unique Key Field</dt>
-
-				<dt class="default-search-field">Default Search Field</dt>
-
-			</dl>
-
-		</div>
-
-	</div>
+  </div>
 
 </div>

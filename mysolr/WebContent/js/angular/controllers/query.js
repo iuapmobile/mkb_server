@@ -30,7 +30,7 @@ solrAdminApp.controller('QueryController',
     $scope.spellcheck = {spellcheck:"on"};
     $scope.qt = "/select";
 
-    $scope.doQuery = function() {debugger;
+    $scope.doQuery = function() {
       var params = {};
 
       var set = function(key, value) {
@@ -61,13 +61,9 @@ solrAdminApp.controller('QueryController',
       if ($scope.rawParams) {
         var rawParams = $scope.rawParams.split(/[&\n]/);
         for (var i in rawParams) {
-          var param = rawParams[i];
-          var equalPos = param.indexOf("=");
-          if (equalPos > -1) {
-            set(param.substring(0, equalPos), param.substring(equalPos+1));
-          } else {
-            set(param, ""); // Use empty value for params without "="
-          }
+            var param = rawParams[i];
+            var parts = param.split("=");
+            set(parts[0], parts[1]);
         }
       }
 
@@ -85,7 +81,7 @@ solrAdminApp.controller('QueryController',
         set("qt", qt);
       }
       var url = Query.url(params);
-      Query.query(params, function(data) {debugger;
+      Query.query(params, function(data) {
         $scope.lang = $scope.query.wt;
         $scope.response = data;
         $scope.url = $location.protocol() + "://" +

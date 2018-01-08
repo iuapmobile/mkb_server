@@ -16,31 +16,38 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-#content #files #tree-holder {
-	float: left;
-	width: 20%;
+
+#content #files #tree-holder
+{
+  float: left;
+  width: 20%;
 }
 
-#content #files #tree-holder li {
-	overflow: hidden;
+#content #files #tree-holder li
+{
+  overflow: hidden;
 }
 
-#content #files form .buttons button {
-	float: right;
+#content #files form .buttons button
+{
+  float: right;
 }
 
-#content #files #file-content {
-	float: right;
-	position: relative;
-	width: 78%;
-	min-height: 100px
+#content #files #file-content
+{
+  float: right;
+  position: relative;
+  width: 78%;
+  min-height: 100px
 }
 
-#content #files .show #file-content {
-	display: block;
+#content #files .show #file-content
+{
+  display: block;
 }
 
-#content #files #file-content .response {
-	border: 1px solid transparent;
-	padding: 2px;
+#content #files #file-content .response
+{
+  border: 1px solid transparent;
+  padding: 2px;
 }
