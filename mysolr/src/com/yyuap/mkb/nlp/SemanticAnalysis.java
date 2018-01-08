@@ -37,7 +37,7 @@ public class SemanticAnalysis {
             result = sbf.toString();
             
         } catch (Exception e) {
-            e.printStackTrace();
+        	MKBLogger.info("SemanticAnalysis simnet Exception:" + e.toString());
         }
         MKBLogger.info(result);
        

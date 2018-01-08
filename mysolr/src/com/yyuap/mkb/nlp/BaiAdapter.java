@@ -79,13 +79,13 @@ class BaiAdapter {
 
         } catch (UnsupportedEncodingException e) {
             // TODO 自动生成的 catch 块
-            e.printStackTrace();
+        	MKBLogger.info("BaiAdapter simnet Exception:" + e.toString());
         } catch (HttpException e) {
             // TODO 自动生成的 catch 块
             e.printStackTrace();
         } catch (IOException e) {
             // TODO 自动生成的 catch 块
-            e.printStackTrace();
+        	MKBLogger.info("BaiAdapter simnet Exception:" + e.toString());
         } catch (Exception e) {
             MKBLogger.info("BaiAdapter simnet Exception:" + e.toString());
         }

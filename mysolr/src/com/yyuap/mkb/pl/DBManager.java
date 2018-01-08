@@ -395,7 +395,7 @@ public class DBManager {
             list = DbUtil.selectQA_topn(Common.QA_TOPN, topn, dbconf,tag);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+        	MKBLogger.error("DBManager simnet Exception:" + e.toString());
         }
         return list;
     }
@@ -407,7 +407,7 @@ public class DBManager {
             id = DbUtil.updateQAFeedback(Common.UPDATE_QA_FEEDBACK_SQL, fb, dbconf);
         } catch (SQLException e) {
 
-            e.printStackTrace();
+        	MKBLogger.error("DBManager simnet Exception:" + e.toString());
         }
         return id;
     }
@@ -463,7 +463,7 @@ public class DBManager {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("DBManager simnet Exception:" + e.toString());
 			}
         }
 
@@ -476,7 +476,7 @@ public class DBManager {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("DBManager simnet Exception:" + e.toString());
 			}
         }
 
@@ -490,7 +490,7 @@ public class DBManager {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("DBManager updateQA Exception:" + e.toString());
 			}
         }
         return success && success2 && ids.size() > 0;
@@ -514,7 +514,7 @@ public class DBManager {
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("DBManager simnet Exception:" + e.toString());
 			}
         }
         boolean success1 = false;
@@ -542,7 +542,7 @@ public class DBManager {
 						e.printStackTrace();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						MKBLogger.error("DBManager simnet Exception:" + e.toString());
 					}
                     break;
                 case "modified":
@@ -555,7 +555,7 @@ public class DBManager {
 						e.printStackTrace();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						MKBLogger.error("DBManager simnet Exception:" + e.toString());
 					}
                     break;
                 case "deleted":
@@ -568,7 +568,7 @@ public class DBManager {
 						e.printStackTrace();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						MKBLogger.error("DBManager updateQAQS Exception:" + e.toString());
 					}
                     break;
                 default:
@@ -720,7 +720,7 @@ public class DBManager {
         	map = DbUtil.queryDataTj(day, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	MKBLogger.error("DBManager queryDataTj Exception:" + e1.toString());
         }
 
         return map;
@@ -735,7 +735,7 @@ public class DBManager {
         	count = DbUtil.queryBotServicesTj(dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	MKBLogger.error("DBManager queryBotServicesTj Exception:" + e1.toString());
         }
 
         return count;
@@ -952,7 +952,7 @@ public class DBManager {
         	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+        	MKBLogger.error("DBManager queryFieldForTable Exception:" + e.toString());
         }
         return list;
     }
@@ -977,7 +977,7 @@ public class DBManager {
         	list = DbUtil.queryFieldForTable(sbf.toString(),dbconf);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+        	MKBLogger.error("DBManager queryFieldForTableTenant Exception:" + e.toString());
         }
         return list;
     }
@@ -1006,7 +1006,7 @@ public class DBManager {
         	map = DbUtil.queryDimensionTj(field, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	MKBLogger.error("DBManager queryDimensionTj Exception:" + e1.toString());
         }
 
         return map;
@@ -1021,7 +1021,7 @@ public class DBManager {
         	map = DbUtil.queryQaTopTj(topn,istop, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	MKBLogger.error("DBManager queryQaTopTj Exception:" + e1.toString());
         }
 
         return map;
@@ -1036,7 +1036,7 @@ public class DBManager {
         	array = DbUtil.queryDimensionData(field, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	MKBLogger.error("DBManager queryDimensionData Exception:" + e1.toString());
         }
 
         return array;
@@ -1050,7 +1050,7 @@ public class DBManager {
         	map = DbUtil.queryQaTopTjForDimension(topn,istop,field,fieldValue, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+        	MKBLogger.error("DBManager queryQaTopTjForDimension Exception:" + e1.toString());
         }
 
         return map;
