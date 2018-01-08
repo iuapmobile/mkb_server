@@ -69,7 +69,6 @@ var woxiang = {
 SelfProcesserData = {
 	  "我想"　: woxiang
 }
-debugger;
 var SelfProcesser = {};
 SelfProcesser.process = function(text){
 	if(text.indexOf("我想")==0){

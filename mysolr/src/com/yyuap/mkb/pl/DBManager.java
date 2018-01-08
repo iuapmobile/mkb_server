@@ -379,7 +379,7 @@ public class DBManager {
             return id;
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            MKBLogger.error("+++++记录查询统计发生异常");
         }
         return id;
     }

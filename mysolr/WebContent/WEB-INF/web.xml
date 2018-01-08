@@ -40,7 +40,7 @@
   
     <env-entry>
        <env-entry-name>solr/home</env-entry-name>
-       <env-entry-value>/home/gct/kb_home</env-entry-value>
+       <env-entry-value>/Users/gct/work/solrhome</env-entry-value>
        <env-entry-type>java.lang.String</env-entry-type>
     </env-entry>
    

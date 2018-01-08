@@ -209,13 +209,13 @@ function getRobotResponse(text) {
             buserid: __buserid
 		},
 		success : function(data) {
-            debugger;
+            
 			public_curAllData = public_curAllData.concat(data.response.docs);
 			renderRobotResponse(data, $li);
 
 		},
 		error : function(res) {
-            debugger;
+            
 			var data = data_demo;
 			renderRobotResponse(data, $li);
 		}
@@ -224,7 +224,7 @@ function getRobotResponse(text) {
 
 //渲染机器人单条回答
 function renderRobotResponse(data, $li) {
-    //debugger;
+
 	commonRenderRobot(data.response, $("#multiSelectTmpl"), $li);
     
 	return;

@@ -13,11 +13,11 @@
 			var json;
 			var viewModel;
 			$(function() {
-				debugger
+
 				console.log(UM.MKBURL);
 				init();
 				$("#btnSave").on("click", function(){
-					debugger;
+					
 					//alert(123);
 
 					$.ajax({
@@ -41,7 +41,7 @@
 			});
 			function init(){
 				//Knockout绑定
-				//debugger;
+				
 
 				viewModel = ko.observable({
 					"title" : "移动开发",
