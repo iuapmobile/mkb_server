@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yyuap.mkb.log.MKBLogger;
+
 public class CBOManager {
 
     public Tenant getTenantInfo(String apiKey) throws SQLException {
@@ -436,7 +438,7 @@ public class CBOManager {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();

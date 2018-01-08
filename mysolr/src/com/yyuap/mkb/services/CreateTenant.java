@@ -7,8 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -16,16 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -301,14 +291,14 @@ public class CreateTenant extends HttpServlet {
 	            response.getWriter().write(ro.toString());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			MKBLogger.error("Exception:" + e.toString());
 		}finally {
             if (rs != null) {
                 try {
 					rs.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					MKBLogger.error("Exception:" + e.toString());
 				}
             }
             if (ps != null) {
@@ -316,7 +306,7 @@ public class CreateTenant extends HttpServlet {
 					ps.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					MKBLogger.error("Exception:" + e.toString());
 				}
             }
             if (conn != null) {
@@ -324,7 +314,7 @@ public class CreateTenant extends HttpServlet {
 					conn.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					MKBLogger.error("Exception:" + e.toString());
 				}
             }
         }
@@ -359,7 +349,7 @@ public class CreateTenant extends HttpServlet {
                 	stat.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					MKBLogger.error("Exception:" + e.toString());
 				}
             }
         }
@@ -485,7 +475,7 @@ public class CreateTenant extends HttpServlet {
 //        	httpclient.doHttpUriGet("http://127.0.0.1:8080/kb/admin/cores?action=STATUS&core=yycloudkbcore");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MKBLogger.error("Exception:" + e.toString());
 		}
 	}
 

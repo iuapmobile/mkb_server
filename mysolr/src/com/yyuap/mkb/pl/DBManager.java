@@ -17,7 +17,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.bcel.internal.generic.RET;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
@@ -259,7 +258,7 @@ public class DBManager {
             list = DbUtil.selectAnswer(sql, q, dbconf);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         if (list.size() == 0) {
             try {
@@ -338,7 +337,7 @@ public class DBManager {
 			json = solr.selectQAById(tenant,id);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MKBLogger.error("Exception:" + e.toString());
 		}
         return json;
     }
@@ -361,7 +360,7 @@ public class DBManager {
         	 array = solr.selectSimilarQByQid(tenant,id);
  		} catch (Exception e) {
  			// TODO Auto-generated catch block
- 			e.printStackTrace();
+ 			MKBLogger.error("Exception:" + e.toString());
  		}
          return array;
     }
@@ -460,7 +459,7 @@ public class DBManager {
 				solr.addQADoc(kbqa);
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("Exception:" + e.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				MKBLogger.error("DBManager simnet Exception:" + e.toString());
@@ -473,7 +472,7 @@ public class DBManager {
 				solr.delQASimilarDoc(kbqa);
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("Exception:" + e.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				MKBLogger.error("DBManager simnet Exception:" + e.toString());
@@ -487,7 +486,7 @@ public class DBManager {
 				solr.addQASimilarDoc(kbqa);
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("Exception:" + e.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				MKBLogger.error("DBManager updateQA Exception:" + e.toString());
@@ -511,7 +510,7 @@ public class DBManager {
 				solr.addQADoc(kbqa);
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("Exception:" + e.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				MKBLogger.error("DBManager simnet Exception:" + e.toString());
@@ -539,7 +538,7 @@ public class DBManager {
 						
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						MKBLogger.error("Exception:" + e.toString());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						MKBLogger.error("DBManager simnet Exception:" + e.toString());
@@ -552,7 +551,7 @@ public class DBManager {
 						solr.updateQASimilarDoc(kbqa,qs);
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						MKBLogger.error("Exception:" + e.toString());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						MKBLogger.error("DBManager simnet Exception:" + e.toString());
@@ -565,7 +564,7 @@ public class DBManager {
 						solr.delQASimilarDoc(kbqa,qs);
 					} catch (SolrServerException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						MKBLogger.error("Exception:" + e.toString());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						MKBLogger.error("DBManager updateQAQS Exception:" + e.toString());

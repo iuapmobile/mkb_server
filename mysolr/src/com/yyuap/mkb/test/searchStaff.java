@@ -9,11 +9,9 @@ import java.util.ArrayList;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.Common;
 import com.yyuap.mkb.pl.DBConfig;
-import com.yyuap.mkb.pl.DbUtil;
 
 public class searchStaff {
     public static void test() {
@@ -54,7 +52,7 @@ public class searchStaff {
             list = selectAnswer(SQL_SELECT, cols, q, dbconf);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
 
         return list;
@@ -86,7 +84,7 @@ public class searchStaff {
                 list.add(obj);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();

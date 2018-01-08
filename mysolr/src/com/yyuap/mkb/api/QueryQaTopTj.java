@@ -1,19 +1,13 @@
 package com.yyuap.mkb.api;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.pl.KBSQLException;
@@ -142,7 +136,7 @@ public class QueryQaTopTj extends HttpServlet {
             } else {
                 ro.setStatus(1000);
                 ro.setReason(e.toString());
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
         response.getWriter().write(ro.toString());

@@ -12,8 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.servlet.ServletInputStream;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.TextField;
 import org.apache.solr.client.solrj.SolrClient;
@@ -46,7 +44,6 @@ import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQS;
-import com.yyuap.mkb.fileUtil.KnowlegeType;
 import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.nlp.SAConfig;
 import com.yyuap.mkb.nlp.SemanticAnalysis;
@@ -91,7 +88,7 @@ public class SolrManager {
             return solr;
         } catch (Exception e) {
             MKBLogger.info("请检查tomcat服务器或端口是否开启!");
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
         return null;
     }
@@ -101,7 +98,7 @@ public class SolrManager {
      * CoreContainer();
      * 
      * server = new EmbeddedSolrServer(coreContainer, ""); } catch (Exception e)
-     * { e.printStackTrace(); } }
+     * { MKBLogger.error("Exception:" + e.toString()); } }
      */
 
     public void query2() throws Exception {
@@ -115,7 +112,7 @@ public class SolrManager {
             MKBLogger.info(String.valueOf(list.getNumFound()));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } finally {
             coreContainer.shutdown();
         }
@@ -127,7 +124,7 @@ public class SolrManager {
             server.commit();
             query2();
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } finally {
             coreContainer.shutdown();
         }
@@ -144,9 +141,9 @@ public class SolrManager {
             client.deleteById(ids);
             client.commit();
         } catch (SolrServerException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 
@@ -156,9 +153,9 @@ public class SolrManager {
             client.deleteById(id);
             client.commit();
         } catch (SolrServerException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 
@@ -168,9 +165,9 @@ public class SolrManager {
             client.deleteByQuery("qid:" + id);
             client.commit();
         } catch (SolrServerException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 
@@ -1008,7 +1005,7 @@ public class SolrManager {
                 this.addDoc(kbIndex);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
     }
@@ -1029,7 +1026,7 @@ public class SolrManager {
 
             document.add(tf);
         } catch (IOException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
         return tika.toString();
     }
@@ -1050,7 +1047,7 @@ public class SolrManager {
             inputStream.close();
             return handler.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
         return null;
     }
@@ -1065,7 +1062,7 @@ public class SolrManager {
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
         return true;
     }
@@ -1504,9 +1501,9 @@ public class SolrManager {
             client.deleteByQuery("qid:" + "715eea41-b712-4592-af0c-bcb34b6c1d69");
             client.commit();
         } catch (SolrServerException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 
@@ -1553,7 +1550,7 @@ public class SolrManager {
             queryDocumentById();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 

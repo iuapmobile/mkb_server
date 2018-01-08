@@ -3,18 +3,10 @@ package com.yyuap.mkb.services;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.pl.KBDelSQLException;
-import com.yyuap.mkb.pl.KBDuplicateSQLException;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.processor.SolrManager;
 
 /**
  * Servlet implementation class deleteDoc
@@ -80,7 +72,7 @@ public class DelQA extends HttpServlet {
             success = qam.delQA(id, tenant);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
         if (success) {
             ro.setResponseKV("id", id);

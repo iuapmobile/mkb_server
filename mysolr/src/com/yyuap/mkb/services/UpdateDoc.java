@@ -2,17 +2,11 @@ package com.yyuap.mkb.services;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.UUID;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.DBManager;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.processor.SolrManager;
@@ -118,7 +112,7 @@ public class UpdateDoc extends HttpServlet {
             success = saveData2DB.updateKBIndex(kbindex, tenant);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
 
         if (success) {
@@ -127,7 +121,7 @@ public class UpdateDoc extends HttpServlet {
                 solr.addDoc(kbindex);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
 

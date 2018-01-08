@@ -1,8 +1,6 @@
 package com.yyuap.mkb.socialChatBot;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,7 +11,6 @@ import java.util.Map.Entry;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -23,6 +20,8 @@ import org.apache.http.impl.client.HttpClients;
 //import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import com.yyuap.mkb.log.MKBLogger;
 
 //import org.apache.http.NameValuePair;
 //import org.apache.http.client.HttpClient;
@@ -119,14 +118,14 @@ public class MKBHttpClient {
 				EntityUtils.consume(entity);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			MKBLogger.error("Exception:" + e.toString());
 		} finally {
 			try {
 				if (httpResponse != null) {
 					httpResponse.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				MKBLogger.error("Exception:" + e.toString());
 			}
 			return result;
 		}
