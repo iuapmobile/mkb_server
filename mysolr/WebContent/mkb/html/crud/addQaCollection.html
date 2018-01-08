@@ -18,7 +18,7 @@
 				console.log(UM.MKBURL);
 				init();
 				$("#btnSave").on("click", function(){
-					debugger;
+					
 					var kodata = viewModel(); 
 					kodata.qs = [kodata.q1, kodata.q2, kodata.q3];
 
@@ -49,7 +49,7 @@
 			});
 			function init(){
 				//Knockout绑定
-				//debugger;
+				//
 
 				viewModel = ko.observable({
 					"userid" : "",

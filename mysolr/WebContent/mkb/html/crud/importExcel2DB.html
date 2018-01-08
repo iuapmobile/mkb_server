@@ -17,7 +17,7 @@
 				console.log(KBCONFIG.MKBURL);
 				init();
 				$("#btnDel").on("click", function(){
-					debugger;
+					
 					if(!viewModel().path){
 						alert("请录入文件路径");
 						return;
@@ -47,7 +47,7 @@
 			});
 			function init(){
 				//Knockout绑定
-				//debugger;
+				//
 
 				viewModel = ko.observable({
 					"apiKey" : "bc2b9ac6ea134eeb940bb1ec43ff3a5a",//8002

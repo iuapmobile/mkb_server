@@ -3,7 +3,7 @@ $(function() {
 	console.log(UM.MKBURL);
 
 	$("#btnSave").on("click", function(){
-		debugger;
+		
 		$.ajax({
 			url: KBCONFIG.MKBURL + '/mkb/QATop',
 			data : {

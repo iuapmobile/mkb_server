@@ -20,7 +20,7 @@
 				console.log(UM.MKBURL);
 
 				$("#btnSave").on("click", function(){
-					debugger;
+					
 					$.ajax({
 						url: KBCONFIG.MKBURL + '/mkb/queryQaCollectionByUserid',
 						data : {
@@ -30,7 +30,7 @@
 						type:'post',
 						dataType:'json',
 						success:function(data){
-							debugger;
+							
 							alert("获取成功，返回数据:\n" + JSON.stringify(data));
 							var $tbody = $("#query_table tbody");
 							$tbody.empty();

@@ -171,7 +171,7 @@ function getRobotResponse(text) {
 }
 //渲染机器人单条回答
 function renderRobotResponse(data, $li) {
-    //debugger;
+    //
 	commonRenderRobot(data.response, $("#multiSelectTmpl"), $li);
     
 	return;

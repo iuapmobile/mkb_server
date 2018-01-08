@@ -517,7 +517,7 @@
 							day:day
 					 },
 					 success : function(data) {
-					 //debugger;
+					 //
 							 Xvalue=data.response.xAxis;
 							 Yvalue=data.response.key;
 							loadOption(data.response.xAxis,data.response.key,title,id);
@@ -541,7 +541,7 @@
 						  field:"extend0"
 					 },
 					 success : function(data) {
-					 debugger;
+					 
 					   var departmentData=data.response.data;
 							for(var i=0;i<departmentData.length;i++){
 								$("#departData").append('<option>'+departmentData[i]+'</option>');
@@ -564,7 +564,7 @@
 					 url :KBCONFIG.MKBURL +url,
 					 data : JSON.parse(param),
 					 success : function(data) {
-					 //debugger;
+					 //
 							 Xvalue=data.response.xAxis;
 							 Yvalue=data.response.key;
 							 if(JSON.parse(Xvalue).length==0&&id=="department"){
@@ -580,7 +580,7 @@
 				 });
 			}
 			function loadOption(Xvalue,Yvalue,title,id){
-			//debugger;
+			//
 			 var myChart=echarts.init(document.getElementById(id));
 				option = {
 							 title: {
@@ -646,7 +646,7 @@
 					 });
 			}
 			function loadOption_department(Xvalue,Yvalue,unit,name,title,id){
-			//debugger;
+			//
 			 var myChart=echarts.init(document.getElementById(id));
 				option = {
 							 title: {
