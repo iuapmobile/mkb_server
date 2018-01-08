@@ -25,6 +25,7 @@ import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.fileUtil.ExcelReader;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.Common;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DbUtil;
@@ -134,7 +135,7 @@ public class importStaff {
 
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("import data error: " + row.toString());
+                MKBLogger.info("import data error: " + row.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,7 +216,7 @@ public class importStaff {
                 }
             }
         }
-        // System.out.println(table.toJSONString());
+        // MKBLogger.info(table.toJSONString());
         return table;
     }
 

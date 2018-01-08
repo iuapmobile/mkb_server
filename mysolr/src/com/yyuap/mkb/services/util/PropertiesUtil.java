@@ -8,6 +8,8 @@ import java.util.Properties;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
 
+import com.yyuap.mkb.log.MKBLogger;
+
 import sun.print.resources.serviceui;
 
 public class PropertiesUtil {
@@ -43,12 +45,12 @@ public class PropertiesUtil {
 	        {
 	            try
 	            {
-	            	System.out.println("加载jdbcproperties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties")));
+	            	MKBLogger.info("加载jdbcproperties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties")));
 	                ise = new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/jdbc.properties"));
 	                
 	                jdbcProp.load(ise);
 	                
-	                System.out.println("加载config.properties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/config.properties")));
+	                MKBLogger.info("加载config.properties"+new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/config.properties")));
 	                propise = new FileInputStream(arg0.getServletContext().getRealPath("/WEB-INF/properties/config.properties"));
 	                
 	                prop.load(propise);
@@ -89,12 +91,12 @@ public class PropertiesUtil {
 	    } 
 	    
 	    public static void main(String[] args) {
-//	    	System.out.println(request.getContextPath());
-			System.out.println(Thread.currentThread().getContextClassLoader().getResourceAsStream("D:/software/apache-tomcat-8.5.15/webapps/kb/WEB-INF/lib/jdbc.properties"));
+//	    	MKBLogger.info(request.getContextPath());
+			//MKBLogger.info(Thread.currentThread().getContextClassLoader().getResourceAsStream("D:/software/apache-tomcat-8.5.15/webapps/kb/WEB-INF/lib/jdbc.properties"));
 			try {
 				InputStream a = new FileInputStream("/D:/software/apache-tomcat-8.5.15/webapps/kb/WEB-INF/properties/jdbc.properties");
 				jdbcProp.load(a);
-				System.out.println(getJdbcString("db_port"));
+				MKBLogger.info(getJdbcString("db_port"));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

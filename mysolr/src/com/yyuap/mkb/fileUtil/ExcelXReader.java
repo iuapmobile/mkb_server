@@ -20,6 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
+import com.yyuap.mkb.log.MKBLogger;
 
 /**
  * @author gct
@@ -97,7 +98,7 @@ public class ExcelXReader {
                     }
                     if (kbIndex.getTitle().equals("") && kbIndex.getDescript().equals("") && kbIndex.getUrl().equals("")
                             && kbIndex.getText().equals("")) {
-                        System.out.println("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
+                        MKBLogger.info("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
                                 + " title is empty!");
                     } else {
                         list.add(kbIndex);
@@ -162,7 +163,7 @@ public class ExcelXReader {
                     kbIndex.setDomain(hssfSheet.getSheetName());
                     if (kbIndex.getTitle().equals("") && kbIndex.getDescript().equals("") && kbIndex.getUrl().equals("")
                             && kbIndex.getText().equals("")) {
-                        System.out.println("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
+                        MKBLogger.info("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
                                 + " title is empty!");
                     } else {
                         list.add(kbIndex);
@@ -175,18 +176,18 @@ public class ExcelXReader {
 
     public List<KBQA> readXlsx4QA(InputStream is) throws IOException {
         // getServletContext().getRealPath("/");
-//        if (path == null || path.equals("")) {
-//            return new ArrayList<KBQA>();
-//        }
+        // if (path == null || path.equals("")) {
+        // return new ArrayList<KBQA>();
+        // }
         // InputStream is = new FileInputStream(Common.EXCEL_PATH);
-//        InputStream is = new FileInputStream(path);
+        // InputStream is = new FileInputStream(path);
 
         // HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
         XSSFWorkbook hssfWorkbook = new XSSFWorkbook(is);
-        
-        //标点符号 正则表达式
-        String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]";
-        
+
+        // 标点符号 正则表达式
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]";
+
         KBQA kbqa = null;
         List<KBQA> list = new ArrayList<KBQA>();
         // foreach Sheet
@@ -200,51 +201,53 @@ public class ExcelXReader {
                 XSSFRow hssfRow = hssfSheet.getRow(rowNum);
                 if (hssfRow != null) {
                     kbqa = new KBQA();
-                    //获取 最大列数 从0开始
+                    // 获取 最大列数 从0开始
                     int cellNum = hssfRow.getLastCellNum();
                     XSSFCell cellValue = null;
                     String kbqauuid = UUID.randomUUID().toString();
-                    List<String> qsList = new ArrayList<String>();//相似问题list
-                    for(int i =0;i<=cellNum;i++){
-                    	cellValue = hssfRow.getCell(i);
-                    	if("".equals(getValue(cellValue))){
-                    		continue;
-                    	}
-                    	if(i==0){//先q赋值
-                    		kbqa.setQuestion(getValue(cellValue).replaceAll(regEx, ""));
-                    	}else if(i==1){//在a赋值，然后放到list中
-                    		kbqa.setAnswer(getValue(cellValue));
-                    		kbqa.setId(kbqauuid);
-                    	}else if(i==2){
-                    		kbqa.setDomain(getValue(cellValue));
-                    	}else if(i==3){
-                    		kbqa.setExtend0(getValue(cellValue));//产品
-                    	}else if(i==4){
-                    		kbqa.setProduct(getValue(cellValue));
-                    	}else if(i==5){
-                    		kbqa.setExtend1(getValue(cellValue));//答案提供人
-                    	}else{
-                    		qsList.add(getValue(cellValue).replaceAll(regEx, ""));
-                    	}
+                    List<String> qsList = new ArrayList<String>();// 相似问题list
+                    for (int i = 0; i <= cellNum; i++) {
+                        cellValue = hssfRow.getCell(i);
+                        if ("".equals(getValue(cellValue))) {
+                            continue;
+                        }
+                        if (i == 0) {// 先q赋值
+                            kbqa.setQuestion(getValue(cellValue).replaceAll(regEx, ""));
+                        } else if (i == 1) {// 在a赋值，然后放到list中
+                            kbqa.setAnswer(getValue(cellValue));
+                            kbqa.setId(kbqauuid);
+                        } else if (i == 2) {
+                            kbqa.setDomain(getValue(cellValue));
+                        } else if (i == 3) {
+                            kbqa.setExtend0(getValue(cellValue));// 产品
+                        } else if (i == 4) {
+                            kbqa.setProduct(getValue(cellValue));
+                        } else if (i == 5) {
+                            kbqa.setExtend1(getValue(cellValue));// 答案提供人
+                        } else {
+                            qsList.add(getValue(cellValue).replaceAll(regEx, ""));
+                        }
                     }
                     kbqa.setQuestions(qsList.toArray(new String[qsList.size()]));
                     list.add(kbqa);
                     // 对应
-//                    XSSFCell num_cell = hssfRow.getCell(0);// 问题
-//                    XSSFCell q_cell = hssfRow.getCell(1);// 问题
-//                    XSSFCell a_cell = hssfRow.getCell(2);// 答案
-//
-//                    String uuid = UUID.randomUUID().toString();
-//                    kbqa.setId(uuid);
-//                    kbqa.setQuestion(getValue(q_cell));
-//                    kbqa.setAnswer(getValue(a_cell));
-//
-//                    if (kbqa.getQuestion().equals("") || kbqa.getAnswer().equals("")) {
-//                        System.out.println("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
-//                                + " title is empty!");
-//                    } else {
-//                        list.add(kbqa);
-//                    }
+                    // XSSFCell num_cell = hssfRow.getCell(0);// 问题
+                    // XSSFCell q_cell = hssfRow.getCell(1);// 问题
+                    // XSSFCell a_cell = hssfRow.getCell(2);// 答案
+                    //
+                    // String uuid = UUID.randomUUID().toString();
+                    // kbqa.setId(uuid);
+                    // kbqa.setQuestion(getValue(q_cell));
+                    // kbqa.setAnswer(getValue(a_cell));
+                    //
+                    // if (kbqa.getQuestion().equals("") ||
+                    // kbqa.getAnswer().equals("")) {
+                    // MKBLogger.info("numSheet : " +
+                    // hssfSheet.getSheetName() + " , rowNum : " + rowNum
+                    // + " title is empty!");
+                    // } else {
+                    // list.add(kbqa);
+                    // }
                 }
             }
         }

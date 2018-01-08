@@ -47,6 +47,7 @@ import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.entity.KBQA;
 import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.fileUtil.KnowlegeType;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.nlp.SAConfig;
 import com.yyuap.mkb.nlp.SemanticAnalysis;
 import com.yyuap.mkb.pl.DBManager;
@@ -69,7 +70,7 @@ public class SolrManager {
     public SolrManager(String kbcore) {
         String x = "ddd";
         if (x == "ddd") {
-            SOLR_URL = "http://"+this.BOT_IP+":"+this.BOT_PORT+"/"+this.BOT_WEBAPP+"/" + kbcore;
+            SOLR_URL = "http://" + this.BOT_IP + ":" + this.BOT_PORT + "/" + this.BOT_WEBAPP + "/" + kbcore;
         }
     }
 
@@ -89,7 +90,7 @@ public class SolrManager {
             }
             return solr;
         } catch (Exception e) {
-            System.out.println("请检查tomcat服务器或端口是否开启!");
+            MKBLogger.info("请检查tomcat服务器或端口是否开启!");
             e.printStackTrace();
         }
         return null;
@@ -111,7 +112,7 @@ public class SolrManager {
             q.setStart(0);
             q.setRows(20);
             SolrDocumentList list = server.query(q).getResults();
-            System.out.println(list.getNumFound());
+            MKBLogger.info(String.valueOf(list.getNumFound()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,8 +134,8 @@ public class SolrManager {
     }
 
     /**
-     * pengjf
-     * 批量删除solr 根据id
+     * pengjf 批量删除solr 根据id
+     * 
      * @param ids
      */
     public void delBatById(List<String> ids) {
@@ -148,7 +149,7 @@ public class SolrManager {
             e.printStackTrace();
         }
     }
-    
+
     public void delDocById(String id) {
         try {
             HttpSolrClient client = this.getHttpSolrClient();
@@ -188,13 +189,13 @@ public class SolrManager {
         String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
-        String ext_scope = kbindex.getExt_scope();//可见范围
-        String ktype = kbindex.getKtype();//知识类型
-        String domain = kbindex.getDomain();//领域
-        String product = kbindex.getProduct();//产品
-        String subproduct = kbindex.getSubproduct();//子产品
-        String tag = kbindex.getTag();//标签
-        String author = kbindex.getAuthor();//作者
+        String ext_scope = kbindex.getExt_scope();// 可见范围
+        String ktype = kbindex.getKtype();// 知识类型
+        String domain = kbindex.getDomain();// 领域
+        String product = kbindex.getProduct();// 产品
+        String subproduct = kbindex.getSubproduct();// 子产品
+        String tag = kbindex.getTag();// 标签
+        String author = kbindex.getAuthor();// 作者
         String extend0 = kbindex.getExtend0();
         String extend1 = kbindex.getExtend1();
         String extend2 = kbindex.getExtend2();
@@ -215,7 +216,7 @@ public class SolrManager {
         String extend17 = kbindex.getExtend17();
         String extend18 = kbindex.getExtend18();
         String extend19 = kbindex.getExtend19();
-        
+
         // 1.创建链接
         @SuppressWarnings("deprecation")
         SolrClient solr = this.getHttpSolrClient();
@@ -264,18 +265,17 @@ public class SolrManager {
         document.addField("extend17", extend17);
         document.addField("extend18", extend18);
         document.addField("extend19", extend19);
-        
-        if(null != ext_scope){
-        	document.addField("ext_scope", ext_scope);
+
+        if (null != ext_scope) {
+            document.addField("ext_scope", ext_scope);
         }
-        
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long times = System.currentTimeMillis();
-        System.out.println(times);
+        MKBLogger.info(String.valueOf(times));
         Date date = new Date(times);
         String tim = sdf.format(date);
-        System.out.println(tim);
+        MKBLogger.info(tim);
 
         // document.addField("createTime", tim);
         // document.addField("updateTime", tim);
@@ -302,13 +302,13 @@ public class SolrManager {
         String qtype = kbindex.getQtype();
         String createTime = kbindex.getCreateTime();
         String updateTime = kbindex.getUpdateTime();
-        String ext_scope = kbindex.getExt_scope();//可见范围
-        String ktype = kbindex.getKtype();//知识类型
-        String domain = kbindex.getDomain();//领域
-        String product = kbindex.getProduct();//产品
-        String subproduct = kbindex.getSubproduct();//子产品
-        String tag = kbindex.getTag();//标签
-        String author = kbindex.getAuthor();//作者
+        String ext_scope = kbindex.getExt_scope();// 可见范围
+        String ktype = kbindex.getKtype();// 知识类型
+        String domain = kbindex.getDomain();// 领域
+        String product = kbindex.getProduct();// 产品
+        String subproduct = kbindex.getSubproduct();// 子产品
+        String tag = kbindex.getTag();// 标签
+        String author = kbindex.getAuthor();// 作者
         String extend0 = kbindex.getExtend0();
         String extend1 = kbindex.getExtend1();
         String extend2 = kbindex.getExtend2();
@@ -351,8 +351,8 @@ public class SolrManager {
         document.addField("qtype", qtype);
         document.addField("createTime", createTime);
         document.addField("updateTime", updateTime);
-        if(null != ext_scope){
-        	document.addField("ext_scope", ext_scope);
+        if (null != ext_scope) {
+            document.addField("ext_scope", ext_scope);
         }
         document.addField("ktype", ktype);
         document.addField("domain", domain);
@@ -380,15 +380,15 @@ public class SolrManager {
         document.addField("extend17", extend17);
         document.addField("extend18", extend18);
         document.addField("extend19", extend19);
-      
+
         document.addField("_version_", 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long times = System.currentTimeMillis();
-        System.out.println(times);
+        MKBLogger.info(String.valueOf(times));
         Date date = new Date(times);
         String tim = sdf.format(date);
-        System.out.println(tim);
+        MKBLogger.info(tim);
 
         // document.addField("createTime", tim);
         // document.addField("updateTime", tim);
@@ -412,12 +412,12 @@ public class SolrManager {
         kbindex.setCreateTime(kbqa.getCreateTime());
         kbindex.setUpdateTime(kbqa.getUpdateTime());
         kbindex.setQtype(kbqa.getQtype());
-        kbindex.setExt_scope(kbqa.getExt_scope());//可见范围
-        //kbindex.setKtype(KnowlegeType.QA_KTYPE_QA);//知识类型
+        kbindex.setExt_scope(kbqa.getExt_scope());// 可见范围
+        // kbindex.setKtype(KnowlegeType.QA_KTYPE_QA);//知识类型
         kbindex.setKtype(kbqa.getKtype());
-        kbindex.setDomain(kbqa.getDomain());//领域
-        kbindex.setProduct(kbqa.getProduct());//产品
-        kbindex.setSubproduct(kbqa.getSubproduct());//子产品
+        kbindex.setDomain(kbqa.getDomain());// 领域
+        kbindex.setProduct(kbqa.getProduct());// 产品
+        kbindex.setSubproduct(kbqa.getSubproduct());// 子产品
         kbindex.setExtend0(kbqa.getExtend0());
         kbindex.setExtend1(kbqa.getExtend1());
         kbindex.setExtend2(kbqa.getExtend2());
@@ -603,15 +603,15 @@ public class SolrManager {
 
     }
 
-    public JSONObject query(JSONObject requestParam, Tenant tenant,String id) throws Exception {
+    public JSONObject query(JSONObject requestParam, Tenant tenant, String id) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
         // 1、设置solr查询参数
         String _q = requestParam.getString("q");
-        
+
         // 可见范围
-        String[] tag = (String[])requestParam.get("tag");
+        String[] tag = (String[]) requestParam.get("tag");
 
         int rows = 10;
         int start = 0;
@@ -658,29 +658,28 @@ public class SolrManager {
         rules.setQF(query, q, qf, tenant);
 
         String new_q = rules.addFilterQuery(query, q, tenant);
-        
-       
-        if(null == tag){
-        	if(null !=id){
-        		query.addFilterQuery(" -id:\""+id+"\" AND -qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
-        	}else{
-        		query.addFilterQuery("-qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围		
-        	}
-        	 
-        }else if("personinside".equals(tag[0])){//如果 为personinside 内部员工，查询全部
-        	if(null !=id){
-        		query.addFilterQuery(" -id:\""+id+"\" AND -qid:[\"\" TO *]");  // q中含有subproduct，则fq限定范围	
-        	}else{
-        		query.addFilterQuery("-qid:[\"\" TO *]");  // q中含有subproduct，则fq限定范围	
-        	}
-        	 
-        }else{
-        	if(null !=id){
-        		query.addFilterQuery(" -id:\""+id+"\" AND -qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
-        	}else{
-        		query.addFilterQuery("-qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
-        	}
-        	 
+
+        if (null == tag) {
+            if (null != id) {
+                query.addFilterQuery(" -id:\"" + id + "\" AND -qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围
+            } else {
+                query.addFilterQuery("-qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围
+            }
+
+        } else if ("personinside".equals(tag[0])) {// 如果 为personinside 内部员工，查询全部
+            if (null != id) {
+                query.addFilterQuery(" -id:\"" + id + "\" AND -qid:[\"\" TO *]"); // q中含有subproduct，则fq限定范围
+            } else {
+                query.addFilterQuery("-qid:[\"\" TO *]"); // q中含有subproduct，则fq限定范围
+            }
+
+        } else {
+            if (null != id) {
+                query.addFilterQuery(" -id:\"" + id + "\" AND -qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围
+            } else {
+                query.addFilterQuery("-qid:[\"\" TO *]  AND -ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围
+            }
+
         }
         // if (q == null || q.equals("")) {
         // q = "*:*";
@@ -690,29 +689,46 @@ public class SolrManager {
         if (new_q == null || new_q.trim().equals("")) {
             new_q = "*:*";
         }
-        if(null == tag){
-        	if(null !=id){
-        		new_q = new_q + " AND -id:\""+id+"\" AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
-        	}else{
-        		new_q = new_q + " AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
-        	}
-        	
-        }else if("personinside".equals(tag[0])){//如果 为personinside 内部员工，查询全部
-        	if(null !=id){
-        		new_q = new_q + "  AND -id:\""+id+"\"  AND -qid:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
-        	}else{
-        		new_q = new_q + " AND -qid:[\"\" TO *]";//*  在solr当中  应该代表 有值  -取反// q中含有subproduct，则fq限定范围	
-        	}
-        	
-        }else{
-        	if(null !=id){
-        		new_q = new_q + "  AND -id:\""+id+"\"  AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";
-        	}else{
-        		new_q = new_q + " AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";
-        	}
-        	
+        if (null == tag) {
+            if (null != id) {
+                new_q = new_q + " AND -id:\"" + id + "\" AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";// *
+                                                                                                          // 在solr当中
+                                                                                                          // 应该代表
+                                                                                                          // 有值
+                                                                                                          // -取反//
+                                                                                                          // q中含有subproduct，则fq限定范围
+            } else {
+                new_q = new_q + " AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";// *
+                                                                                   // 在solr当中
+                                                                                   // 应该代表
+                                                                                   // 有值
+                                                                                   // -取反//
+                                                                                   // q中含有subproduct，则fq限定范围
+            }
+
+        } else if ("personinside".equals(tag[0])) {// 如果 为personinside 内部员工，查询全部
+            if (null != id) {
+                new_q = new_q + "  AND -id:\"" + id + "\"  AND -qid:[\"\" TO *]";// *
+                                                                                 // 在solr当中
+                                                                                 // 应该代表
+                                                                                 // 有值
+                                                                                 // -取反//
+                                                                                 // q中含有subproduct，则fq限定范围
+            } else {
+                new_q = new_q + " AND -qid:[\"\" TO *]";// * 在solr当中 应该代表 有值
+                                                        // -取反//
+                                                        // q中含有subproduct，则fq限定范围
+            }
+
+        } else {
+            if (null != id) {
+                new_q = new_q + "  AND -id:\"" + id + "\"  AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";
+            } else {
+                new_q = new_q + " AND -qid:[\"\" TO *] AND -ext_scope:[\"\" TO *]";
+            }
+
         }
-        
+
         query.set("q", new_q);
 
         rules.addSort(query, q, tenant);
@@ -757,8 +773,8 @@ public class SolrManager {
          */
 
         SolrDocumentList solrDocumentList = response.getResults();
-        // System.out.println("通过文档集合获取查询的结果");
-        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
+        // MKBLogger.info("通过文档集合获取查询的结果");
+        MKBLogger.info("搜索结果的总数量：" + solrDocumentList.getNumFound());
 
         JSONObject json = new JSONObject();
 
@@ -781,7 +797,7 @@ public class SolrManager {
         JSONArray docs = new JSONArray();
         // 遍历列表
         for (SolrDocument doc : solrDocumentList) {
-            // System.out.println("id:"+doc.get("id")+" name:"+doc.get("name")+"
+            // MKBLogger.info("id:"+doc.get("id")+" name:"+doc.get("name")+"
             // description:"+doc.get("description"));
             /*
              * List<String> hl_title =
@@ -810,14 +826,14 @@ public class SolrManager {
         /*
          * //得到实体对象 List<Person> tmpLists = response.getBeans(Person.class);
          * if(tmpLists!=null && tmpLists.size()>0){
-         * System.out.println("通过文档集合获取查询的结果"); for(Person per:tmpLists){
-         * System.out.println("id:"+per.getId()+"   name:"+per.getName()
+         * MKBLogger.info("通过文档集合获取查询的结果"); for(Person per:tmpLists){
+         * MKBLogger.info("id:"+per.getId()+"   name:"+per.getName()
          * +"    description:"+per.getDescription()); } }
          */
 
     }
 
-    public JSONObject queryQuestion(JSONObject requestParam,String[] tag) throws SolrServerException, IOException {
+    public JSONObject queryQuestion(JSONObject requestParam, String[] tag) throws SolrServerException, IOException {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
         SolrQuery query = new SolrQuery();
@@ -833,11 +849,11 @@ public class SolrManager {
             String _keywords = sap.getKeywords(conf);
             q = this.process(_keywords);
         }
-        if(null == tag){
-       	 	query.addFilterQuery("-ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
-        }else if("personinside".equals(tag[0])){//如果 为personinside 内部员工，查询全部
-        }else{
-       		query.addFilterQuery("-ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围	
+        if (null == tag) {
+            query.addFilterQuery("-ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围
+        } else if ("personinside".equals(tag[0])) {// 如果 为personinside 内部员工，查询全部
+        } else {
+            query.addFilterQuery("-ext_scope:[\"\" TO *]");// q中含有subproduct，则fq限定范围
         }
         // 非空处理
         if (q == null || q.equals("")) {
@@ -862,7 +878,7 @@ public class SolrManager {
             try {
                 num = Integer.parseInt(strNum);
             } catch (Exception e) {
-                System.out.println("查询参数num为[" + strNum + "]，其值不是一个有效的整数，已默认处理为取前10条");
+                MKBLogger.info("查询参数num为[" + strNum + "]，其值不是一个有效的整数，已默认处理为取前10条");
                 num = 3;
             }
         }
@@ -873,7 +889,7 @@ public class SolrManager {
         QueryResponse qResponse = solrServer.query(query);
         SolrDocumentList solrDocumentList = qResponse.getResults();
 
-        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
+        MKBLogger.info("搜索结果的总数量：" + solrDocumentList.getNumFound());
 
         JSONObject jsonRet = new JSONObject();
 
@@ -944,7 +960,7 @@ public class SolrManager {
 
         // client.commit();
         QueryResponse rsp = client.query(new SolrQuery("*:*"));
-        System.out.println(rsp);
+        MKBLogger.info(rsp.toString());
     }
 
     public void indexTikaFile(String path, KBIndex kbIndex, Tenant tenant)
@@ -1029,7 +1045,7 @@ public class SolrManager {
             parseContext.set(Parser.class, parser);
             parser.parse(inputStream, handler, metadata, parseContext);
             for (String string : metadata.names()) {
-                System.out.println(string + ":" + metadata.get(string));
+                MKBLogger.info(string + ":" + metadata.get(string));
             }
             inputStream.close();
             return handler.toString();
@@ -1054,10 +1070,10 @@ public class SolrManager {
         return true;
     }
 
-    public JSONObject importQA(InputStream is, Tenant tenant,String fileName) throws Exception {
+    public JSONObject importQA(InputStream is, Tenant tenant, String fileName) throws Exception {
         // TODO Auto-generated method stub
         DBManager dbMgr = new DBManager();
-        JSONObject obj = dbMgr.insertQAFromExcel(is, tenant,fileName);
+        JSONObject obj = dbMgr.insertQAFromExcel(is, tenant, fileName);
 
         return obj;
     }
@@ -1072,7 +1088,7 @@ public class SolrManager {
         QueryResponse response = solrServer.query(query);
 
         SolrDocumentList solrDocumentList = response.getResults();
-        // System.out.println("通过文档集合获取查询的结果");
+        // MKBLogger.info("通过文档集合获取查询的结果");
 
         JSONArray array = new JSONArray();
         // 遍历列表
@@ -1087,8 +1103,8 @@ public class SolrManager {
         /*
          * //得到实体对象 List<Person> tmpLists = response.getBeans(Person.class);
          * if(tmpLists!=null && tmpLists.size()>0){
-         * System.out.println("通过文档集合获取查询的结果"); for(Person per:tmpLists){
-         * System.out.println("id:"+per.getId()+"   name:"+per.getName()
+         * MKBLogger.info("通过文档集合获取查询的结果"); for(Person per:tmpLists){
+         * MKBLogger.info("id:"+per.getId()+"   name:"+per.getName()
          * +"    description:"+per.getDescription()); } }
          */
 
@@ -1104,7 +1120,7 @@ public class SolrManager {
         QueryResponse response = solrServer.query(query);
 
         SolrDocumentList solrDocumentList = response.getResults();
-        // System.out.println("通过文档集合获取查询的结果");
+        // MKBLogger.info("通过文档集合获取查询的结果");
 
         JSONObject json = new JSONObject();
 
@@ -1118,7 +1134,7 @@ public class SolrManager {
             json.put("qtype", doc.get("qtype"));
             json.put("ktype", doc.get("ktype"));
             json.put("kbid", doc.get("kbid"));
-            
+
             json.put("domain", doc.get("domain"));
             json.put("product", doc.get("product"));
 
@@ -1127,8 +1143,8 @@ public class SolrManager {
         /*
          * //得到实体对象 List<Person> tmpLists = response.getBeans(Person.class);
          * if(tmpLists!=null && tmpLists.size()>0){
-         * System.out.println("通过文档集合获取查询的结果"); for(Person per:tmpLists){
-         * System.out.println("id:"+per.getId()+"   name:"+per.getName()
+         * MKBLogger.info("通过文档集合获取查询的结果"); for(Person per:tmpLists){
+         * MKBLogger.info("id:"+per.getId()+"   name:"+per.getName()
          * +"    description:"+per.getDescription()); } }
          */
 
@@ -1140,7 +1156,7 @@ public class SolrManager {
         SolrQuery query = new SolrQuery();
         // 1、设置solr查询参数
         String _q = requestParam.getString("q");
-        
+
         String dept = requestParam.getString("dept");
         String startDate = requestParam.getString("startDate");
         String endDate = requestParam.getString("endDate");
@@ -1178,25 +1194,29 @@ public class SolrManager {
             String _keywords = sap.getKeywords(conf);
             q = this.process(_keywords);
         }
-        //(question:嘟嘟  AND  qid:"") OR (question:嘟嘟  AND  -qid:*)
+        // (question:嘟嘟 AND qid:"") OR (question:嘟嘟 AND -qid:*)
         if (q == null) {
             q = "*:* ";
         } else if (q.equals("")) {
-        	q = "*:* ";
+            q = "*:* ";
         }
-        q = q + " AND -qid:[\"\" TO *] AND -(ktype:kb OR ktype:video OR ktype:doc )";//*  在solr当中  应该代表 有值  -取反
-//        String dept = requestParam.getString("dept");
-//        String startDate = requestParam.getString("startDate");
-//        String endDate = requestParam.getString("endDate");
-//        String people = requestParam.getString("people");
-        if(null!=dept&&!"".equals(dept)){
-        	q = q + " AND extend0:"+dept;
+        q = q + " AND -qid:[\"\" TO *] AND -(ktype:kb OR ktype:video OR ktype:doc )";// *
+                                                                                     // 在solr当中
+                                                                                     // 应该代表
+                                                                                     // 有值
+                                                                                     // -取反
+        // String dept = requestParam.getString("dept");
+        // String startDate = requestParam.getString("startDate");
+        // String endDate = requestParam.getString("endDate");
+        // String people = requestParam.getString("people");
+        if (null != dept && !"".equals(dept)) {
+            q = q + " AND extend0:" + dept;
         }
-        if(null!=startDate&&!"".equals(startDate)&&null!=endDate&&!"".equals(endDate)){
-        	q = q + " AND updateTime:["+startDate+" TO "+endDate+"]";
+        if (null != startDate && !"".equals(startDate) && null != endDate && !"".equals(endDate)) {
+            q = q + " AND updateTime:[" + startDate + " TO " + endDate + "]";
         }
-        if(null!=people&&!"".equals(people)){
-        	q = q + " AND extend1:*"+people+"*";
+        if (null != people && !"".equals(people)) {
+            q = q + " AND extend1:*" + people + "*";
         }
 
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
@@ -1248,8 +1268,8 @@ public class SolrManager {
          */
 
         SolrDocumentList solrDocumentList = response.getResults();
-        // System.out.println("通过文档集合获取查询的结果");
-        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
+        // MKBLogger.info("通过文档集合获取查询的结果");
+        MKBLogger.info("搜索结果的总数量：" + solrDocumentList.getNumFound());
 
         JSONObject json = new JSONObject();
 
@@ -1272,7 +1292,7 @@ public class SolrManager {
         JSONArray docs = new JSONArray();
         // 遍历列表
         for (SolrDocument doc : solrDocumentList) {
-            // System.out.println("id:"+doc.get("id")+" name:"+doc.get("name")+"
+            // MKBLogger.info("id:"+doc.get("id")+" name:"+doc.get("name")+"
             // description:"+doc.get("description"));
             /*
              * List<String> hl_title =
@@ -1289,7 +1309,6 @@ public class SolrManager {
             obj.put("qtype", doc.get("qtype"));
             obj.put("domain", doc.get("domain"));
             obj.put("product", doc.get("product"));
-
 
             obj.put("extend0", doc.get("extend0"));
             obj.put("extend1", doc.get("extend1"));
@@ -1312,7 +1331,6 @@ public class SolrManager {
             obj.put("extend18", doc.get("extend18"));
             obj.put("extend19", doc.get("extend19"));
 
-
             docs.add(obj);
 
         }
@@ -1323,13 +1341,13 @@ public class SolrManager {
         /*
          * //得到实体对象 List<Person> tmpLists = response.getBeans(Person.class);
          * if(tmpLists!=null && tmpLists.size()>0){
-         * System.out.println("通过文档集合获取查询的结果"); for(Person per:tmpLists){
-         * System.out.println("id:"+per.getId()+"   name:"+per.getName()
+         * MKBLogger.info("通过文档集合获取查询的结果"); for(Person per:tmpLists){
+         * MKBLogger.info("id:"+per.getId()+"   name:"+per.getName()
          * +"    description:"+per.getDescription()); } }
          */
 
     }
-    
+
     public JSONObject queryAllKbIndexInfo(JSONObject requestParam, Tenant tenant) throws Exception {
 
         HttpSolrClient solrServer = this.getHttpSolrClient();
@@ -1369,13 +1387,13 @@ public class SolrManager {
             String _keywords = sap.getKeywords(conf);
             q = this.process(_keywords);
         }
-        //(question:嘟嘟  AND  qid:"") OR (question:嘟嘟  AND  -qid:*)
+        // (question:嘟嘟 AND qid:"") OR (question:嘟嘟 AND -qid:*)
         if (q == null) {
             q = "*:* ";
         } else if (q.equals("")) {
-        	q = "*:* ";
+            q = "*:* ";
         }
-        q = q + " AND (ktype:kb OR ktype:video OR ktype:doc )";//类型，kb 文档，qa 问答
+        q = q + " AND (ktype:kb OR ktype:video OR ktype:doc )";// 类型，kb 文档，qa 问答
         query.set("q", q);// 相关查询，比如某条数据某个字段含有周、星、驰三个字 将会查询出来 ，这个作用适用于联想查询
 
         // 2、处理权重
@@ -1385,7 +1403,6 @@ public class SolrManager {
 
         query.addSort("updateTime", ORDER.desc);
 
-
         // 设置分页参数
         query.setStart(start);
         query.setRows(rows);// 每一页多少值
@@ -1394,8 +1411,8 @@ public class SolrManager {
         QueryResponse response = solrServer.query(query);
 
         SolrDocumentList solrDocumentList = response.getResults();
-        // System.out.println("通过文档集合获取查询的结果");
-        System.out.println("搜索结果的总数量：" + solrDocumentList.getNumFound());
+        // MKBLogger.info("通过文档集合获取查询的结果");
+        MKBLogger.info("搜索结果的总数量：" + solrDocumentList.getNumFound());
 
         JSONObject json = new JSONObject();
 
@@ -1419,22 +1436,22 @@ public class SolrManager {
         // 遍历列表
         for (SolrDocument doc : solrDocumentList) {
             JSONObject obj = new JSONObject();
-            obj.put("id", doc.get("id")==null?"":doc.get("id"));
-            obj.put("title", doc.get("title")==null?"":doc.get("title"));
-            obj.put("question", doc.get("question")==null?"":doc.get("question"));
-            obj.put("descript", doc.get("descript")==null?"":doc.get("descript"));
-            obj.put("answer", doc.get("answer")==null?"":doc.get("answer"));
-            obj.put("updateTime", doc.get("updateTime")==null?"":doc.get("updateTime"));
-            obj.put("createTime", doc.get("createTime")==null?"":doc.get("createTime"));
-            obj.put("url", doc.get("url")==null?"":doc.get("url"));
-            obj.put("ext_scope", doc.get("ext_scope")==null?"":doc.get("ext_scope"));
-            obj.put("domain", doc.get("domain")==null?"":doc.get("domain"));
-            obj.put("product", doc.get("product")==null?"":doc.get("product"));
-            obj.put("subproduct", doc.get("subproduct")==null?"":doc.get("subproduct"));
-            obj.put("descriptImg", doc.get("descriptImg")==null?"":doc.get("descriptImg"));
-            obj.put("author", doc.get("author")==null?"":doc.get("author"));
-            obj.put("keywords", doc.get("keywords")==null?"":doc.get("keywords"));
-            obj.put("tag", doc.get("tag")==null?"":doc.get("tag"));
+            obj.put("id", doc.get("id") == null ? "" : doc.get("id"));
+            obj.put("title", doc.get("title") == null ? "" : doc.get("title"));
+            obj.put("question", doc.get("question") == null ? "" : doc.get("question"));
+            obj.put("descript", doc.get("descript") == null ? "" : doc.get("descript"));
+            obj.put("answer", doc.get("answer") == null ? "" : doc.get("answer"));
+            obj.put("updateTime", doc.get("updateTime") == null ? "" : doc.get("updateTime"));
+            obj.put("createTime", doc.get("createTime") == null ? "" : doc.get("createTime"));
+            obj.put("url", doc.get("url") == null ? "" : doc.get("url"));
+            obj.put("ext_scope", doc.get("ext_scope") == null ? "" : doc.get("ext_scope"));
+            obj.put("domain", doc.get("domain") == null ? "" : doc.get("domain"));
+            obj.put("product", doc.get("product") == null ? "" : doc.get("product"));
+            obj.put("subproduct", doc.get("subproduct") == null ? "" : doc.get("subproduct"));
+            obj.put("descriptImg", doc.get("descriptImg") == null ? "" : doc.get("descriptImg"));
+            obj.put("author", doc.get("author") == null ? "" : doc.get("author"));
+            obj.put("keywords", doc.get("keywords") == null ? "" : doc.get("keywords"));
+            obj.put("tag", doc.get("tag") == null ? "" : doc.get("tag"));
             obj.put("extend0", doc.get("extend0"));
             obj.put("extend1", doc.get("extend1"));
             obj.put("extend2", doc.get("extend2"));
@@ -1465,7 +1482,6 @@ public class SolrManager {
         return json;
 
     }
-    
 
     ////// pengjf 下面测试调用solrj 删除文档测试代码 begin
     /**
@@ -1502,14 +1518,14 @@ public class SolrManager {
         HttpSolrClient server = new HttpSolrClient("http://127.0.0.1:8080/kb/" + "yycloudkbcore");
         SolrQuery query = new SolrQuery();
 
+        query.set("q", "(*:*  AND  qid:\"\") OR (*:*  AND  -qid:*)");// AND
+                                                                     // -qid:*
 
-        query.set("q", "(*:*  AND  qid:\"\") OR (*:*  AND  -qid:*)");// AND -qid:* 
-
-        query.set("q", "*");// AND -qid:* 
+        query.set("q", "*");// AND -qid:*
         query.setFilterQueries("ktype:tj");
         query.addStatsFieldFacets("question", "answer");
 
-        //query.setQuery("question:pjf OR answer:嘟嘟");
+        // query.setQuery("question:pjf OR answer:嘟嘟");
 
         QueryResponse response = server.query(query);
         SolrDocumentList solrDocumentList = response.getResults();

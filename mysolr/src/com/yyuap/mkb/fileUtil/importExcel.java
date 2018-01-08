@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.DBManager;
 
 /**
@@ -72,7 +73,7 @@ public class importExcel extends HttpServlet {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            System.out.println("end");
+            MKBLogger.info("importExcel end");
         }
         response.getWriter().append("Served at: ").append(request.getContextPath());
     }

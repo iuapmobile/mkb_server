@@ -2,6 +2,8 @@ package com.yyuap.mkb.fileUtil;
 
 import java.io.File;
 
+import com.yyuap.mkb.log.MKBLogger;
+
 public class FileUtil {
 
     public static void getFiles(String filePath) {
@@ -13,10 +15,10 @@ public class FileUtil {
                  * 递归调用
                  */
                 getFiles(file.getAbsolutePath());
-                //filelist.add(file.getAbsolutePath());
-                System.out.println("显示" + filePath + "下所有子目录及其文件" + file.getAbsolutePath());
+                // filelist.add(file.getAbsolutePath());
+                MKBLogger.info("显示" + filePath + "下所有子目录及其文件" + file.getAbsolutePath());
             } else {
-                System.out.println("显示" + filePath + "下所有子目录" + file.getAbsolutePath());
+                MKBLogger.info("显示" + filePath + "下所有子目录" + file.getAbsolutePath());
             }
         }
     }

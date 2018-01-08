@@ -3,6 +3,7 @@ package com.yyuap.mkb.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.services.util.PropertiesUtil;
 
 public class MeContextListener implements ServletContextListener
@@ -16,7 +17,7 @@ public class MeContextListener implements ServletContextListener
     @Override
 	public void contextInitialized(ServletContextEvent arg0)
     {
-    	    System.out.println(arg0.getServletContext().getContextPath());
+    	    MKBLogger.info(arg0.getServletContext().getContextPath());
 //            Thread t = new Thread(new Runnable()
 //            {
 //                
@@ -25,7 +26,7 @@ public class MeContextListener implements ServletContextListener
 //                {
 //                    try
 //                    {
-//                    	System.out.println(arg0.getServletContext().getContextPath());
+//                    	MKBLogger.info(arg0.getServletContext().getContextPath());
 //                        Thread.sleep(10 * 1000);
 //                    }
 //                    catch (InterruptedException e)

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.PropertyConfigurator;
 
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.services.util.PropertiesUtil;
 
 public class MeLog4jListener implements ServletContextListener
@@ -20,7 +21,7 @@ public class MeLog4jListener implements ServletContextListener
         String log4jFile = ctx.getInitParameter("log4j");
         String log4jConfigPath = prefix + log4jFile;
         PropertyConfigurator.configure(log4jConfigPath);
-        System.out.println("initialized log4j finish");
+        MKBLogger.info("initialized log4j finish");
     }
 
     @Override

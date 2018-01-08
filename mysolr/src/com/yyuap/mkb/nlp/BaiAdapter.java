@@ -15,6 +15,7 @@ import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 class BaiAdapter {
@@ -44,7 +45,7 @@ class BaiAdapter {
             JSONObject obj = JSONObject.parseObject(botRes);
             String access_token = obj.getString("access_token");
             String expires_in = obj.getString("expires_in");
-            System.out.println(
+            MKBLogger.info(
                     "ai.baidu.com >>>get token finish! access_token: " + access_token + ", expires_in:" + expires_in);
 
             String url = simnet_url + "?access_token=" + access_token;
@@ -72,7 +73,7 @@ class BaiAdapter {
             score = jsonRet.getFloatValue("score");
             String log = String.format("+++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=%s，_q=%s，结果：%s", text_2,
                     text_1, dataStr);
-            System.out.println(log);
+            MKBLogger.info(log);
 
             return score;
 
@@ -86,7 +87,7 @@ class BaiAdapter {
             // TODO 自动生成的 catch 块
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("BaiAdapter simnet Exception:" + e.toString());
+            MKBLogger.info("BaiAdapter simnet Exception:" + e.toString());
         }
 
         return score;

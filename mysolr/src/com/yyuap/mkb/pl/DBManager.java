@@ -28,6 +28,7 @@ import com.yyuap.mkb.entity.KBSynonym;
 import com.yyuap.mkb.entity.QaCollection;
 import com.yyuap.mkb.fileUtil.ExcelReader;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.SolrManager;
 
 /**
@@ -83,7 +84,7 @@ public class DBManager {
             DbUtil.insert(Common.INSERT_KBINDEXINFO_SQL, kbIndex, dbconf);
             return false;
         } else {
-            System.out.println("The Record was Exist : title. = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
+            MKBLogger.info("The Record was Exist : title. = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
                     + ", descript = " + kbIndex.getDescript() + ", and has been throw away!");
             return false;
         }
@@ -157,7 +158,7 @@ public class DBManager {
 
                 return ret;
             } else {
-                System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
+                MKBLogger.info("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
                         + qa.getAnswer() + ", and has been throw away!");
                 String id = list.get(0).getId();
 
@@ -218,7 +219,7 @@ public class DBManager {
 
                 return ret;
             } else {
-                System.out.println("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
+                MKBLogger.info("The Record was Exist : question. = " + qa.getQuestion() + " , answer = "
                         + qa.getAnswer() + ", and has been throw away!");
                // String id = list.get(0).getId();
                 ret.add(list.get(0).getQuestion());
@@ -272,7 +273,7 @@ public class DBManager {
             	}
                 list = DbUtil.selectAnswerSimilarFromDB(sql, q, dbconf,tag);
             } catch (SQLException e) {
-                System.out.println("selectUniqueAnswer方法异常，取相似问题时，出现异常");
+                MKBLogger.info("selectUniqueAnswer方法异常，取相似问题时，出现异常");
             }
             if (list.size() == 1) {
                 ret = list.get(0);
@@ -371,7 +372,7 @@ public class DBManager {
         try {
             id = DbUtil.insertQA_TJ(Common.INSERT_QA_TJ_SQL, qa, dbconf);
 
-            System.out.println("+++++记录查询[" + tenant.gettname() + "] : question = " + qa.getQuestion() + " answer = "
+            MKBLogger.info("+++++记录查询[" + tenant.gettname() + "] : question = " + qa.getQuestion() + " answer = "
                     + qa.getAnswer() + " simscore = " + qa.getSimscore() + " by tname=" + tenant.gettname()
                     + ", tusername=" + tenant.gettusername() + ", apiKey=" + tenant.gettAPIKey());
 
@@ -675,7 +676,7 @@ public class DBManager {
         String str = "u订货可以在微信端使用吗？";
         String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？\\s]";
         str.replaceAll(regEx, "");
-        System.out.println(str.replaceAll(regEx, ""));
+        MKBLogger.info(str.replaceAll(regEx, ""));
     }
 
     public boolean setIsTop(String qaid, String istop, Tenant tenant) throws SQLException {
@@ -762,7 +763,7 @@ public class DBManager {
                 
                 return vo.getId();
             } else {
-            	 System.out.println("The Record was Exist : title. = " + vo.getTitle() + ", has been throw away!");
+            	 MKBLogger.info("The Record was Exist : title. = " + vo.getTitle() + ", has been throw away!");
             	 String id = list.get(0).getId();
                  KBDuplicateSQLException e = new KBDuplicateSQLException(
                          "存在重复的记录title[" + vo.getTitle() + "], 未能持久化成功改次操作");

@@ -290,7 +290,7 @@ public class solrQueryRules {
             ret.add(word);
         }
         // String[] a = new Array();
-        // System.out.println("分词结果：" + ret.toArray(a).toString());
+        // MKBLogger.info("分词结果：" + ret.toArray(a).toString());
         return ret;
     }
 }

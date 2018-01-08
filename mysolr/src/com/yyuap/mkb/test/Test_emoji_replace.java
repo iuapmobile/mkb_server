@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.yyuap.mkb.log.MKBLogger;
+
 public class Test_emoji_replace {
 
     public static void test() {
@@ -25,7 +27,7 @@ public class Test_emoji_replace {
 
         for (String str : list) {
             String newStr = filterEmoji(str, "");
-            System.out.println(newStr);
+            MKBLogger.info(newStr);
         }
 
     }

@@ -17,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import com.yyuap.mkb.entity.KBINDEXTYPE;
 import com.yyuap.mkb.entity.KBIndex;
+import com.yyuap.mkb.log.MKBLogger;
 
 import javafx.animation.KeyValue.Type;
 
@@ -95,7 +96,7 @@ public class ExcelReader {
 
                     if (kbIndex.getTitle().equals("") && kbIndex.getDescript().equals("") && kbIndex.getUrl().equals("")
                             && kbIndex.getText().equals("")) {
-                        System.out.println("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
+                        MKBLogger.info("numSheet : " + hssfSheet.getSheetName() + " , rowNum : " + rowNum
                                 + " title is empty!");
                     } else {
                         list.add(kbIndex);

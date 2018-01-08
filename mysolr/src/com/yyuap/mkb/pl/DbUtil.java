@@ -27,6 +27,7 @@ import com.yyuap.mkb.entity.KBQAFeedback;
 import com.yyuap.mkb.entity.KBQS;
 import com.yyuap.mkb.entity.KBSynonym;
 import com.yyuap.mkb.entity.QaCollection;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.SolrManager;
 
 /**
@@ -114,7 +115,7 @@ public class DbUtil {
 
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("import data : title = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
+                MKBLogger.info("import data : title = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
                         + ", descript = " + kbIndex.getDescript() + " succeed!");
             }
         } catch (Exception e) {
@@ -254,7 +255,7 @@ public class DbUtil {
 
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("update data : title = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
+                MKBLogger.info("update data : title = " + kbIndex.getTitle() + " , url = " + kbIndex.getUrl()
                         + ", descript = " + kbIndex.getDescript() + " succeed!");
             }
         } catch (Exception e) {
@@ -434,7 +435,7 @@ public class DbUtil {
                 ret = id;
                 qa.setCreateTime(datetime);
                 qa.setUpdateTime(datetime);
-                System.out.println("insert a row into QA table success!: question=" + qa.getQuestion() + ", answer="
+                MKBLogger.info("insert a row into QA table success!: question=" + qa.getQuestion() + ", answer="
                         + qa.getAnswer() + ", url=" + qa.getUrl());
 
             }
@@ -724,10 +725,10 @@ public class DbUtil {
                     kbqs.setQuestion(qs);
                     kbqs.setQid(qa.getId());
                     qa.getQS().add(kbqs);// 这里将成功insert数据库的数据转化为kbqs，供插入solr使用
-                    System.out.println(
+                    MKBLogger.info(
                             "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " succeed!");
                 } else {
-                    System.out.println(
+                    MKBLogger.info(
                             "import data[" + id + "] : question_similar = " + qa.getQuestions()[i] + " failed!");
                 }
 
@@ -1024,7 +1025,7 @@ public class DbUtil {
 
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("update data succeed!");
+                MKBLogger.info("update data succeed!");
                 id = fb.getId();
             }
         } catch (Exception e) {
@@ -1059,7 +1060,7 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = true;
-                System.out.println("delete qa record : id = " + id + " succeed!");
+                MKBLogger.info("delete qa record : id = " + id + " succeed!");
             }
         } catch (Exception e) {
 
@@ -1239,7 +1240,7 @@ public class DbUtil {
             if (!flag) {
                 ret = true;
                 qa.setUpdateTime(datetime);
-                System.out.println("import data : question = " + qa.getQuestion() + " succeed!");
+                MKBLogger.info("import data : question = " + qa.getQuestion() + " succeed!");
             }
         } catch (Exception e) {
             // e.toString()
@@ -1273,7 +1274,7 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = true;
-                System.out.println("delete qa_similar record : id = " + qs.getId() + " succeed!");
+                MKBLogger.info("delete qa_similar record : id = " + qs.getId() + " succeed!");
             }
         } catch (Exception e) {
 
@@ -1310,7 +1311,7 @@ public class DbUtil {
 
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("update data succeed!");
+                MKBLogger.info("update data succeed!");
                 id = qs.getId();
                 qs.setUpdateTime(datetime);
                 ret = true;
@@ -1360,7 +1361,7 @@ public class DbUtil {
                 ret = id;
                 qs.setCreateTime(datetime);
                 qs.setUpdateTime(datetime);
-                System.out.println("insert qa_similar row : question = " + qs.getQuestion() + " succeed!");
+                MKBLogger.info("insert qa_similar row : question = " + qs.getQuestion() + " succeed!");
             }
         } catch (Exception e) {
             // e.toString()
@@ -1424,7 +1425,7 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = id;
-                System.out.println("import data : qacollection 用户：= " + qac.getUserid() + "----标题：" + qac.getTitle()
+                MKBLogger.info("import data : qacollection 用户：= " + qac.getUserid() + "----标题：" + qac.getTitle()
                         + " succeed!");
             }
         } catch (Exception e) {
@@ -1656,7 +1657,7 @@ public class DbUtil {
             boolean flag = ps.execute();
             if (!flag) {
                 ret = true;
-                System.out.println("update istop data : id = " + qaid + " succeed!");
+                MKBLogger.info("update istop data : id = " + qaid + " succeed!");
             }
         } catch (Exception e) {
             // e.toString()
@@ -1899,7 +1900,7 @@ public class DbUtil {
 
             boolean flag = ps.execute();
             if (!flag) {
-                System.out.println("更新文档成功，id====" + kbIndex.getId());
+                MKBLogger.info("更新文档成功，id====" + kbIndex.getId());
                 rflag = true;
             }
         } catch (Exception e) {

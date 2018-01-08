@@ -14,6 +14,7 @@ import org.apache.commons.httpclient.HttpException;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.nlp.OpenAPI;
 
 public class simnet {
@@ -132,7 +133,7 @@ public class simnet {
                                         }else if (wei_yu_reason1.equals("家里有事")){
                                             reason = zhuyu0 +  wei_yu_reason1;
                                         }
-                                        // System.out.println(xxx);
+                                        // MKBLogger.info(xxx);
 
                                         // ps.println(q + " 原因:" + reason);//
                                         // 往文件里写入字符串
@@ -153,7 +154,7 @@ public class simnet {
                 }
             }
             writeExcelX(dataSource, filePath, KBINDEXTYPE.QA);
-            System.out.println("一共造句" + count);
+            MKBLogger.info("一共造句" + count);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -387,12 +388,12 @@ public class simnet {
             String q3 = obj.getString("d");
             String score = obj.getString("score");
 
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("用户问:" + q1);
-            System.out.println("预置问:" + q2);
-            System.out.println("原因:" + q3);
-            System.out.println(score);
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<");
+            MKBLogger.info(">>>>>>>>>>>>>>>>>>>>>");
+            MKBLogger.info("用户问:" + q1);
+            MKBLogger.info("预置问:" + q2);
+            MKBLogger.info("原因:" + q3);
+            MKBLogger.info(score);
+            MKBLogger.info("<<<<<<<<<<<<<<<<<<<<<");
 
         }
     }

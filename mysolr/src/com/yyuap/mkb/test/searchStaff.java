@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.Common;
 import com.yyuap.mkb.pl.DBConfig;
 import com.yyuap.mkb.pl.DbUtil;
@@ -18,7 +19,7 @@ public class searchStaff {
     public static void test() {
         String q = "姚";
         JSONArray ret = searchStaff.selectFromDB(q);
-        System.out.println(ret.toJSONString());
+        MKBLogger.info(ret.toJSONString());
     }
 
     public static JSONArray selectFromDB(String q) {

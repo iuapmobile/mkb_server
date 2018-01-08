@@ -25,6 +25,7 @@ import org.wltea.analyzer.core.Lexeme;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 //develop
@@ -44,18 +45,16 @@ public class Main {
     // System.out.print(term.toString()+"|");
     // }
     // reader.close();
-    // System.out.println();
+    // MKBLogger.info();
     // }
 
     public static void main(String[] args) throws IOException {
         // String path = "/Users/gct/work2/xiaoyou/stuff原始数据_renyuan.xls";
         // importStaff.test();
-       //searchStaff.test();
+        // searchStaff.test();
 
-        
         importAtomServices.test();
-        
-        
+
         // Test_emoji_replace.test();
 
         // TestEmotiboChat.chat();
@@ -70,7 +69,7 @@ public class Main {
         // Pattern pattern = Pattern.compile(reg);
         // java.util.regex.Matcher m = pattern.matcher("这个是什么牌子的？");
         // while (m.find()) {
-        // System.out.println(m.group());// 输出“牌子”
+        // MKBLogger.info(m.group());// 输出“牌子”
         // String xxxx1 = m.group();
         // String xxxx2 = m.group(0);
         // }
@@ -139,11 +138,11 @@ public class Main {
 
         for (int i = 0, len = list.size(); i < len; i++) {
             String text = list.get(i);
-            System.out.println(i + ":");// 输出
+            MKBLogger.info(i + ":");// 输出
 
             predictIntent(text);
         }
-        System.out.println("-----------------end");// 输出
+        MKBLogger.info("-----------------end");// 输出
     }
 
     public static void predictIntent(String text) {
@@ -174,8 +173,8 @@ public class Main {
             ok = true;
         }
         if (!ok) {
-            System.out.println(text + "*****************非打电话场景");
-            System.out.println("");
+            MKBLogger.info(text + "*****************非打电话场景");
+            MKBLogger.info("");
             return;
         }
         ArrayList<String> regList = new ArrayList<String>();
@@ -206,13 +205,13 @@ public class Main {
 
                 String name = m.group();
                 if (name.length() == 0) {
-                    System.out.println(text + "*****************非打电话场景");
-                    System.out.println("");
+                    MKBLogger.info(text + "*****************非打电话场景");
+                    MKBLogger.info("");
                     continue;
                 }
-                System.out.println((name.equals("姚磊") ? "" : "**********Err:") + text + "====>" + name
+                MKBLogger.info((name.equals("姚磊") ? "" : "**********Err:") + text + "====>" + name
                         + "                 reg" + index + ":" + reg);// 输出
-                System.out.println();
+                MKBLogger.info("-----------");
                 has = true;
             }
             if (has) {
@@ -233,7 +232,7 @@ public class Main {
             System.out.print(lex.getLexemeText() + "|");
             ret.add(lex.getLexemeText());
         }
-        System.out.println("");
+        MKBLogger.info("");
         return ret;
     }
 
@@ -247,7 +246,7 @@ public class Main {
         Pattern pattern = Pattern.compile(reg);
         java.util.regex.Matcher m = pattern.matcher("这个是什么牌子的？");
         while (m.find()) {
-            System.out.println(m.group());// 输出“牌子”
+            MKBLogger.info(m.group());// 输出“牌子”
             String xxxx1 = m.group();
             String xxxx2 = m.group(0);
         }
@@ -256,7 +255,7 @@ public class Main {
         Pattern pattern2 = Pattern.compile(reg);
         java.util.regex.Matcher m2 = pattern.matcher("给姚磊打电话？");
         while (m2.find()) {
-            System.out.println(m2.group());// 输出“牌子”
+            MKBLogger.info(m2.group());// 输出“牌子”
             String xxxx1 = m2.group();
             String xxxx2 = m2.group(0);
         }
@@ -298,7 +297,7 @@ public class Main {
             while ((lex = ik.next()) != null) {
                 System.out.print(lex.getLexemeText() + "|");
             }
-            System.out.println("");
+            MKBLogger.info("");
         }
 
         MKBHttpClient httpclient = new MKBHttpClient();
@@ -314,7 +313,7 @@ public class Main {
         String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
         JSONObject obj = JSONObject.parseObject(botRes);
         String access_token = obj.getString("access_token");
-        System.out.println("access_token: " + access_token);
+        MKBLogger.info("access_token: " + access_token);
 
         // String url =
         // "https://aip.baidubce.com/rpc/2.0/nlp/v2/word_emb_sim?access_token="
@@ -347,7 +346,7 @@ public class Main {
 
                 JSONObject jsonRet = JSONObject.parseObject(dataStr);
 
-                System.out.println(dataStr);
+                MKBLogger.info(dataStr);
 
             }
         } catch (UnsupportedEncodingException e) {
@@ -417,7 +416,7 @@ public class Main {
         String botRes = httpclient.doPost(tokenURL, createMap, charset, null);
         JSONObject obj = JSONObject.parseObject(botRes);
         String access_token = obj.getString("access_token");
-        System.out.println("access_token: " + access_token);
+        MKBLogger.info("access_token: " + access_token);
         return access_token;
     }
 
@@ -450,7 +449,7 @@ public class Main {
 
         JSONObject jsonRet = JSONObject.parseObject(dataStr);
 
-        System.out.println(dataStr);
+        MKBLogger.info(dataStr);
         return jsonRet;
     }
 

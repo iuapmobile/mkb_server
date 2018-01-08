@@ -6,6 +6,8 @@ import javax.servlet.ServletContextEvent;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.yyuap.mkb.log.MKBLogger;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -18,11 +20,11 @@ public class RedisUtil {
 //		 if(jedis == null){
 //			 jedis = new Jedis("10.3.13.7",6868);
 //			 jedis.auth("yywl_ydpt");
-//			 System.out.println("新创建");
+//			 MKBLogger.info("新创建");
 //		 }
-//		 System.out.println("连接成功");
+//		 MKBLogger.info("连接成功");
 //	     //查看服务是否运行
-//	     System.out.println("服务正在运行: "+jedis.ping());
+//	     MKBLogger.info("服务正在运行: "+jedis.ping());
 //	     
 //	     return jedis;
 //	 }
@@ -172,7 +174,7 @@ public class RedisUtil {
 	
 	 public static void main(String[] args) {
 //		 RedisUtil.setString("testpjf", "testpjf");
-		 System.out.println(RedisUtil.getString("667eb1cb-8776-445f-bb38-5e57a0ca336c"));
+		 MKBLogger.info(RedisUtil.getString("667eb1cb-8776-445f-bb38-5e57a0ca336c"));
 	}
 	 
 }

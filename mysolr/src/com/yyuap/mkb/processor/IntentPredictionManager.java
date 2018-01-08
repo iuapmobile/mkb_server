@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 public class IntentPredictionManager {
@@ -97,11 +98,11 @@ public class IntentPredictionManager {
 
                 name = m.group();
                 if (name.length() == 0) {
-                    System.out.println(text + "*****************非打电话场景");
-                    System.out.println("");
+                    MKBLogger.info(text + "*****************非打电话场景");
+                    MKBLogger.info("");
                     continue;
                 }
-                System.out.println(text + "====>" + name + "                 reg" + i + ":" + reg);// 输出
+                MKBLogger.info(text + "====>" + name + "                 reg" + i + ":" + reg);// 输出
                 has = true;
             }
             if (has) {

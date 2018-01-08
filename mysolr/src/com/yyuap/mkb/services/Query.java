@@ -334,9 +334,9 @@ public class Query extends HttpServlet {
                                         Map<String, String> mapParms = new HashMap<String, String>();
                                         String tl_url = "http://www.tuling123.com/openapi/api";
                                         String key = tenant.getbotKey();
-                                        mapParms.put("appid", key);
+                                        mapParms.put("key", key);
                                         mapParms.put("userid", userid);
-                                        mapParms.put("text", q);
+                                        mapParms.put("info", q);
 
                                         TulingBot tl = new TulingBot();
                                         JSONObject jsonTu = tl.chat(tl_url, mapParms, null);

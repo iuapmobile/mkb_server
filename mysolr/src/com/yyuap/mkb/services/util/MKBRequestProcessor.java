@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 
 public class MKBRequestProcessor {
 
@@ -19,7 +20,7 @@ public class MKBRequestProcessor {
                 json.append(line);
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            MKBLogger.info(e.toString());
         }
         String str = json.toString();
         try {

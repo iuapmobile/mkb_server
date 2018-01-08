@@ -2,6 +2,7 @@ package com.yyuap.mkb.cbo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 
 public class Tenant {
 
@@ -246,7 +247,7 @@ public class Tenant {
             try {
                 this.bot_api_ia_conf_JSON = JSON.parseObject(this.bot_api_ia_conf);
             } catch (Exception e) {
-                System.out.println(e.toString());
+                MKBLogger.error("Tenant.java getBot_api_ia_conf_JSON() Exception: " + e.toString());
             }
         }
         return this.bot_api_ia_conf_JSON;

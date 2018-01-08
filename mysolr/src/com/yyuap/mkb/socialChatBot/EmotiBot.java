@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 
 public class EmotiBot {
 
@@ -19,7 +20,7 @@ public class EmotiBot {
             if (data.size() > 0) {
                 String answer = data.getJSONObject(0).getString("value");
                 // text = "您是要问我知识库以外的问题？好吧，我想说的是" + text;
-                System.out.println("zhujian answer:" + answer);
+                MKBLogger.info("zhujian answer:" + answer);
                 // return obj;
                 
                 

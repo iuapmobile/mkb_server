@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBSynonym;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.DBManager;
 
 public class MKBSessionManager {
@@ -33,7 +34,7 @@ public class MKBSessionManager {
             }
 
         } catch (Exception e) {
-            System.out.println("getSynonym failed! tname=" + tenant.gettname() + ", apiKey=" + tenant.gettAPIKey());
+            MKBLogger.info("getSynonym failed! tname=" + tenant.gettname() + ", apiKey=" + tenant.gettAPIKey());
         }
         return list;
     }
@@ -108,7 +109,7 @@ public class MKBSessionManager {
             return new_q;
 
         } catch (Exception e) {
-            System.out.println("getSynonym failed! tname=" + tenant.gettname() + ", apiKey=" + tenant.gettAPIKey());
+            MKBLogger.info("getSynonym failed! tname=" + tenant.gettname() + ", apiKey=" + tenant.gettAPIKey());
         }
 
         return null;

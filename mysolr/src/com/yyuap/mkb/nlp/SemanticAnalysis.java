@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 
 public class SemanticAnalysis {
     public String getKeywords(SAConfig conf){
@@ -38,7 +39,7 @@ public class SemanticAnalysis {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(result);
+        MKBLogger.info(result);
        
         return result;
     }
