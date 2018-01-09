@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.servlet.ServletContextEvent;
+
 import com.yyuap.mkb.log.MKBLogger;
 
 public class PropertiesUtil {

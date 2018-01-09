@@ -3,6 +3,8 @@ package com.yyuap.mkb.services.util;
 import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.log.MKBLogger;
 
