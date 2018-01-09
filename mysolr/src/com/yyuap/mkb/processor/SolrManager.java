@@ -66,9 +66,9 @@ public class SolrManager {
 
     public SolrManager(String kbcore) {
         String x = "ddd";
-        if (x == "ddd") {
+        
             SOLR_URL = "http://" + this.BOT_IP + ":" + this.BOT_PORT + "/" + this.BOT_WEBAPP + "/" + kbcore;
-        }
+        
     }
 
     public SolrManager(String ip, String port, String kb, String kbcore) {

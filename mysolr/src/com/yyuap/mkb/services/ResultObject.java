@@ -113,7 +113,7 @@ public class ResultObject {
     }
 
     public void setResponseKV(String key, Object value) {
-        if (key == null && key == null) {
+        if (key == null) {
             return;
         }
         if (key.equals(this.RESPONSE_BOTRESPONSE)) {
