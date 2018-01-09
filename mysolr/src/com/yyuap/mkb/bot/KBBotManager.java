@@ -4,18 +4,16 @@ package com.yyuap.mkb.bot;
 import java.io.IOException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.socialChatBot.MKBHttpClient;
 
 public class KBBotManager {
@@ -80,10 +78,10 @@ String d = "";
             String data = resJson.getString("data"); // 成功：数据添加成功条数 失败：失败原因的描述
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
 
     }

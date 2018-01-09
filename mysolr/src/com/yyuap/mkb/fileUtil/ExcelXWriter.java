@@ -7,8 +7,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFCell;
@@ -18,10 +16,8 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
-import com.yyuap.mkb.entity.KBIndex;
-import com.yyuap.mkb.processor.QAManager;
+import com.yyuap.mkb.log.MKBLogger;
 
 /**
  * 
@@ -91,7 +87,7 @@ public class ExcelXWriter {
             wb.write(outXlsx);
         } catch (Exception e) {
             flag = false;
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } finally {
             try {
                 if (outXlsx != null) {
@@ -101,7 +97,7 @@ public class ExcelXWriter {
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
 
             }
         }

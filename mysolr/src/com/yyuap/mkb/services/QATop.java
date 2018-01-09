@@ -5,14 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
@@ -92,7 +84,7 @@ public class QATop extends HttpServlet {
             tenant = api.getTenantInfo(apiKey);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         MKBLogger.info(System.getProperty("user.dir"));
         QAManager qamgr = new QAManager();
@@ -130,7 +122,7 @@ public class QATop extends HttpServlet {
                 str = java.net.URLDecoder.decode(str, "UTF-8");
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
 
             String[] strs = str.split("&");
@@ -162,7 +154,7 @@ public class QATop extends HttpServlet {
             tenant = api.getTenantInfo("bc2b9ac6ea134eeb940bb1ec43ff3a5a");
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         MKBLogger.info(PropertiesUtil.class.getClassLoader().getResource("jdbc.properties").getPath());
     }

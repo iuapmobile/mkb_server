@@ -82,7 +82,7 @@ class BaiAdapter {
         	MKBLogger.info("BaiAdapter simnet Exception:" + e.toString());
         } catch (HttpException e) {
             // TODO 自动生成的 catch 块
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
             // TODO 自动生成的 catch 块
         	MKBLogger.info("BaiAdapter simnet Exception:" + e.toString());

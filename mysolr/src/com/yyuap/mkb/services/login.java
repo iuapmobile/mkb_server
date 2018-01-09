@@ -3,19 +3,10 @@ package com.yyuap.mkb.services;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.cbo.TenantInfo;
-import com.yyuap.mkb.pl.KBDuplicateSQLException;
-import com.yyuap.mkb.processor.QAManager;
+import com.yyuap.mkb.log.MKBLogger;
 
 /**
  * Servlet implementation class login
@@ -63,7 +54,7 @@ public class login extends HttpServlet {
         try {
         	tenantinfo = api.getTenantInfoForLogin(username,password);
         } catch (SQLException e1) {
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         if (tenantinfo == null) {
         	JSONObject ret = new JSONObject();

@@ -3,12 +3,6 @@ package com.yyuap.mkb.fileUtil;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
@@ -56,7 +50,7 @@ public class importExcel extends HttpServlet {
                 tenant = api.getTenantInfo(apiKey);
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
             if (tenant == null) {
                 return;
@@ -71,7 +65,7 @@ public class importExcel extends HttpServlet {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
             MKBLogger.info("importExcel end");
         }

@@ -3,8 +3,6 @@ package com.yyuap.mkb.services.util;
 import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.log.MKBLogger;
 
@@ -31,7 +29,7 @@ public class MKBRequestProcessor {
                 str = java.net.URLDecoder.decode(str, "UTF-8");
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
 
             String[] strs = str.split("&");
@@ -54,7 +52,7 @@ public class MKBRequestProcessor {
                     q = java.net.URLDecoder.decode(q, "utf-8");
                 } catch (UnsupportedEncodingException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    MKBLogger.error("Exception:" + e.toString());
                 }
             }
         }

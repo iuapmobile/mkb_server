@@ -5,17 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.yyuap.mkb.cbo.CBOManager;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.cbo.TenantInfo;
+import com.yyuap.mkb.log.MKBLogger;
 
 /**
  * Servlet implementation class AddStore
@@ -66,7 +60,7 @@ public class QueryTenant extends HttpServlet {
             	list.add(tenant);
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
         }else{
         	CBOManager api = new CBOManager();
@@ -74,7 +68,7 @@ public class QueryTenant extends HttpServlet {
             	list = api.getTenantInfo();
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
         }
 
