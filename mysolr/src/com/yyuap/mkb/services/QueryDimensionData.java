@@ -1,8 +1,6 @@
 package com.yyuap.mkb.services;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,16 +8,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.services.ResultObject;
-import com.yyuap.mkb.services.ResultObjectFactory;
 
 /**
  * 查询具体维度值
@@ -101,7 +97,7 @@ public class QueryDimensionData extends HttpServlet {
             } else {
                 ro.setStatus(1000);
                 ro.setReason(e.toString());
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
         response.getWriter().write(ro.toString());

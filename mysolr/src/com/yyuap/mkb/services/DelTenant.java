@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yyuap.mkb.cbo.CBOManager;
+import com.yyuap.mkb.log.MKBLogger;
 
 /**
  * Servlet implementation class UpdateTenant
@@ -62,7 +63,7 @@ public class DelTenant extends HttpServlet {
         	flag = api.delTenantInfo(id);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         if(flag){
         	ro.setStatus(0);

@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -17,12 +16,8 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.log.MKBLogger;
@@ -151,7 +146,7 @@ public class Main {
         // JSONObject obj = fenci(text);
         // } catch (IOException e) {
         // // TODO Auto-generated catch block
-        // e.printStackTrace();
+        // MKBLogger.error("Exception:" + e.toString());
         // }
 
         boolean ok = false;
@@ -351,13 +346,13 @@ public class Main {
             }
         } catch (UnsupportedEncodingException e) {
             // TODO 自动生成的 catch 块
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (HttpException e) {
             // TODO 自动生成的 catch 块
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
             // TODO 自动生成的 catch 块
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
 
         //

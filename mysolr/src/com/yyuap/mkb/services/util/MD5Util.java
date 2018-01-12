@@ -9,6 +9,8 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Hex;
 
+import com.yyuap.mkb.log.MKBLogger;
+
 
 public class MD5Util
 {
@@ -31,7 +33,7 @@ public class MD5Util
              return sb.toString();  
          } catch (NoSuchAlgorithmException e) {  
              // TODO Auto-generated catch block  
-             e.printStackTrace();  
+             MKBLogger.error("Exception:" + e.toString());  
          }  
        
      return "" ;  

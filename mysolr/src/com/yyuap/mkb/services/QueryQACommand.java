@@ -3,7 +3,6 @@ package com.yyuap.mkb.services;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.pl.KBSQLException;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
 
 
@@ -57,7 +56,7 @@ public class QueryQACommand extends HttpServlet {
             tenant = api.getTenantInfo(apiKey);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         ResultObjectFactory rof = new ResultObjectFactory();
         ResultObject ro = rof.create(0);

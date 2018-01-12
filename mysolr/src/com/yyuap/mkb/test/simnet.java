@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
 
 import org.apache.commons.httpclient.HttpException;
 
@@ -76,10 +75,10 @@ public class simnet {
             }
         } catch (HttpException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
 
         print(result);
@@ -157,7 +156,7 @@ public class simnet {
             MKBLogger.info("一共造句" + count);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 
@@ -168,7 +167,7 @@ public class simnet {
             xwriter.writeXlsx(dataSource, filePath, type);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 
@@ -412,7 +411,7 @@ public class simnet {
             // ps.append(txt);// 在已有的基础上添加字符串
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
     }
 }

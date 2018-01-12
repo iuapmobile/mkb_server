@@ -16,7 +16,6 @@ import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.services.util.MKBRequestProcessor;
 
 /**
  * Servlet implementation class UpdateQA
@@ -121,7 +120,7 @@ public class UpdateQAQS extends HttpServlet {
             tenant = api.getTenantInfo(apiKey);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         if (tenant == null) {
             return;
@@ -158,7 +157,7 @@ public class UpdateQAQS extends HttpServlet {
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
             ro.setStatus(1169);
             ro.setReason(e.toString());
         }
@@ -188,7 +187,7 @@ public class UpdateQAQS extends HttpServlet {
                 str = java.net.URLDecoder.decode(str, "UTF-8");
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
 
             String[] strs = str.split("&");

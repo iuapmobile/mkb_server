@@ -56,7 +56,7 @@ public class importExcel extends HttpServlet {
                 tenant = api.getTenantInfo(apiKey);
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
             if (tenant == null) {
                 return;
@@ -71,7 +71,7 @@ public class importExcel extends HttpServlet {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
             MKBLogger.info("importExcel end");
         }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBINDEXTYPE;
-import com.yyuap.mkb.pl.DBManager;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.SolrManager;
 
 /**
@@ -60,7 +60,7 @@ public class ImportExcel2DB extends HttpServlet {
                 tenant = api.getTenantInfo(apiKey);
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
-                e1.printStackTrace();
+                MKBLogger.error("Exception:" + e1.toString());
             }
             if (tenant == null) {
                 return;

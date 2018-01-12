@@ -2,9 +2,7 @@ package com.yyuap.mkb.services;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.tika.exception.TikaException;
 import org.xml.sax.SAXException;
 
@@ -20,6 +17,7 @@ import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.entity.KBIndex;
 import com.yyuap.mkb.fileUtil.ExcelXReader;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.SolrManager;
 
 /**
@@ -66,7 +64,7 @@ public class IndexFiles extends HttpServlet {
             tenant = api.getTenantInfo(apiKey);
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         if (tenant == null) {
             return;
@@ -88,13 +86,13 @@ public class IndexFiles extends HttpServlet {
                     mgr.indexTikaFile(_fullPath, kb, tenant);
                 } catch (SAXException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    MKBLogger.error("Exception:" + e.toString());
                 } catch (TikaException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    MKBLogger.error("Exception:" + e.toString());
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    MKBLogger.error("Exception:" + e.toString());
                 }
             }
         } else if (path != null && !path.equals("")) {
@@ -103,13 +101,13 @@ public class IndexFiles extends HttpServlet {
                 mgr.indexTikaFile(path, kb, tenant);
             } catch (SAXException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             } catch (TikaException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
         response.getWriter().append("Served at: ").append(request.getContextPath());

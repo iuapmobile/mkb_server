@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.SolrManager;
 
 /**
@@ -70,7 +71,7 @@ public class ImportQA extends HttpServlet {
             paramItems = diskFileUpload.parseRequest(request);  
   
         } catch (FileUploadException e) {  
-            e.printStackTrace();  
+            MKBLogger.error("Exception:" + e.toString());  
         }  
         Iterator i = paramItems.iterator();  
         // 依次出来每个文件 请求参数  
@@ -87,7 +88,7 @@ public class ImportQA extends HttpServlet {
                 try {  
                 	apiKey = fi.getString("utf-8");  
                 } catch (UnsupportedEncodingException e) {  
-                    e.printStackTrace();  
+                    MKBLogger.error("Exception:" + e.toString());  
                 }  
             }  
         }  
@@ -108,7 +109,7 @@ public class ImportQA extends HttpServlet {
                 } catch (SQLException e1) {
                     ro.setStatus(1000);
                     ro.setReason("获取租户信息异常，apiKey=" + apiKey);
-                    e1.printStackTrace();
+                    MKBLogger.error("Exception:" + e1.toString());
                 }
                 if (tenant != null) {
                     try {

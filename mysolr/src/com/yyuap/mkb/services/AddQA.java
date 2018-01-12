@@ -1,13 +1,8 @@
 package com.yyuap.mkb.services;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +12,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
 import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.entity.KBIndex;
-import com.yyuap.mkb.entity.KBQA;
-import com.yyuap.mkb.pl.DBConfig;
-import com.yyuap.mkb.pl.DBManager;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.KBDuplicateSQLException;
 import com.yyuap.mkb.pl.KBInsertSQLException;
 import com.yyuap.mkb.pl.KBSQLException;
 import com.yyuap.mkb.processor.QAManager;
-import com.yyuap.mkb.processor.SolrManager;
 
 /**
  * Servlet implementation class addQA
@@ -170,7 +161,7 @@ public class AddQA extends HttpServlet {
             } else {
                 ro.setStatus(1000);
                 ro.setReason(e.toString());
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
         response.getWriter().write(ro.toString());

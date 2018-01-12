@@ -12,6 +12,7 @@ import org.wltea.analyzer.core.Lexeme;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 
 public class solrQueryRules {
     public void setQF(SolrQuery query, String q, String qf, Tenant tenant) {
@@ -186,7 +187,7 @@ public class solrQueryRules {
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
 
         return ret_new_q;

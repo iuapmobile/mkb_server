@@ -1,6 +1,5 @@
 package com.yyuap.mkb.fileUtil;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Map;
@@ -13,6 +12,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import com.alibaba.fastjson.JSONArray;
 import com.yyuap.mkb.cbo.Tenant;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.processor.QAManager;
 
 /**
@@ -76,7 +76,7 @@ public class ExcelExport {
 	        wb.write(outXlsx);
 		} catch (Exception e) {
 			flag = false;
-			e.printStackTrace();
+			MKBLogger.error("Exception:" + e.toString());
 		}finally{
 			try {
 				if (outXlsx != null) {
@@ -86,7 +86,7 @@ public class ExcelExport {
                 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
 
             }
 		}

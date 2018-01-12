@@ -1,16 +1,13 @@
 package com.yyuap.mkb.test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -18,17 +15,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.yyuap.mkb.cbo.Tenant;
-import com.yyuap.mkb.entity.KBINDEXTYPE;
-import com.yyuap.mkb.entity.KBIndex;
-import com.yyuap.mkb.fileUtil.ExcelReader;
-import com.yyuap.mkb.fileUtil.ExcelXReader;
 import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.pl.Common;
 import com.yyuap.mkb.pl.DBConfig;
-import com.yyuap.mkb.pl.DbUtil;
 
 public class importStaff {
 
@@ -39,7 +28,7 @@ public class importStaff {
             saveDB(xx);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         }
 
     }
@@ -106,7 +95,7 @@ public class importStaff {
                 insert(INSERT_SQL, row, dbc);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
 
@@ -138,7 +127,7 @@ public class importStaff {
                 MKBLogger.info("import data error: " + row.toString());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();

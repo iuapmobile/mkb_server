@@ -2,8 +2,6 @@ package com.yyuap.mkb.api;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yyuap.mkb.cbo.CBOManager;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.cbo.TenantInfo;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.services.ResultObject;
 import com.yyuap.mkb.services.ResultObjectFactory;
 
@@ -77,7 +73,7 @@ public class GetBotIsRecommended extends HttpServlet {
             ResultObject ro = rof.create(-1);
             ro.setReason("未能正确获取apiKey[" + apiKey + "]的租户信息！");
             response.getWriter().write(ro.toString());
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
             return;
         }
 

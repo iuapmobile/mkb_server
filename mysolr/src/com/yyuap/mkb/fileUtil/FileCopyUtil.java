@@ -40,7 +40,7 @@ public class FileCopyUtil {
                 file3.createNewFile();
                 copyDatas(file.getAbsolutePath(), file3.getAbsolutePath());
             } catch (IOException e) {
-                e.printStackTrace();
+                MKBLogger.error("Exception:" + e.toString());
             }
         }
     }

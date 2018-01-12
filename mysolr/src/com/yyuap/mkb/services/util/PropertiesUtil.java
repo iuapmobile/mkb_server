@@ -1,16 +1,12 @@
 package com.yyuap.mkb.services.util;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
-import javax.servlet.http.HttpServletRequest;
 
 import com.yyuap.mkb.log.MKBLogger;
-
-import sun.print.resources.serviceui;
 
 public class PropertiesUtil {
 	private static Properties jdbcProp = new Properties();
@@ -99,7 +95,7 @@ public class PropertiesUtil {
 				MKBLogger.info(getJdbcString("db_port"));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				MKBLogger.error("Exception:" + e.toString());
 			}
 	    }
 

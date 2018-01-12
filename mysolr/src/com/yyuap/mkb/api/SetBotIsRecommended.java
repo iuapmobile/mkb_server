@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yyuap.mkb.cbo.CBOManager;
-import com.yyuap.mkb.cbo.Tenant;
 import com.yyuap.mkb.cbo.TenantInfo;
+import com.yyuap.mkb.log.MKBLogger;
 import com.yyuap.mkb.services.ResultObject;
 import com.yyuap.mkb.services.ResultObjectFactory;
 
@@ -71,7 +71,7 @@ public class SetBotIsRecommended extends HttpServlet {
         try {
             flag = cboMgr.updateBotSettings(apiKey, "recommended", tenant.getRecommended());
         } catch (SQLException e1) {
-            e1.printStackTrace();
+            MKBLogger.error("Exception:" + e1.toString());
         }
         if (flag) {
             ro.setStatus(0);

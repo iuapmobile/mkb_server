@@ -119,7 +119,7 @@ public class DbUtil {
                         + ", descript = " + kbIndex.getDescript() + " succeed!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil insert Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -172,7 +172,7 @@ public class DbUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectOne Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -212,7 +212,7 @@ public class DbUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectOne Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -259,7 +259,7 @@ public class DbUtil {
                         + ", descript = " + kbIndex.getDescript() + " succeed!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil update Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -486,7 +486,7 @@ public class DbUtil {
                 list.add(obj);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectAnswer Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -547,7 +547,7 @@ public class DbUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectAnswerSimilarFromDB Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -586,7 +586,7 @@ public class DbUtil {
                 list.add(qa);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectALLQA Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -600,7 +600,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectALLQA Exception:" + e.toString());
             }
         }
         return list;
@@ -658,7 +658,7 @@ public class DbUtil {
                 map.put(rs.getString("id"), qa);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectQA Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -672,7 +672,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectQA Exception:" + e.toString());
             }
         }
         list = new ArrayList<KBQA>(map.values());
@@ -734,7 +734,7 @@ public class DbUtil {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil insertQA_SIMILAR Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -773,7 +773,7 @@ public class DbUtil {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectQAById Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -787,7 +787,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectQAById Exception:" + e.toString());
             }
         }
         return json;
@@ -811,7 +811,7 @@ public class DbUtil {
     // rs = ps.executeQuery();
     //
     // } catch (Exception e) {
-    // e.printStackTrace();
+    // MKBLogger.error("DBUtil query Exception:" + e.toString());
     // } finally {
     // if (rs != null) {
     // // rs.close();
@@ -856,7 +856,7 @@ public class DbUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectSimilarQByQid Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -872,7 +872,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectSimilarQByQid Exception:" + e.toString());
 
             }
         }
@@ -913,7 +913,7 @@ public class DbUtil {
                 id = newid;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil insertQA_TJ Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -993,7 +993,7 @@ public class DbUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectQA_topn Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -1029,7 +1029,7 @@ public class DbUtil {
                 id = fb.getId();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil updateQAFeedback Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1064,7 +1064,7 @@ public class DbUtil {
             }
         } catch (Exception e) {
 
-            e.printStackTrace();
+            MKBLogger.error("DBUtil delQA Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1244,7 +1244,7 @@ public class DbUtil {
             }
         } catch (Exception e) {
             // e.toString()
-            e.printStackTrace();
+            MKBLogger.error("DBUtil updateQA Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1278,7 +1278,7 @@ public class DbUtil {
             }
         } catch (Exception e) {
 
-            e.printStackTrace();
+            MKBLogger.error("DBUtil delQS Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1317,7 +1317,7 @@ public class DbUtil {
                 ret = true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil updateQS Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1365,7 +1365,7 @@ public class DbUtil {
             }
         } catch (Exception e) {
             // e.toString()
-            e.printStackTrace();
+            MKBLogger.error("DBUtil insertQS Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1430,7 +1430,7 @@ public class DbUtil {
             }
         } catch (Exception e) {
             // e.toString()
-            e.printStackTrace();
+            MKBLogger.error("DBUtil insertQaCollectioin Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1522,7 +1522,7 @@ public class DbUtil {
             // }
             // }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectQaCollection Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -1536,7 +1536,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectQaCollection Exception:" + e.toString());
 
             }
         }
@@ -1572,7 +1572,7 @@ public class DbUtil {
         } catch (Exception e) {
             // e.toString()
             flag = false;
-            e.printStackTrace();
+            MKBLogger.error("DBUtil deleteQaCollectioin Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1608,7 +1608,7 @@ public class DbUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil exportExcelQA Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -1624,7 +1624,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil exportExcelQA Exception:" + e.toString());
 
             }
         }
@@ -1661,7 +1661,7 @@ public class DbUtil {
             }
         } catch (Exception e) {
             // e.toString()
-            e.printStackTrace();
+            MKBLogger.error("DBUtil updateQAIsTop Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1728,7 +1728,7 @@ public class DbUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectSynonym Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -1742,7 +1742,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectSynonym Exception:" + e.toString());
             }
         }
 
@@ -1789,7 +1789,7 @@ public class DbUtil {
                 map.put(sj, c);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryDataTj Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -1823,7 +1823,7 @@ public class DbUtil {
                 c = rs.getString("c");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryBotServicesTj Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -1870,7 +1870,7 @@ public class DbUtil {
                 list.add(kb);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectOneIsExists Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -1904,7 +1904,7 @@ public class DbUtil {
                 rflag = true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil updateKbInfo Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1940,7 +1940,7 @@ public class DbUtil {
             ret = true;
         } catch (Exception e) {
             conn.rollback();
-            e.printStackTrace();
+            MKBLogger.error("DBUtil delkbInfo Exception:" + e.toString());
         } finally {
             if (ps != null) {
                 ps.close();
@@ -1982,7 +1982,7 @@ public class DbUtil {
                 array.add(json);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryFieldForTable Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -2069,7 +2069,7 @@ public class DbUtil {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil saveFieldForTable Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -2121,7 +2121,7 @@ public class DbUtil {
                 map.put(name, c);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryDimensionTj Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -2219,7 +2219,7 @@ public class DbUtil {
             // }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryQaTopTj Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -2256,7 +2256,7 @@ public class DbUtil {
                 array.add(name);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryDimensionData Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -2301,7 +2301,7 @@ public class DbUtil {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil queryQaTopTjForDimension Exception:" + e.toString());
         } finally {
             if (rs != null) {
                 rs.close();
@@ -2384,7 +2384,7 @@ public class DbUtil {
             // }
             // }
         } catch (Exception e) {
-            e.printStackTrace();
+            MKBLogger.error("DBUtil selectQAByKtype Exception:" + e.toString());
         } finally {
             try {
                 if (rs != null) {
@@ -2398,7 +2398,7 @@ public class DbUtil {
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                MKBLogger.error("DBUtil selectQAByKtype Exception:" + e.toString());
 
             }
         }
