@@ -82,19 +82,24 @@ public class MKBRequestProcessor {
         String start = request.getParameter("start");
         param.put("start", start);
 
-        String dailog = request.getParameter("dailog");
-        param.put("dailog", dailog);
+        // String dailog = request.getParameter("dailog");
+        // param.put("dailog", dailog);
+        //
+        // String dialog = request.getParameter("dialog");
+        // param.put("dialog", dialog);
+        // if (dialog != null) {
+        // param.put("dailog", dialog);
+        // }
 
-        String dialog = request.getParameter("dialog");
-        if (dialog != null) {
-            param.put("dialog", dialog);
-        }
         String dailogid = request.getParameter("dailogid");
         param.put("dailogid", dailogid);
+        param.put("dialogid", dailogid);
 
+        // dialogid优先级高于dailogid
         String dialogid = request.getParameter("dialogid");
         if (dialogid != null) {
             param.put("dailogid", dialogid);
+            param.put("dialogid", dialogid);
         }
         // 部门
         String dept = request.getParameter("dept");
