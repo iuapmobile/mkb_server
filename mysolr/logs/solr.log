@@ -359,3 +359,403 @@
 2017-08-14 10:29:27.457 WARN  (main) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="4EBFAAA77FB3D8ED0BD61AB7AD43CDC1:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
 2017-08-14 10:29:27.570 WARN  (main) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="448F5E742006CB0149EC129030E25AD3:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
 2017-08-14 10:29:27.571 WARN  (main) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="5D47B869FE8FF55FAA6A4DA249BDA810:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:18:21.933 INFO  (localhost-startStop-1) [   ] bot_kb_info_logger /kb
+2018-01-12 09:18:21.940 INFO  (localhost-startStop-1) [   ] bot_kb_info_logger 加载jdbcpropertiesjava.io.FileInputStream@31d91444
+2018-01-12 09:18:21.941 INFO  (localhost-startStop-1) [   ] bot_kb_info_logger 加载config.propertiesjava.io.FileInputStream@27519202
+2018-01-12 09:18:21.968 INFO  (localhost-startStop-1) [   ] o.a.s.s.SolrDispatchFilter SolrDispatchFilter.init(): ParallelWebappClassLoader
+  context: kb
+  delegate: false
+----------> Parent Classloader:
+java.net.URLClassLoader@7a79be86
+
+2018-01-12 09:18:21.990 INFO  (localhost-startStop-1) [   ] o.a.s.c.SolrResourceLoader Using JNDI solr.home: /Users/gct/work/solrhome
+2018-01-12 09:18:21.990 INFO  (localhost-startStop-1) [   ] o.a.s.c.SolrResourceLoader new SolrResourceLoader for directory: '/Users/gct/work/solrhome'
+2018-01-12 09:18:21.991 INFO  (localhost-startStop-1) [   ] o.a.s.c.SolrResourceLoader Using JNDI solr.home: /Users/gct/work/solrhome
+2018-01-12 09:18:22.002 INFO  (localhost-startStop-1) [   ] o.a.s.c.SolrXmlConfig Loading container configuration from /Users/gct/work/solrhome/solr.xml
+2018-01-12 09:18:22.241 INFO  (localhost-startStop-1) [   ] o.a.s.c.CorePropertiesLocator Config-defined core root directory: /Users/gct/work/solrhome
+2018-01-12 09:18:22.300 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreContainer New CoreContainer 798818251
+2018-01-12 09:18:22.300 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreContainer Loading cores into CoreContainer [instanceDir=/Users/gct/work/solrhome]
+2018-01-12 09:18:22.302 WARN  (localhost-startStop-1) [   ] o.a.s.c.CoreContainer Couldn't add files from /Users/gct/work/solrhome/lib to classpath: /Users/gct/work/solrhome/lib
+2018-01-12 09:18:22.328 INFO  (localhost-startStop-1) [   ] o.a.s.h.c.HttpShardHandlerFactory created with socketTimeout : 600000,connTimeout : 60000,maxConnectionsPerHost : 20,maxConnections : 10000,corePoolSize : 0,maximumPoolSize : 2147483647,maxThreadIdleTime : 5,sizeOfQueue : -1,fairnessPolicy : false,useRetries : false,connectionsEvictorSleepDelay : 5000,maxConnectionIdleTime : 40000,
+2018-01-12 09:18:22.663 INFO  (localhost-startStop-1) [   ] o.a.s.u.UpdateShardHandler Creating UpdateShardHandler HTTP client with params: socketTimeout=600000&connTimeout=60000&retry=true
+2018-01-12 09:18:22.666 INFO  (localhost-startStop-1) [   ] o.a.s.l.LogWatcher SLF4J impl is org.slf4j.impl.Log4jLoggerFactory
+2018-01-12 09:18:22.667 INFO  (localhost-startStop-1) [   ] o.a.s.l.LogWatcher Registering Log Listener [Log4j (org.slf4j.impl.Log4jLoggerFactory)]
+2018-01-12 09:18:22.670 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreContainer Security conf doesn't exist. Skipping setup for authorization module.
+2018-01-12 09:18:22.670 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreContainer No authentication plugin used.
+2018-01-12 09:18:22.737 INFO  (localhost-startStop-1) [   ] o.a.s.c.CorePropertiesLocator Looking for core definitions underneath /Users/gct/work/solrhome
+2018-01-12 09:18:22.761 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreDescriptor Created CoreDescriptor: {name=core1, config=solrconfig.xml, loadOnStartup=true, schema=schema.xml, configSetProperties=configsetprops.json, transient=false, dataDir=data}
+2018-01-12 09:18:22.762 INFO  (localhost-startStop-1) [   ] o.a.s.c.CorePropertiesLocator Found core core1 in /Users/gct/work/solrhome/core1
+2018-01-12 09:18:22.769 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreDescriptor Created CoreDescriptor: {name=kb_u_momo_core, config=solrconfig.xml, loadOnStartup=true, schema=schema.xml, configSetProperties=configsetprops.json, transient=false, dataDir=data}
+2018-01-12 09:18:22.769 INFO  (localhost-startStop-1) [   ] o.a.s.c.CorePropertiesLocator Found core kb_u_momo_core in /Users/gct/work/solrhome/kb_u_momo_core
+2018-01-12 09:18:22.774 INFO  (localhost-startStop-1) [   ] o.a.s.c.CoreDescriptor Created CoreDescriptor: {name=yycloudkbcore, config=solrconfig.xml, loadOnStartup=true, schema=schema.xml, configSetProperties=configsetprops.json, transient=false, dataDir=data}
+2018-01-12 09:18:22.775 INFO  (localhost-startStop-1) [   ] o.a.s.c.CorePropertiesLocator Found core yycloudkbcore in /Users/gct/work/solrhome/yycloudkbcore
+2018-01-12 09:18:22.775 INFO  (localhost-startStop-1) [   ] o.a.s.c.CorePropertiesLocator Found 3 core definitions
+2018-01-12 09:18:22.783 INFO  (localhost-startStop-1) [   ] o.a.s.s.SolrDispatchFilter user.dir=/Users/gct/work/gho/mkb_server/mysolr
+2018-01-12 09:18:22.784 INFO  (localhost-startStop-1) [   ] o.a.s.s.SolrDispatchFilter SolrDispatchFilter.init() done
+2018-01-12 09:18:22.784 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrResourceLoader new SolrResourceLoader for directory: '/Users/gct/work/solrhome/kb_u_momo_core'
+2018-01-12 09:18:22.784 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrResourceLoader new SolrResourceLoader for directory: '/Users/gct/work/solrhome/yycloudkbcore'
+2018-01-12 09:18:22.784 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.SolrResourceLoader new SolrResourceLoader for directory: '/Users/gct/work/solrhome/core1'
+2018-01-12 09:18:22.786 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrResourceLoader Using JNDI solr.home: /Users/gct/work/solrhome
+2018-01-12 09:18:22.786 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrResourceLoader Using JNDI solr.home: /Users/gct/work/solrhome
+2018-01-12 09:18:22.786 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.SolrResourceLoader Using JNDI solr.home: /Users/gct/work/solrhome
+2018-01-12 09:18:22.855 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrConfig current version of requestparams : -1
+2018-01-12 09:18:22.855 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.SolrConfig current version of requestparams : -1
+2018-01-12 09:18:22.855 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrConfig current version of requestparams : 0
+2018-01-12 09:18:22.860 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrConfig Adding specified lib dirs to ClassLoader
+2018-01-12 09:18:22.862 WARN  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrConfig Couldn't add files from /Users/gct/work/solrhome/kb_u_momo_core/E:\apache-tomcat-8.5.15\webapps\kb\WEB-INF\lib filtered by .*\.jar to classpath: /Users/gct/work/solrhome/kb_u_momo_core/E:\apache-tomcat-8.5.15\webapps\kb\WEB-INF\lib
+2018-01-12 09:18:22.893 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.u.SolrIndexConfig IndexWriter infoStream solr logging is enabled
+2018-01-12 09:18:22.896 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.u.SolrIndexConfig IndexWriter infoStream solr logging is enabled
+2018-01-12 09:18:22.904 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.SolrConfig Using Lucene MatchVersion: 5.5.4
+2018-01-12 09:18:22.906 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrConfig Using Lucene MatchVersion: 5.5.4
+2018-01-12 09:18:22.919 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrConfig Using Lucene MatchVersion: 5.5.4
+2018-01-12 09:18:23.127 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.SolrConfig Loaded SolrConfig: solrconfig.xml
+2018-01-12 09:18:23.127 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.SolrConfig Loaded SolrConfig: solrconfig.xml
+2018-01-12 09:18:23.146 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.SolrConfig Loaded SolrConfig: solrconfig.xml
+2018-01-12 09:18:23.217 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.s.IndexSchema [core1] Schema name=example
+2018-01-12 09:18:23.230 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.s.IndexSchema [kb_u_momo_core] Schema name=example
+2018-01-12 09:18:23.236 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.IndexSchema [yycloudkbcore] Schema name=example
+2018-01-12 09:18:23.867 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.IndexSchema unique key field: id
+2018-01-12 09:18:23.867 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.s.IndexSchema unique key field: id
+2018-01-12 09:18:23.875 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.s.IndexSchema unique key field: id
+2018-01-12 09:18:24.069 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.s.FileExchangeRateProvider Reloading exchange rates from file currency.xml
+2018-01-12 09:18:24.072 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.FileExchangeRateProvider Reloading exchange rates from file currency.xml
+2018-01-12 09:18:24.078 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.s.FileExchangeRateProvider Reloading exchange rates from file currency.xml
+2018-01-12 09:18:24.079 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.s.FileExchangeRateProvider Reloading exchange rates from file currency.xml
+2018-01-12 09:18:24.080 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.s.FileExchangeRateProvider Reloading exchange rates from file currency.xml
+2018-01-12 09:18:24.083 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.ConfigSetProperties Did not find ConfigSet properties, assuming default properties: Can't find resource 'configsetprops.json' in classpath or '/Users/gct/work/solrhome/yycloudkbcore'
+2018-01-12 09:18:24.083 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.s.FileExchangeRateProvider Reloading exchange rates from file currency.xml
+2018-01-12 09:18:24.084 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.ConfigSetProperties Did not find ConfigSet properties, assuming default properties: Can't find resource 'configsetprops.json' in classpath or '/Users/gct/work/solrhome/core1'
+2018-01-12 09:18:24.084 INFO  (coreLoadExecutor-6-thread-3) [   ] o.a.s.c.CoreContainer Creating SolrCore 'yycloudkbcore' using configuration from instancedir /Users/gct/work/solrhome/yycloudkbcore
+2018-01-12 09:18:24.085 INFO  (coreLoadExecutor-6-thread-1) [   ] o.a.s.c.CoreContainer Creating SolrCore 'core1' using configuration from instancedir /Users/gct/work/solrhome/core1
+2018-01-12 09:18:24.087 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.ConfigSetProperties Did not find ConfigSet properties, assuming default properties: Can't find resource 'configsetprops.json' in classpath or '/Users/gct/work/solrhome/kb_u_momo_core'
+2018-01-12 09:18:24.088 INFO  (coreLoadExecutor-6-thread-2) [   ] o.a.s.c.CoreContainer Creating SolrCore 'kb_u_momo_core' using configuration from instancedir /Users/gct/work/solrhome/kb_u_momo_core
+2018-01-12 09:18:24.120 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrCore solr.NRTCachingDirectoryFactory
+2018-01-12 09:18:24.121 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrCore solr.NRTCachingDirectoryFactory
+2018-01-12 09:18:24.121 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore solr.NRTCachingDirectoryFactory
+2018-01-12 09:18:24.146 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrCore [[yycloudkbcore] ] Opening new SolrCore at [/Users/gct/work/solrhome/yycloudkbcore], dataDir=[/Users/gct/work/solrhome/yycloudkbcore/data/]
+2018-01-12 09:18:24.146 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrCore [[core1] ] Opening new SolrCore at [/Users/gct/work/solrhome/core1], dataDir=[/Users/gct/work/solrhome/core1/data/]
+2018-01-12 09:18:24.146 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore [[kb_u_momo_core] ] Opening new SolrCore at [/Users/gct/work/solrhome/kb_u_momo_core], dataDir=[/Users/gct/work/solrhome/kb_u_momo_core/data/]
+2018-01-12 09:18:24.149 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.JmxMonitoredMap JMX monitoring is enabled. Adding Solr mbeans to JMX Server: com.sun.jmx.mbeanserver.JmxMBeanServer@5c072e3f
+2018-01-12 09:18:24.149 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.JmxMonitoredMap JMX monitoring is enabled. Adding Solr mbeans to JMX Server: com.sun.jmx.mbeanserver.JmxMBeanServer@5c072e3f
+2018-01-12 09:18:24.149 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.JmxMonitoredMap JMX monitoring is enabled. Adding Solr mbeans to JMX Server: com.sun.jmx.mbeanserver.JmxMBeanServer@5c072e3f
+2018-01-12 09:18:24.188 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore [[kb_u_momo_core] ] Added SolrEventListener for newSearcher: [org.apache.solr.core.QuerySenderListener{queries=[]}]
+2018-01-12 09:18:24.188 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore [[kb_u_momo_core] ] Added SolrEventListener for firstSearcher: [org.apache.solr.core.QuerySenderListener{queries=[]}]
+2018-01-12 09:18:24.190 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SchemaCodecFactory Using default compressionMode: BEST_SPEED
+2018-01-12 09:18:24.190 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SchemaCodecFactory Using default compressionMode: BEST_SPEED
+2018-01-12 09:18:24.194 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SchemaCodecFactory Using default compressionMode: BEST_SPEED
+2018-01-12 09:18:24.316 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory return new directory for /Users/gct/work/solrhome/core1/data
+2018-01-12 09:18:24.316 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory return new directory for /Users/gct/work/solrhome/kb_u_momo_core/data
+2018-01-12 09:18:24.316 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory return new directory for /Users/gct/work/solrhome/yycloudkbcore/data
+2018-01-12 09:18:24.317 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrCore New index directory detected: old=null new=/Users/gct/work/solrhome/yycloudkbcore/data/index/
+2018-01-12 09:18:24.318 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrCore New index directory detected: old=null new=/Users/gct/work/solrhome/core1/data/index/
+2018-01-12 09:18:24.318 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore New index directory detected: old=null new=/Users/gct/work/solrhome/kb_u_momo_core/data/index/
+2018-01-12 09:18:24.319 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory return new directory for /Users/gct/work/solrhome/core1/data/index
+2018-01-12 09:18:24.319 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory return new directory for /Users/gct/work/solrhome/yycloudkbcore/data/index
+2018-01-12 09:18:24.319 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory return new directory for /Users/gct/work/solrhome/kb_u_momo_core/data/index
+2018-01-12 09:18:24.340 INFO  (OldIndexDirectoryCleanupThreadForCore-core1) [   x:core1] o.a.s.c.SolrCore Looking for old index directories to cleanup for core core1 in /Users/gct/work/solrhome/core1/data/
+2018-01-12 09:18:24.340 INFO  (OldIndexDirectoryCleanupThreadForCore-yycloudkbcore) [   x:yycloudkbcore] o.a.s.c.SolrCore Looking for old index directories to cleanup for core yycloudkbcore in /Users/gct/work/solrhome/yycloudkbcore/data/
+2018-01-12 09:18:24.341 INFO  (OldIndexDirectoryCleanupThreadForCore-kb_u_momo_core) [   x:kb_u_momo_core] o.a.s.c.SolrCore Looking for old index directories to cleanup for core kb_u_momo_core in /Users/gct/work/solrhome/kb_u_momo_core/data/
+2018-01-12 09:18:24.348 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag queryResponseWriter : 'velocity' created with startup=lazy 
+2018-01-12 09:18:24.355 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.r.XSLTResponseWriter xsltCacheLifetimeSeconds=5
+2018-01-12 09:18:24.491 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrCore no updateRequestProcessorChain defined as default, creating implicit default
+2018-01-12 09:18:24.491 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrCore no updateRequestProcessorChain defined as default, creating implicit default
+2018-01-12 09:18:24.586 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.p.UpdateRequestProcessorChain creating updateRequestProcessorChain "add-unknown-fields-to-the-schema"
+2018-01-12 09:18:24.590 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.591 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.596 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.597 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.598 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.598 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.599 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.600 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.668 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.PluginBag requestHandler : '/analysis/field' created with startup=lazy 
+2018-01-12 09:18:24.668 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.PluginBag requestHandler : '/analysis/document' created with startup=lazy 
+2018-01-12 09:18:24.671 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.PluginBag requestHandler : '/terms' created with startup=lazy 
+2018-01-12 09:18:24.671 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.RequestHandlers Registered paths: /admin/mbeans,/update/json/docs,/admin/luke,/export,/get,/admin/properties,/update/json,/admin/threads,/query,/analysis/field,/analysis/document,/update/csv,/select,/admin/segments,/admin/system,/replication,/config,/schema,/admin/plugins,/admin/logging,/admin/ping,/update,/admin/file,/debug/dump,/terms
+2018-01-12 09:18:24.672 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrCore Using default statsCache cache: org.apache.solr.search.stats.LocalStatsCache
+2018-01-12 09:18:24.674 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.PluginBag requestHandler : '/analysis/field' created with startup=lazy 
+2018-01-12 09:18:24.674 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.PluginBag requestHandler : '/analysis/document' created with startup=lazy 
+2018-01-12 09:18:24.675 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.PluginBag requestHandler : '/terms' created with startup=lazy 
+2018-01-12 09:18:24.675 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.RequestHandlers Registered paths: /admin/mbeans,/update/json/docs,/admin/luke,/export,/get,/admin/properties,/update/json,/admin/threads,/query,/analysis/field,/analysis/document,/update/csv,/select,/admin/segments,/admin/system,/replication,/config,/schema,/admin/plugins,/admin/logging,/admin/ping,/update,/admin/file,/debug/dump,/terms,/dataimport
+2018-01-12 09:18:24.678 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrCore Using default statsCache cache: org.apache.solr.search.stats.LocalStatsCache
+2018-01-12 09:18:24.705 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-01-12 09:18:24.705 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-01-12 09:18:24.709 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-01-12 09:18:24.710 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-01-12 09:18:24.732 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-01-12 09:18:24.732 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2018-01-12 09:18:24.764 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-01-12 09:18:24.764 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2018-01-12 09:18:24.895 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrDeletionPolicy SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(MMapDirectory@/Users/gct/work/solrhome/yycloudkbcore/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@6aa03912; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_qn,generation=959}
+2018-01-12 09:18:24.897 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.SolrDeletionPolicy newest commit generation = 959
+2018-01-12 09:18:24.895 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrDeletionPolicy SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(MMapDirectory@/Users/gct/work/solrhome/core1/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@6aa03912; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_1,generation=1}
+2018-01-12 09:18:24.897 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.SolrDeletionPolicy newest commit generation = 1
+2018-01-12 09:18:24.915 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore no updateRequestProcessorChain defined as default, creating implicit default
+2018-01-12 09:18:24.920 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.921 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.923 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.925 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.l.XMLLoader xsltCacheLifetimeSeconds=60
+2018-01-12 09:18:24.931 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/update/extract' created with startup=lazy 
+2018-01-12 09:18:24.932 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/analysis/field' created with startup=lazy 
+2018-01-12 09:18:24.932 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/analysis/document' created with startup=lazy 
+2018-01-12 09:18:24.933 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/spell' created with startup=lazy 
+2018-01-12 09:18:24.933 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/tvrh' created with startup=lazy 
+2018-01-12 09:18:24.933 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/terms' created with startup=lazy 
+2018-01-12 09:18:24.933 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.PluginBag requestHandler : '/elevate' created with startup=lazy 
+2018-01-12 09:18:24.933 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.RequestHandlers Registered paths: /admin/mbeans,/browse,/update/json/docs,/admin/luke,/export,/get,/admin/properties,/elevate,/update/json,/admin/threads,/query,/analysis/field,/analysis/document,/spell,/update/csv,/tvrh,/select,/admin/segments,/admin/system,/replication,/config,/schema,/admin/plugins,/admin/logging,/admin/ping,/update,/admin/file,/debug/dump,/terms,/update/extract,/dataimport
+2018-01-12 09:18:24.935 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrCore Using default statsCache cache: org.apache.solr.search.stats.LocalStatsCache
+2018-01-12 09:18:24.936 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.UpdateHandler Using UpdateLog implementation: org.apache.solr.update.UpdateLog
+2018-01-12 09:18:24.936 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.s.SolrIndexSearcher Opening Searcher@5a52cd65[core1] main
+2018-01-12 09:18:24.936 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.UpdateLog Initializing UpdateLog: dataDir= defaultSyncLevel=FLUSH numRecordsToKeep=100 maxNumLogsToKeep=10 numVersionBuckets=65536
+2018-01-12 09:18:24.952 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/gct/work/solrhome/core1/conf
+2018-01-12 09:18:24.952 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.r.RestManager Initializing RestManager with initArgs: {storageDir=/Users/gct/work/solrhome/core1/conf}
+2018-01-12 09:18:24.952 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.CommitTracker Hard AutoCommit: if uncommited for 15000ms; 
+2018-01-12 09:18:24.953 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.CommitTracker Soft AutoCommit: disabled
+2018-01-12 09:18:24.970 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrDeletionPolicy SolrDeletionPolicy.onInit: commits: num=1
+	commit{dir=NRTCachingDirectory(MMapDirectory@/Users/gct/work/solrhome/kb_u_momo_core/data/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@6aa03912; maxCacheMB=48.0 maxMergeSizeMB=4.0),segFN=segments_ac,generation=372}
+2018-01-12 09:18:24.971 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.SolrDeletionPolicy newest commit generation = 372
+2018-01-12 09:18:24.984 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.r.ManagedResourceStorage Reading _rest_managed.json using file:dir=/Users/gct/work/solrhome/core1/conf
+2018-01-12 09:18:24.985 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.r.ManagedResourceStorage Loaded LinkedHashMap at path _rest_managed.json using file:dir=/Users/gct/work/solrhome/core1/conf
+2018-01-12 09:18:24.985 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.r.ManagedResource Loaded initArgs {} for /rest/managed
+2018-01-12 09:18:24.986 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.r.RestManager Initializing 0 registered ManagedResources
+2018-01-12 09:18:25.009 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-01-12 09:18:25.012 INFO  (searcherExecutor-8-thread-1-processing-x:core1) [   x:core1] o.a.s.c.SolrCore [core1] Registered new searcher Searcher@5a52cd65[core1] main{ExitableDirectoryReader(UninvertingDirectoryReader())}
+2018-01-12 09:18:25.012 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.UpdateLog Looking up max value of version field to seed version buckets
+2018-01-12 09:18:25.014 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.VersionInfo Refreshing highest value of _version_ for 65536 version buckets from index
+2018-01-12 09:18:25.014 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.VersionInfo No terms found for _version_, cannot seed version bucket highest value from index
+2018-01-12 09:18:25.014 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.UpdateLog Could not find max version in index or recent updates, using new clock 1589347515119960064
+2018-01-12 09:18:25.021 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.u.UpdateLog Took 7.0ms to seed version buckets with highest version 1589347515119960064
+2018-01-12 09:18:25.022 INFO  (coreLoadExecutor-6-thread-1) [   x:core1] o.a.s.c.CoreContainer registering core: core1
+2018-01-12 09:18:25.036 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.s.SolrIndexSearcher Opening Searcher@11d32468[yycloudkbcore] main
+2018-01-12 09:18:25.037 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/gct/work/solrhome/yycloudkbcore/conf
+2018-01-12 09:18:25.038 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.r.RestManager Initializing RestManager with initArgs: {storageDir=/Users/gct/work/solrhome/yycloudkbcore/conf}
+2018-01-12 09:18:25.038 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.r.ManagedResourceStorage Reading _rest_managed.json using file:dir=/Users/gct/work/solrhome/yycloudkbcore/conf
+2018-01-12 09:18:25.039 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.r.ManagedResourceStorage Loaded LinkedHashMap at path _rest_managed.json using file:dir=/Users/gct/work/solrhome/yycloudkbcore/conf
+2018-01-12 09:18:25.039 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.r.ManagedResource Loaded initArgs {} for /rest/managed
+2018-01-12 09:18:25.039 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.r.RestManager Initializing 0 registered ManagedResources
+2018-01-12 09:18:25.040 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-01-12 09:18:25.049 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.s.SolrIndexSearcher Opening Searcher@d200521[kb_u_momo_core] main
+2018-01-12 09:18:25.050 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.r.ManagedResourceStorage File-based storage initialized to use dir: /Users/gct/work/solrhome/kb_u_momo_core/conf
+2018-01-12 09:18:25.050 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.r.RestManager Initializing RestManager with initArgs: {storageDir=/Users/gct/work/solrhome/kb_u_momo_core/conf}
+2018-01-12 09:18:25.050 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.r.ManagedResourceStorage Reading _rest_managed.json using file:dir=/Users/gct/work/solrhome/kb_u_momo_core/conf
+2018-01-12 09:18:25.050 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.r.RestManager Initializing 0 registered ManagedResources
+2018-01-12 09:18:25.051 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.c.SpellCheckComponent Initializing spell checkers
+2018-01-12 09:18:25.054 INFO  (searcherExecutor-7-thread-1-processing-x:yycloudkbcore) [   x:yycloudkbcore] o.a.s.c.SolrCore [yycloudkbcore] Registered new searcher Searcher@11d32468[yycloudkbcore] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_jr(5.5.4):C541/1:delGen=1) Uninverting(_js(5.5.4):C118) Uninverting(_jt(5.5.4):C809)))}
+2018-01-12 09:18:25.061 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.UpdateLog Looking up max value of version field to seed version buckets
+2018-01-12 09:18:25.062 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.VersionInfo Refreshing highest value of _version_ for 65536 version buckets from index
+2018-01-12 09:18:25.083 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.s.DirectSolrSpellChecker init: {name=default,field=_text_,classname=solr.DirectSolrSpellChecker,distanceMeasure=internal,accuracy=0.5,maxEdits=2,minPrefix=1,maxInspections=5,minQueryLength=4,maxQueryFrequency=0.01}
+2018-01-12 09:18:25.084 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.c.SpellCheckComponent No queryConverter defined, using default converter
+2018-01-12 09:18:25.089 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.c.QueryElevationComponent Loading QueryElevation from: /Users/gct/work/solrhome/kb_u_momo_core/conf/elevate.xml
+2018-01-12 09:18:25.117 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.VersionInfo Found MAX value 1586146395384971266 from Terms for _version_ in index
+2018-01-12 09:18:25.119 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.u.UpdateLog Took 57.0ms to seed version buckets with highest version 1586741152228311040
+2018-01-12 09:18:25.119 INFO  (coreLoadExecutor-6-thread-3) [   x:yycloudkbcore] o.a.s.c.CoreContainer registering core: yycloudkbcore
+2018-01-12 09:18:25.136 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.h.ReplicationHandler Commits will be reserved for  10000
+2018-01-12 09:18:25.137 INFO  (searcherExecutor-9-thread-1-processing-x:kb_u_momo_core) [   x:kb_u_momo_core] o.a.s.c.QuerySenderListener QuerySenderListener sending requests to Searcher@d200521[kb_u_momo_core] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_ag(5.5.4):C2599/3:delGen=3) Uninverting(_ah(5.5.4):C1) Uninverting(_ai(5.5.4):C1) Uninverting(_aj(5.5.4):C1) Uninverting(_ak(5.5.4):C1)))}
+2018-01-12 09:18:25.137 INFO  (searcherExecutor-9-thread-1-processing-x:kb_u_momo_core) [   x:kb_u_momo_core] o.a.s.c.QuerySenderListener QuerySenderListener done.
+2018-01-12 09:18:25.137 INFO  (searcherExecutor-9-thread-1-processing-x:kb_u_momo_core) [   x:kb_u_momo_core] o.a.s.h.c.SpellCheckComponent Loading spell index for spellchecker: default
+2018-01-12 09:18:25.139 INFO  (searcherExecutor-9-thread-1-processing-x:kb_u_momo_core) [   x:kb_u_momo_core] o.a.s.c.SolrCore [kb_u_momo_core] Registered new searcher Searcher@d200521[kb_u_momo_core] main{ExitableDirectoryReader(UninvertingDirectoryReader(Uninverting(_ag(5.5.4):C2599/3:delGen=3) Uninverting(_ah(5.5.4):C1) Uninverting(_ai(5.5.4):C1) Uninverting(_aj(5.5.4):C1) Uninverting(_ak(5.5.4):C1)))}
+2018-01-12 09:18:25.140 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.UpdateLog Looking up max value of version field to seed version buckets
+2018-01-12 09:18:25.141 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.VersionInfo Refreshing highest value of _version_ for 65536 version buckets from index
+2018-01-12 09:18:25.149 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.VersionInfo Found MAX value 1588097183107776512 from Terms for _version_ in index
+2018-01-12 09:18:25.151 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.u.UpdateLog Took 10.0ms to seed version buckets with highest version 1588097183107776512
+2018-01-12 09:18:25.151 INFO  (coreLoadExecutor-6-thread-2) [   x:kb_u_momo_core] o.a.s.c.CoreContainer registering core: kb_u_momo_core
+2018-01-12 09:18:43.993 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:18:43.997 ERROR (http-nio-8080-exec-9) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:18:46.996 INFO  (http-nio-8080-exec-8) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=友人才+AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=119 status=0 QTime=530
+2018-01-12 09:18:47.044 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger 搜索结果的总数量：119
+2018-01-12 09:18:47.131 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 友人才 answer = 友人才为企业提供专业的招聘服务、人事服务、员工服务和共享服务工作台，支持全员参与、社交协同，开放连接内外部应用和服务生态，具备场景化，个性化，智能化等特性，帮助企业精准获取高质量人才，增强员工体验和团队协作，提升服务运营效率，助力HR更专注战略，促进数字化决策保持人才领先。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:18:51.834 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:18:51.835 ERROR (http-nio-8080-exec-7) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:18:52.672 INFO  (http-nio-8080-exec-10) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=北京电器&defType=edismax&qf=question&start=0&fq=-ext_scope:[""+TO+*]&rows=3&wt=javabin&version=2} hits=0 status=0 QTime=7
+2018-01-12 09:18:52.673 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger 搜索结果的总数量：0
+2018-01-12 09:18:52.685 INFO  (http-nio-8080-exec-6) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=北京电器+AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=9 status=0 QTime=9
+2018-01-12 09:18:52.693 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger 搜索结果的总数量：9
+2018-01-12 09:18:52.889 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 北京电器 answer = 注意用电安全。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:18:57.201 INFO  (http-nio-8080-exec-1) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:18:57.201 ERROR (http-nio-8080-exec-1) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:18:57.877 INFO  (http-nio-8080-exec-8) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=北京天气&defType=edismax&qf=question&start=0&fq=-ext_scope:[""+TO+*]&rows=3&wt=javabin&version=2} hits=0 status=0 QTime=1
+2018-01-12 09:18:57.878 INFO  (http-nio-8080-exec-1) [   ] bot_kb_info_logger 搜索结果的总数量：0
+2018-01-12 09:18:57.893 INFO  (http-nio-8080-exec-2) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=北京天气+AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=8 status=0 QTime=12
+2018-01-12 09:18:57.895 INFO  (http-nio-8080-exec-1) [   ] bot_kb_info_logger 搜索结果的总数量：8
+2018-01-12 09:18:58.092 INFO  (http-nio-8080-exec-1) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 北京天气 answer = 北京:周五,晴 西南风微风,最低气温-8度，最高气温2度 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:19:14.836 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:19:14.836 ERROR (http-nio-8080-exec-10) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:19:16.372 INFO  (http-nio-8080-exec-6) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=如何说服供应商上线友云采&defType=edismax&qf=question&start=0&fq=-ext_scope:[""+TO+*]&rows=3&wt=javabin&version=2} hits=374 status=0 QTime=14
+2018-01-12 09:19:16.375 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger 搜索结果的总数量：374
+2018-01-12 09:19:16.857 WARN  (http-nio-8080-exec-10) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="B6AE789D94721E94A439235DB3786CAB:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:16.858 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.8cba8cc7ef708857dabc45786e43e5de.2592000.1518311956.282335-9763964, expires_in:2592000
+2018-01-12 09:19:17.181 WARN  (http-nio-8080-exec-10) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="40DDBB6EA5B0206411A0ECD1D6898A15:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.182 WARN  (http-nio-8080-exec-10) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="3F32FE1133109BA36FADE375FB3E53C8:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.184 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=如何说服供应商上线友云采，_q=说服供应商入驻友云采，结果：{"log_id": 4178025097471350945, "texts": {"text_2": "如何说服供应商上线友云采", "text_1": "说服供应商入驻友云采"}, "score": 0.879778}
+2018-01-12 09:19:17.233 WARN  (http-nio-8080-exec-10) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="411B873A58C56D359A41C20D24379F17:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.234 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.51067003358d464e929673741ee9dffb.2592000.1518311957.282335-9763964, expires_in:2592000
+2018-01-12 09:19:17.378 WARN  (http-nio-8080-exec-10) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="580EEBB615BFF2D152FE31A5CAD79110:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.380 WARN  (http-nio-8080-exec-10) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="98D0B89E2D4843C185C37872EB40C904:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.381 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=如何说服供应商上线友云采，_q=怎么能够快速说服供应商理解并愿意上友云采系统，结果：{"log_id": 8164499657512147113, "texts": {"text_2": "如何说服供应商上线友云采", "text_1": "怎么能够快速说服供应商理解并愿意上友云采系统"}, "score": 0.801122}
+2018-01-12 09:19:17.435 WARN  (http-nio-8080-exec-10) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="EADBD74015863002DCFF86975BE7FC7B:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.436 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.51067003358d464e929673741ee9dffb.2592000.1518311957.282335-9763964, expires_in:2592000
+2018-01-12 09:19:17.552 WARN  (http-nio-8080-exec-10) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="580EEBB615BFF2D152FE31A5CAD79110:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.554 WARN  (http-nio-8080-exec-10) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="F56820B630C8198645D019082FF6DC62:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:19:17.554 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=如何说服供应商上线友云采，_q=友云采线上线下合同，结果：{"log_id": 7538777652622655219, "texts": {"text_2": "如何说服供应商上线友云采", "text_1": "友云采线上线下合同"}, "score": 0.657822}
+2018-01-12 09:19:17.590 INFO  (http-nio-8080-exec-7) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=如何说服供应商上线友云采++AND+-id:"463c7f75-4904-4606-b574-5af3bb738c4a"++AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=+-id:"463c7f75-4904-4606-b574-5af3bb738c4a"+AND+-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=355 status=0 QTime=33
+2018-01-12 09:19:17.595 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger 搜索结果的总数量：355
+2018-01-12 09:19:17.601 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 如何说服供应商上线友云采 answer =       最好的方式就是可以把平台建设的成本分摊到供应商，每个供应商每年交给几百块钱，让他们主动去学习、了解这种采购方式的好处。我们很多客户，每年年度或年初会和主要供应商签订年度采购协议，每年仅会议、差旅等成本都超过1万元，这些成本最终都会转嫁到采购成本中。如果用了友云采平台，每年无论是差旅费、招待费，还是交易协同都会非常方便。我们的金麦郎，原先每个供应商经常月底出差到北京，花6-7天逐笔对仗，工作繁琐并且容易出错。现在通过友云采，每一笔业务都能够实施反映到系统中（下单、审核、发货、到货、入账），供应商和客户都很满意。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:20.066 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:20.068 ERROR (http-nio-8080-exec-9) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:20.324 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 找个人 answer = 您要找谁？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:22.721 INFO  (http-nio-8080-exec-5) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:22.721 ERROR (http-nio-8080-exec-5) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:22.866 INFO  (http-nio-8080-exec-5) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 陆鹏 answer = 正在帮您找，请稍等。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:27.617 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:27.617 ERROR (http-nio-8080-exec-6) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:27.774 INFO  (http-nio-8080-exec-7) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=找个服务&defType=edismax&qf=question&start=0&fq=-ext_scope:[""+TO+*]&rows=3&wt=javabin&version=2} hits=149 status=0 QTime=10
+2018-01-12 09:21:27.779 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger 搜索结果的总数量：149
+2018-01-12 09:21:27.831 WARN  (http-nio-8080-exec-6) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="24F3EB9B367CAC306D0FC42F4AD5F03C:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:27.832 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.fc7d5ffc4bde4fc224b1098b0e96e8ed.2592000.1518312087.282335-9763964, expires_in:2592000
+2018-01-12 09:21:27.985 WARN  (http-nio-8080-exec-6) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="469340CF37578175A2283F4B9373F5E5:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:27.987 WARN  (http-nio-8080-exec-6) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="81F94726B526EFDCBB9D650B849E1DCC:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:27.988 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找个服务，_q=我要找个人，结果：{"log_id": 5827041881040812908, "texts": {"text_2": "找个服务", "text_1": "我要找个人"}, "score": 0.723533}
+2018-01-12 09:21:28.043 WARN  (http-nio-8080-exec-6) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="DBA85475DBBD6500C6DC05EABC0452AF:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:28.044 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.4d595cfadab0da021f95616dd53b22bc.2592000.1518312088.282335-9763964, expires_in:2592000
+2018-01-12 09:21:28.172 WARN  (http-nio-8080-exec-6) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="5AD9C6EEAD4337101360CC6CA732A8C1:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:28.181 WARN  (http-nio-8080-exec-6) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="21746E62B4599C9205E669DF5C6A6398:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:28.182 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找个服务，_q=服务，结果：{"log_id": 912226541046161137, "texts": {"text_2": "找个服务", "text_1": "服务"}, "score": 0.792397}
+2018-01-12 09:21:28.228 WARN  (http-nio-8080-exec-6) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="47197942ED9C2C5D6B19F22A0929773E:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:28.229 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.4d595cfadab0da021f95616dd53b22bc.2592000.1518312088.282335-9763964, expires_in:2592000
+2018-01-12 09:21:28.347 WARN  (http-nio-8080-exec-6) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="5AD9C6EEAD4337101360CC6CA732A8C1:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:28.348 WARN  (http-nio-8080-exec-6) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="E13D976160207CD77127751FAE550342:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:28.349 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找个服务，_q=RestFul服务，结果：{"log_id": 7958588527127323287, "texts": {"text_2": "找个服务", "text_1": "RestFul服务"}, "score": 0.522228}
+2018-01-12 09:21:28.369 INFO  (http-nio-8080-exec-10) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=找个服务++AND+-id:"2612cecc-27bc-452f-8639-7de5cd64608c"++AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=+-id:"2612cecc-27bc-452f-8639-7de5cd64608c"+AND+-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=322 status=0 QTime=18
+2018-01-12 09:21:28.375 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger 搜索结果的总数量：322
+2018-01-12 09:21:28.380 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 找个服务 answer = 能够满足顾客需求的无形产品。可以是独立服务，比如咨询，也可以是附属服务，比如安装，维修等。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:33.777 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:33.777 ERROR (http-nio-8080-exec-8) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:33.949 INFO  (http-nio-8080-exec-2) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=找服务&defType=edismax&qf=question&start=0&fq=-ext_scope:[""+TO+*]&rows=3&wt=javabin&version=2} hits=151 status=0 QTime=2
+2018-01-12 09:21:33.959 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger 搜索结果的总数量：151
+2018-01-12 09:21:34.008 WARN  (http-nio-8080-exec-8) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="70BF6A5AB9E062A2E4A37068984F6B1C:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.008 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.b3d0ab335ab8af912a05c10b3be83ff2.2592000.1518312093.282335-9763964, expires_in:2592000
+2018-01-12 09:21:34.097 WARN  (http-nio-8080-exec-8) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="DB727E289EA4FE01D3849B093200620A:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.098 WARN  (http-nio-8080-exec-8) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="14FCC925349F3F3EB39EBC64365E17D1:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.099 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找服务，_q=在哪儿找所需应用，结果：{"log_id": 6009714880858592362, "texts": {"text_2": "找服务", "text_1": "在哪儿找所需应用"}, "score": 0.58505}
+2018-01-12 09:21:34.158 WARN  (http-nio-8080-exec-8) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="5651BB6E1FA5F3CA8C464D666D3BA96D:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.159 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.adef52f7a12eb724f889f99208856672.2592000.1518312094.282335-9763964, expires_in:2592000
+2018-01-12 09:21:34.248 WARN  (http-nio-8080-exec-8) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="DB727E289EA4FE01E8B6D497AAFF747D:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.249 WARN  (http-nio-8080-exec-8) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="B24EC1A3D07B136920644FB25507844D:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.249 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找服务，_q=在哪儿找所需应用，结果：{"log_id": 2250088865896890103, "texts": {"text_2": "找服务", "text_1": "在哪儿找所需应用"}, "score": 0.58505}
+2018-01-12 09:21:34.292 WARN  (http-nio-8080-exec-8) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="3BE583E885B84BF4C123B32CFB6D4B80:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.292 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.adef52f7a12eb724f889f99208856672.2592000.1518312094.282335-9763964, expires_in:2592000
+2018-01-12 09:21:34.363 WARN  (http-nio-8080-exec-8) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="DB727E289EA4FE01A84206FB2DD6A824:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.364 WARN  (http-nio-8080-exec-8) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="4F935993EF873AFF47154289B29B8BFC:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:34.365 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找服务，_q=服务，结果：{"log_id": 7754871446706974125, "texts": {"text_2": "找服务", "text_1": "服务"}, "score": 0.866189}
+2018-01-12 09:21:34.498 INFO  (http-nio-8080-exec-1) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=找服务++AND+-id:"2612cecc-27bc-452f-8639-7de5cd64608c"++AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=+-id:"2612cecc-27bc-452f-8639-7de5cd64608c"+AND+-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=325 status=0 QTime=130
+2018-01-12 09:21:34.500 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger 搜索结果的总数量：325
+2018-01-12 09:21:34.505 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 找服务 answer = 能够满足顾客需求的无形产品。可以是独立服务，比如咨询，也可以是附属服务，比如安装，维修等。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:40.089 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:40.089 ERROR (http-nio-8080-exec-3) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:40.270 INFO  (http-nio-8080-exec-4) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=找个服务&defType=edismax&qf=question&start=0&fq=-ext_scope:[""+TO+*]&rows=3&wt=javabin&version=2} hits=149 status=0 QTime=3
+2018-01-12 09:21:40.271 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger 搜索结果的总数量：149
+2018-01-12 09:21:40.313 WARN  (http-nio-8080-exec-3) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="C8B59F98BC3EB221ECA04558A843B495:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.314 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.841b9b58fc277dd164b85df019bd8baa.2592000.1518312100.282335-9763964, expires_in:2592000
+2018-01-12 09:21:40.493 WARN  (http-nio-8080-exec-3) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="64A945BE2B973E09ED58E641E1EBC033:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.494 WARN  (http-nio-8080-exec-3) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="853BA99C55DD20CD55FE65E7B313A92F:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.494 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找个服务，_q=我要找个人，结果：{"log_id": 8171303054468032630, "texts": {"text_2": "找个服务", "text_1": "我要找个人"}, "score": 0.723533}
+2018-01-12 09:21:40.536 WARN  (http-nio-8080-exec-3) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="3F4B46DEDD8237F6A328960D2A0BAF37:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.536 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.841b9b58fc277dd164b85df019bd8baa.2592000.1518312100.282335-9763964, expires_in:2592000
+2018-01-12 09:21:40.648 WARN  (http-nio-8080-exec-3) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="64A945BE2B973E095086AAB2F7B134BE:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.648 WARN  (http-nio-8080-exec-3) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="47D0EF518B2FE9E2DF9FACCA375CBDFD:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.648 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找个服务，_q=服务，结果：{"log_id": 2037743430881725297, "texts": {"text_2": "找个服务", "text_1": "服务"}, "score": 0.792397}
+2018-01-12 09:21:40.701 WARN  (http-nio-8080-exec-3) [   ] o.a.h.c.p.ResponseProcessCookies Cookie rejected [BAIDUID="3AEA8815C4EC9C2CD4184106172A3533:FG=1", version:0, domain:baidu.com, path:/, expiry:Fri Jan 01 07:55:55 CST 2038] Illegal 'domain' attribute "baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.701 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger ai.baidu.com >>>get token finish! access_token: 24.841b9b58fc277dd164b85df019bd8baa.2592000.1518312100.282335-9763964, expires_in:2592000
+2018-01-12 09:21:40.803 WARN  (http-nio-8080-exec-3) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="64A945BE2B973E09E10A84E61BAAE80D:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.804 WARN  (http-nio-8080-exec-3) [   ] o.a.c.h.HttpMethodBase Cookie rejected: "$Version="1"; BAIDUID="8715F647B0BBE4A0A5C3FE2DB3DD5801:FG=1"; $Path="/"; $Domain=".baidu.com"". Illegal domain attribute ".baidu.com". Domain of origin: "aip.baidubce.com"
+2018-01-12 09:21:40.804 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger +++++[MKBBOT] com.yyuap.mkb.nlpBaiAdapter simnet >>>q=找个服务，_q=RestFul服务，结果：{"log_id": 8488914877725445190, "texts": {"text_2": "找个服务", "text_1": "RestFul服务"}, "score": 0.522228}
+2018-01-12 09:21:40.813 INFO  (http-nio-8080-exec-9) [   x:kb_u_momo_core] o.a.s.c.S.Request [kb_u_momo_core]  webapp=/kb path=/select params={q=找个服务++AND+-id:"2612cecc-27bc-452f-8639-7de5cd64608c"++AND+-qid:[""+TO+*]+AND+-ext_scope:[""+TO+*]&defType=edismax&qf=keywords^100++title^10+descript^2&start=0&fq=+-id:"2612cecc-27bc-452f-8639-7de5cd64608c"+AND+-qid:[""+TO+*]++AND+-ext_scope:[""+TO+*]&rows=10&wt=javabin&version=2} hits=322 status=0 QTime=6
+2018-01-12 09:21:40.815 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger 搜索结果的总数量：322
+2018-01-12 09:21:40.827 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 找个服务 answer = 能够满足顾客需求的无形产品。可以是独立服务，比如咨询，也可以是附属服务，比如安装，维修等。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:43.913 INFO  (http-nio-8080-exec-5) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:43.914 ERROR (http-nio-8080-exec-5) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:44.096 INFO  (http-nio-8080-exec-5) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 找个人 answer = 您要找谁？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:47.298 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:47.298 ERROR (http-nio-8080-exec-7) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:47.456 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 叶林 answer = 正在帮您找，请稍等。 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:21:55.649 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:21:55.649 ERROR (http-nio-8080-exec-8) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:21:56.356 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 明天一起开个会 answer = 请问会议什么时间开始 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:01.728 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:01.729 ERROR (http-nio-8080-exec-3) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:01.890 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 明天上午8点 answer = 请问会议需要多长时间？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:04.496 INFO  (http-nio-8080-exec-5) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:04.497 ERROR (http-nio-8080-exec-5) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:04.652 INFO  (http-nio-8080-exec-5) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 2小时 answer = 好的，正在帮您预订，请稍等... simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:19.662 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:19.662 ERROR (http-nio-8080-exec-7) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:19.918 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 明天一起开会 answer = 请问会议什么时间开始 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:22.390 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:22.390 ERROR (http-nio-8080-exec-10) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:22.540 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 8点 answer = 请问会议需要多长时间？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:25.589 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:25.590 ERROR (http-nio-8080-exec-6) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:25.745 INFO  (http-nio-8080-exec-6) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 2小时 answer = 好的，正在帮您预订，请稍等... simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:37.367 INFO  (http-nio-8080-exec-2) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:37.367 ERROR (http-nio-8080-exec-2) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:38.006 INFO  (http-nio-8080-exec-2) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 一起开会 answer = 请问您想预定哪天的会议室？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:46.139 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:46.139 ERROR (http-nio-8080-exec-8) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:46.275 INFO  (http-nio-8080-exec-8) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 明 i 谈 answer = 请问您想预定哪天的会议室？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:22:53.341 INFO  (http-nio-8080-exec-4) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:22:53.351 ERROR (http-nio-8080-exec-4) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:22:53.504 INFO  (http-nio-8080-exec-4) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 后天 answer = 请问会议什么时间开始 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:23:03.109 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:23:03.109 ERROR (http-nio-8080-exec-9) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:23:03.254 INFO  (http-nio-8080-exec-9) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 19点 answer = 请问会议需要多长时间？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:23:10.358 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:23:10.367 ERROR (http-nio-8080-exec-3) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:23:10.497 INFO  (http-nio-8080-exec-3) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 2小时 answer = 好的，正在帮您预订，请稍等... simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:23:41.199 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:23:41.199 ERROR (http-nio-8080-exec-7) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:23:41.454 INFO  (http-nio-8080-exec-7) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 明天开会 answer = 请问多少人参加？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:23:50.447 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:23:50.447 ERROR (http-nio-8080-exec-10) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:23:50.613 INFO  (http-nio-8080-exec-10) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 20天 answer = 请问会议什么时间开始 simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:24:24.504 INFO  (http-nio-8080-exec-2) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:24:24.504 ERROR (http-nio-8080-exec-2) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:24:25.082 INFO  (http-nio-8080-exec-2) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 后天上午2点 answer = 请问会议需要多长时间？ simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 09:24:41.184 INFO  (http-nio-8080-exec-1) [   ] bot_kb_info_logger query request Start! apiKey=8008
+2018-01-12 09:24:41.185 ERROR (http-nio-8080-exec-1) [   ] bot_kb_error_logger test query error request! apiKey=8008
+2018-01-12 09:24:41.340 INFO  (http-nio-8080-exec-1) [   ] bot_kb_info_logger +++++记录查询[momo_debugger] : question = 3小时 answer = 好的，正在帮您预订，请稍等... simscore = -1.0 by tname=momo_debugger, tusername=momo, apiKey=8008
+2018-01-12 16:46:24.456 INFO  (localhost-startStop-2) [   ] o.a.s.c.CoreContainer Shutting down CoreContainer instance=798818251
+2018-01-12 16:46:24.549 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.SolrCore [core1]  CLOSING SolrCore org.apache.solr.core.SolrCore@e53e3b4
+2018-01-12 16:46:24.549 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.SolrCore [yycloudkbcore]  CLOSING SolrCore org.apache.solr.core.SolrCore@5e29384b
+2018-01-12 16:46:24.549 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.SolrCore [kb_u_momo_core]  CLOSING SolrCore org.apache.solr.core.SolrCore@7608c033
+2018-01-12 16:46:24.551 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.u.DirectUpdateHandler2 closing DirectUpdateHandler2{commits=0,autocommit maxTime=15000ms,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0,transaction_logs_total_size=0,transaction_logs_total_number=0}
+2018-01-12 16:46:24.551 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.u.DirectUpdateHandler2 closing DirectUpdateHandler2{commits=0,autocommit maxTime=15000ms,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0,transaction_logs_total_size=680809,transaction_logs_total_number=6}
+2018-01-12 16:46:24.551 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.u.SolrCoreState Closing SolrCoreState
+2018-01-12 16:46:24.551 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.u.DirectUpdateHandler2 closing DirectUpdateHandler2{commits=0,autocommit maxTime=15000ms,autocommits=0,soft autocommits=0,optimizes=0,rollbacks=0,expungeDeletes=0,docsPending=0,adds=0,deletesById=0,deletesByQuery=0,errors=0,cumulative_adds=0,cumulative_deletesById=0,cumulative_deletesByQuery=0,cumulative_errors=0,transaction_logs_total_size=7554,transaction_logs_total_number=10}
+2018-01-12 16:46:24.551 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.u.SolrCoreState Closing SolrCoreState
+2018-01-12 16:46:24.552 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.u.SolrCoreState Closing SolrCoreState
+2018-01-12 16:46:24.552 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.u.DefaultSolrCoreState SolrCoreState ref count has reached 0 - closing IndexWriter
+2018-01-12 16:46:24.553 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.u.DefaultSolrCoreState closing IndexWriter with IndexWriterCloser
+2018-01-12 16:46:24.552 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.u.DefaultSolrCoreState SolrCoreState ref count has reached 0 - closing IndexWriter
+2018-01-12 16:46:24.553 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.u.DefaultSolrCoreState closing IndexWriter with IndexWriterCloser
+2018-01-12 16:46:24.552 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.u.DefaultSolrCoreState SolrCoreState ref count has reached 0 - closing IndexWriter
+2018-01-12 16:46:24.553 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.u.DefaultSolrCoreState closing IndexWriter with IndexWriterCloser
+2018-01-12 16:46:24.565 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.SolrCore [core1] Closing main searcher on request.
+2018-01-12 16:46:24.567 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.SolrCore [kb_u_momo_core] Closing main searcher on request.
+2018-01-12 16:46:24.567 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.SolrCore [yycloudkbcore] Closing main searcher on request.
+2018-01-12 16:46:24.572 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+2018-01-12 16:46:24.573 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory looking to close /Users/gct/work/solrhome/core1/data [CachedDir<<refCount=0;path=/Users/gct/work/solrhome/core1/data;done=false>>]
+2018-01-12 16:46:24.573 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory Closing directory: /Users/gct/work/solrhome/core1/data
+2018-01-12 16:46:24.573 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory looking to close /Users/gct/work/solrhome/core1/data/index [CachedDir<<refCount=0;path=/Users/gct/work/solrhome/core1/data/index;done=false>>]
+2018-01-12 16:46:24.573 INFO  (coreCloseExecutor-22-thread-1) [   x:core1] o.a.s.c.CachingDirectoryFactory Closing directory: /Users/gct/work/solrhome/core1/data/index
+2018-01-12 16:46:24.577 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory looking to close /Users/gct/work/solrhome/kb_u_momo_core/data [CachedDir<<refCount=0;path=/Users/gct/work/solrhome/kb_u_momo_core/data;done=false>>]
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory Closing directory: /Users/gct/work/solrhome/kb_u_momo_core/data
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory looking to close /Users/gct/work/solrhome/kb_u_momo_core/data/index [CachedDir<<refCount=0;path=/Users/gct/work/solrhome/kb_u_momo_core/data/index;done=false>>]
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-3) [   x:kb_u_momo_core] o.a.s.c.CachingDirectoryFactory Closing directory: /Users/gct/work/solrhome/kb_u_momo_core/data/index
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory Closing NRTCachingDirectoryFactory - 2 directories currently being tracked
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory looking to close /Users/gct/work/solrhome/yycloudkbcore/data/index [CachedDir<<refCount=0;path=/Users/gct/work/solrhome/yycloudkbcore/data/index;done=false>>]
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory Closing directory: /Users/gct/work/solrhome/yycloudkbcore/data/index
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory looking to close /Users/gct/work/solrhome/yycloudkbcore/data [CachedDir<<refCount=0;path=/Users/gct/work/solrhome/yycloudkbcore/data;done=false>>]
+2018-01-12 16:46:24.578 INFO  (coreCloseExecutor-22-thread-2) [   x:yycloudkbcore] o.a.s.c.CachingDirectoryFactory Closing directory: /Users/gct/work/solrhome/yycloudkbcore/data
